@@ -3,7 +3,7 @@ import { FC, useState } from "react";
 import toast from "react-hot-toast";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { MdOutlineLock, MdOutlinePermIdentity } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { useAppDispatch } from "@/hooks";
 
@@ -15,6 +15,8 @@ import { actions } from "@/redux/authentication";
 import { loginAPI } from "@/services/authentication";
 
 import { AuthenticationDetailResponse } from "@/types/server/authentication";
+
+import AppIcon from "@/assets/svgs/ecommerce.svg";
 
 import { initialLoginForm } from "./fixtures";
 import type { LoginForm } from "./types";
@@ -62,8 +64,15 @@ const LoginPage: FC = () => {
     <FormikContext.Provider value={formikBag}>
       <div className="flex w-full max-w-xl flex-col items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
         <div className="w-full space-y-8">
+          <div className="flex flex-row justify-center">
+            <img
+              src={AppIcon}
+              alt="app-icon"
+              className="text-center h-[68px] w-[68px]"
+            />
+          </div>
           <h2 className="text-center text-3xl font-bold tracking-tight text-gray-900">
-            Sign in to CS545
+            Sign in
           </h2>
           <div className="flex flex-col gap-4 rounded-md">
             <FormInput
@@ -106,6 +115,17 @@ const LoginPage: FC = () => {
           >
             Sign in
           </Button>
+        </div>
+
+        <div className="mt-5 flex flex-col sm:flex-row">
+          <p>If you do not have an account yet? </p>
+
+          <div className="flex gap-1 sm:ml-1">
+            <Link to="">
+              <p className="text-blue-600 hover:cursor-pointer">Register</p>
+            </Link>
+            <p> now.</p>
+          </div>
         </div>
       </div>
     </FormikContext.Provider>

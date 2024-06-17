@@ -1,5 +1,5 @@
 const useIsLoggedIn = (): boolean => {
-  return true;
+  return false;
 };
 
 export default useIsLoggedIn;
