@@ -1,100 +1,130 @@
-import { FC, useState } from "react";
-
-import ProductCard from "@/components/ProductCard";
-import { IProduct } from "@/components/ProductCard/types";
-
-import { mockProducts } from "./fixtures";
-import Button from "@/components/Button";
-import Input from "@/components/Input";
+import { FormikContext, useFormik } from "formik";
+import { FC, useCallback, useRef, useState } from "react";
+import toast from "react-hot-toast";
 import { BiSearch } from "react-icons/bi";
-import Select from "@/components/Select";
+
 import { categoryList } from "@/constants/category";
+import { ratingList } from "@/constants/rating";
+
+import Button from "@/components/Button";
+import FormInput from "@/components/Formik/FormInput";
+import FormSelect from "@/components/Formik/FormSelect";
+import ProductCard from "@/components/ProductCard";
+
+import ProductFormModal from "./components/ProductFormModal";
+import { initialProductForm, mockProducts } from "./fixtures";
+import type { ProductForm } from "./types";
 
 const ProductsPage: FC = () => {
-  const [products, setProducts] = useState(mockProducts); // Replace mockProducts with your data fetching logic
-  const [filter, setFilter] = useState("");
-  const [isAddModalOpen, setAddModalOpen] = useState(false);
-  const [isEditModalOpen, setEditModalOpen] = useState(false);
-  const [editProduct, setEditProduct] = useState<IProduct | null>(null);
+  const [products, setProducts] = useState(mockProducts);
 
-  const handleAddProduct = (newProduct: IProduct) => {
-    setProducts([...products, newProduct]);
-    setAddModalOpen(false);
-  };
-
-  const handleEditProduct = (updatedProduct: IProduct) => {
-    setProducts(
-      products.map((product) =>
-        product.id === updatedProduct.id ? updatedProduct : product
-      )
-    );
-    setEditModalOpen(false);
-  };
+  const productFormModalRef = useRef<HTMLDialogElement | null>(null);
 
   const handleDeleteProduct = (productId: number) => {
     setProducts(products.filter((product) => product.id !== productId));
   };
 
+  const handleSubmit = async (values: ProductForm) => {
+    const { mode } = values;
+    const isAdd = mode === "add";
+
+    console.log(values);
+    toast.success(`Successfully ${isAdd ? "added" : "edited"} a product!`);
+  };
+
+  const formikBag = useFormik<ProductForm>({
+    initialValues: initialProductForm,
+    enableReinitialize: true,
+    validateOnChange: false,
+    validateOnBlur: false,
+    onSubmit: handleSubmit,
+  });
+
+  const resetProductFormDetails = useCallback(() => {
+    formikBag.setFieldValue("details.name", "");
+    formikBag.setFieldValue("details.description", "");
+    formikBag.setFieldValue("details.price", 0);
+    formikBag.setFieldValue("details.image", null);
+    formikBag.setFieldValue("mode", "add");
+  }, [formikBag]);
+
+  const handleShowProductFormModal = useCallback(() => {
+    productFormModalRef.current?.showModal();
+  }, []);
+
+  const handleCloseProductFormModal = useCallback(() => {
+    productFormModalRef.current?.close();
+    resetProductFormDetails();
+  }, [resetProductFormDetails]);
+
+  const handleEdit = useCallback(() => {
+    formikBag.setFieldValue("mode", "edit");
+    handleShowProductFormModal();
+  }, [formikBag, handleShowProductFormModal]);
+
   return (
-    <div>
+    <FormikContext.Provider value={formikBag}>
       <h2 className="font-bold">Your Products</h2>
 
-      <div className="mt-8 flex justify-between items-center mb-4">
-        <div className="flex gap-4 items-center">
-          <Input
-            type="text"
+      <div className="mt-8 flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-center">
+          <FormInput
+            name="filters.name"
             label="Product Name"
             placeholder="Search products..."
-            value={filter}
-            inputClassname="w-64"
-            onChange={(e) => setFilter(e.target.value)}
+            containerClassname="w-64"
             rightIcon={<BiSearch />}
           />
 
-          <Select
-            options={categoryList.map((category) => ({
-              label: category,
-              value: category,
-            }))}
+          <FormInput
+            name="filters.price"
+            type="number"
+            label="Price"
+            placeholder="Search price..."
+            containerClassname="w-64"
+            rightIcon={<BiSearch />}
+          />
+
+          <FormSelect
+            name="filters.category"
+            options={categoryList}
             label="Category"
+            selectClassname="w-64"
+          />
+
+          <FormSelect
+            name="filters.rating"
+            options={ratingList}
+            label="Rating"
             selectClassname="w-64"
           />
         </div>
 
-        <Button className="self-end" onClick={() => setAddModalOpen(true)}>
+        <Button
+          className="mt-4 sm:mt-0 sm:self-end"
+          onClick={handleShowProductFormModal}
+        >
           Add Product
         </Button>
       </div>
+
       <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {products
-          .filter((product) => product.title.includes(filter))
-          .map((product) => (
-            <ProductCard
-              key={product.id}
-              {...product}
-              showBtnBasket={false}
-              onEdit={(item) => {
-                setEditProduct(item as IProduct);
-                setEditModalOpen(true);
-              }}
-              onDelete={() => handleDeleteProduct(product.id)}
-            />
-          ))}
+        {products.map((product) => (
+          <ProductCard
+            key={product.id}
+            {...product}
+            showBtnBasket={false}
+            onEdit={handleEdit}
+            onDelete={() => handleDeleteProduct(product.id)}
+          />
+        ))}
       </div>
-      {/* {isAddModalOpen && (
-        <AddProductModal
-          onClose={() => setAddModalOpen(false)}
-          onSave={handleAddProduct}
-        />
-      )}
-      {isEditModalOpen && (
-        <EditProductModal
-          product={editProduct}
-          onClose={() => setEditModalOpen(false)}
-          onSave={handleEditProduct}
-        />
-      )} */}
-    </div>
+
+      <ProductFormModal
+        ref={productFormModalRef}
+        handleClose={handleCloseProductFormModal}
+      />
+    </FormikContext.Provider>
   );
 };
 

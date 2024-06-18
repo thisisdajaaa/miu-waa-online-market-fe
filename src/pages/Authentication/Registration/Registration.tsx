@@ -7,8 +7,8 @@ import { MdEmail, MdKey, MdPeople } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 
 import {
-  AUTHENTICATED_PAGE_URL,
-  NON_AUTHENTICATED_PAGE_URL,
+  AUTHENTICATED_URLS,
+  NON_AUTHENTICATED_URLS,
 } from "@/constants/pageUrl";
 
 import Button from "@/components/Button";
@@ -28,7 +28,7 @@ const RegistrationPage: FC = () => {
 
   const handleSubmit = async (values: RegistrationForm) => {
     console.log(values);
-    navigate(AUTHENTICATED_PAGE_URL.HOME);
+    navigate(AUTHENTICATED_URLS.HOME);
     toast.success("Successfully registered and logged in user!");
   };
 
@@ -156,7 +156,7 @@ const RegistrationPage: FC = () => {
         </div>
 
         <div className="mt-6 w-full">
-          <Link to={NON_AUTHENTICATED_PAGE_URL.LOGIN}>
+          <Link to={NON_AUTHENTICATED_URLS.LOGIN}>
             <span className="flex items-center justify-center">
               <FaArrowLeftLong className="mr-1" />
               Back to Login

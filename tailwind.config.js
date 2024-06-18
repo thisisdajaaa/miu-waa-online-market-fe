@@ -12,6 +12,7 @@ export default {
   },
   plugins: [
     import("@tailwindcss/forms"),
+    import("tailwind-scrollbar-hide"),
     daisyui,
     plugin(function ({ addVariant, e }) {
       addVariant("invalid", ({ modifySelectors, separator }) => {

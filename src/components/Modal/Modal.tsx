@@ -25,13 +25,13 @@ const Modal = forwardRef<HTMLDialogElement, PropsWithChildren<ModalProps>>(
         open={open}
         aria-modal={open}
         className={clsxm(
-          "modal",
+          "modal scrollbar-hide",
           open && "modal-open",
           responsive && "modal-bottom sm:modal-middle",
           containerClassname
         )}
       >
-        <div className={clsxm("modal-box", bodyClassname)}>
+        <div className={clsxm("modal-box no-scrollbar", bodyClassname)}>
           <div className="modal-action">
             <form method="dialog">
               <Button
