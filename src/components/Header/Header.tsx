@@ -113,7 +113,10 @@ const Header: FC<HeaderProps> = (props) => {
       </div>
 
       <div className="flex items-center space-x-3 p-2 pl-6 bg-primary text-white text-sm">
-        <p className="link flex items-center" onClick={handleToggleSidebar}>
+        <p
+          className="link items-center hidden md:flex"
+          onClick={handleToggleSidebar}
+        >
           <BiMenu className="h-6 w-6 mr-1" />
           All
         </p>
