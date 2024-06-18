@@ -8,7 +8,14 @@ import Button from "@/components/Button";
 import type { ProductCardProps } from "./types";
 
 const ProductCard: FC<ProductCardProps> = (props) => {
-  const { title, price, category, description, imageUrl } = props;
+  const {
+    title,
+    price,
+    category,
+    description,
+    imageUrl,
+    showBtnBasket = true,
+  } = props;
   const [rating] = useState<number>(
     Math.floor(Math.random() * (MAX_RATING - MIN_RATING + 1)) + MIN_RATING
   );
@@ -32,7 +39,10 @@ const ProductCard: FC<ProductCardProps> = (props) => {
         </div>
         <p className="text-xs my-2 line-clamp-2">{description}</p>
         <div className="mb-5">{price}</div>
-        <Button className="mt-auto button">Add to basket</Button>
+
+        {showBtnBasket && (
+          <Button className="mt-auto button">Add to basket</Button>
+        )}
       </div>
     </div>
   );

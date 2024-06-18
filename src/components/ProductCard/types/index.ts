@@ -4,4 +4,5 @@ export type ProductCardProps = {
   category: string;
   description: string;
   imageUrl: string;
+  showBtnBasket?: boolean;
 };
