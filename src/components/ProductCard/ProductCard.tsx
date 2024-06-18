@@ -9,13 +9,12 @@ import type { ProductCardProps } from "./types";
 
 const ProductCard: FC<ProductCardProps> = (props) => {
   const { title, price, category, description, imageUrl } = props;
-
   const [rating] = useState<number>(
     Math.floor(Math.random() * (MAX_RATING - MIN_RATING + 1)) + MIN_RATING
   );
 
   return (
-    <div className="card flex-grow bg-base-100 shadow-xl hover:-translate-y-1 cursor-pointer transition duration-200">
+    <div className="card w-full bg-base-100 shadow-xl hover:-translate-y-1 cursor-pointer transition duration-200">
       <figure>
         <p className="absolute top-2 right-2 text-xs italic text-white bg-primary px-4 py-1 rounded-lg uppercase">
           {category}
