@@ -1,11 +1,11 @@
 import { FC } from "react";
 
-import SellerView from "./components/SellerView";
+import BuyerView from "./components/BuyerView";
 
 const HomePage: FC = () => {
   return (
     <div>
-      <SellerView />
+      <BuyerView />
     </div>
   );
 };

@@ -54,7 +54,7 @@ const RegistrationPage: FC = () => {
             <img
               src="/assets/svgs/ecommerce.svg"
               alt="app-icon"
-              className="text-center h-[68px] w-[68px]"
+              className="text-center h-[4.25rem] w-[4.25rem]"
             />
           </div>
           <h2 className="text-center text-3xl font-bold tracking-tight text-gray-900">

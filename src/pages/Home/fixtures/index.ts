@@ -1,5 +1,7 @@
 import faker from "faker";
 
+import type { ProductCardProps } from "@/components/ProductCard/types";
+
 export const mockLabels = [
   "January",
   "February",
@@ -35,3 +37,70 @@ export const orderStatusData = {
     },
   ],
 };
+
+export const mockProducts: ProductCardProps[] = [
+  {
+    title: "Product 1",
+    price: "$100.00",
+    category: "electronics",
+    description: "This is a description for product 1.",
+    imageUrl:
+      "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg",
+  },
+  {
+    title: "Product 2",
+    price: "$200.00",
+    category: "electronics",
+    description: "This is a description for product 2.",
+    imageUrl:
+      "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg",
+  },
+  {
+    title: "Product 3",
+    price: "$300.00",
+    category: "electronics",
+    description: "This is a description for product 3.",
+    imageUrl:
+      "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg",
+  },
+  {
+    title: "Product 4",
+    price: "$400.00",
+    category: "electronics",
+    description: "This is a description for product 4.",
+    imageUrl:
+      "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg",
+  },
+  {
+    title: "Product 5",
+    price: "$500.00",
+    category: "electronics",
+    description: "This is a description for product 5.",
+    imageUrl:
+      "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg",
+  },
+  {
+    title: "Product 6",
+    price: "$600.00",
+    category: "electronics",
+    description: "This is a description for product 6.",
+    imageUrl:
+      "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg",
+  },
+  {
+    title: "Product 7",
+    price: "$700.00",
+    category: "electronics",
+    description: "This is a description for product 7.",
+    imageUrl:
+      "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg",
+  },
+  {
+    title: "Product 8",
+    price: "$800.00",
+    category: "electronics",
+    description: "This is a description for product 8.",
+    imageUrl:
+      "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg",
+  },
+];
