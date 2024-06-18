@@ -5,10 +5,10 @@ export const BASE_URL = Object.freeze({
 
 export const WILDCARD = "*";
 
-export const PARENT_URL = {
+export const PARENT_URL = Object.freeze({
   AUTH: "/auth",
   HOME: "/home",
-};
+});
 
 export const WILDCARD_URL = Object.freeze({
   AUTH: `${PARENT_URL.AUTH}${WILDCARD}`,

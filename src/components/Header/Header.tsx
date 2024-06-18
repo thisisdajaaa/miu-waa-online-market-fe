@@ -1,6 +1,9 @@
 import clsx from "clsx";
 import { FC, useCallback, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { BiSearch } from "react-icons/bi";
+import { IoCartSharp } from "react-icons/io5";
+import { MdPeople } from "react-icons/md";
+import { Link, useNavigate } from "react-router-dom";
 
 import { useAppDispatch, useOnClickOutsideElement } from "@/hooks";
 
@@ -12,6 +15,9 @@ import {
 import { actions } from "@/redux/authentication";
 
 import { logoutAPI } from "@/services/authentication";
+
+import Button from "../Button";
+import Input from "../Input";
 
 const Header: FC = () => {
   const navigate = useNavigate();
@@ -33,8 +39,6 @@ const Header: FC = () => {
     navigate(NON_AUTHENTICATED_PAGE_URL.LOGIN);
   };
 
-  const handleHome = () => navigate(AUTHENTICATED_PAGE_URL.HOME);
-
   const handleOptions = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -44,55 +48,60 @@ const Header: FC = () => {
   };
 
   return (
-    <div className="navbar z-30 bg-base-100 shadow-md">
-      <div className="flex-1 items-center">
-        <button className="btn btn-ghost text-xl" onClick={handleHome}>
-          <h1 className="text-[1.2rem] sm:text-[1.25rem]">CS545</h1>
-        </button>
+    <div className="navbar z-30 bg-accent shadow-md px-10 justify-between">
+      <div className="flex items-center flex-grow sm:flex-grow-0">
+        <Link to={AUTHENTICATED_PAGE_URL.HOME} className="block">
+          <img src="/assets/svgs/ecommerce.svg" className="h-[48px] w-[48px]" />
+        </Link>
       </div>
-      <div className="flex gap-2">
-        <div
-          ref={dropdownRef}
-          className={clsx(
-            "dropdown-end dropdown",
-            isDropdownOpen ? "dropdown-open" : ""
-          )}
-        >
-          <label tabIndex={0}>
-            <button
-              type="button"
-              className="avatar btn btn-circle btn-ghost m-1"
-              onClick={handleOptions}
-            >
-              <div className="w-10 rounded-full">
-                <img
-                  src="/assets/images/mock-avatar.jpg"
-                  alt="User Avatar"
-                  height={40}
-                  width={40}
-                />
-              </div>
-            </button>
-          </label>
 
-          {isDropdownOpen && (
-            <ul
-              className="menu dropdown-content z-50 w-52 rounded-box bg-base-100 p-2 shadow"
-              tabIndex={0}
-              role="menu"
-            >
-              <li>
-                <a>Profile</a>
-              </li>
-              <li>
-                <a>Settings</a>
-              </li>
-              <li onClick={handleLogout}>
-                <a>Logout</a>
-              </li>
-            </ul>
-          )}
+      <div className="hidden sm:flex items-center flex-grow mx-8">
+        <Input rightIcon={<BiSearch />} />
+      </div>
+
+      <div className="flex gap-8">
+        <div className="flex gap-2">
+          <div
+            ref={dropdownRef}
+            className={clsx(
+              "dropdown-end dropdown",
+              isDropdownOpen ? "dropdown-open" : ""
+            )}
+          >
+            <label tabIndex={0}>
+              <Button type="button" variant="ghost" onClick={handleOptions}>
+                <MdPeople className="h-4 w-4 md:h-6 md:w-6" />
+                <div className="flex flex-col items-start">
+                  <p className="font-normal">Hi, Test User!</p>
+                  <p className="font-bold">Account</p>
+                </div>
+              </Button>
+            </label>
+
+            {isDropdownOpen && (
+              <ul
+                className="menu dropdown-content z-50 w-52 rounded-box bg-base-100 p-2 shadow"
+                tabIndex={0}
+                role="menu"
+              >
+                <li>
+                  <a>Profile</a>
+                </li>
+                <li>
+                  <a>Settings</a>
+                </li>
+                <li onClick={handleLogout}>
+                  <a>Logout</a>
+                </li>
+              </ul>
+            )}
+          </div>
         </div>
+
+        <Button className="flex flex-col" variant="ghost">
+          <IoCartSharp className="h-6 w-6" />
+          <p>$0.00</p>
+        </Button>
       </div>
     </div>
   );
