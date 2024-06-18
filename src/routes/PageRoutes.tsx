@@ -2,31 +2,33 @@ import { FC, lazy, Suspense } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 
 import {
-  AUTHENTICATED_PAGE_URL,
-  PARENT_URL,
+  AUTHENTICATED_URLS,
+  PATHS,
   WILDCARD,
-  WILDCARD_URL,
+  WILDCARD_PATHS,
 } from "@/constants/pageUrl";
 
 import Loading from "@/components/Loading";
 import RouteGuard from "@/components/RouteGuard";
 
 const AuthenticationRoutes = lazy(() => import("./AuthenticationRoutes"));
-const HomeRoutes = lazy(() => import("./Home"));
+const HomeRoutes = lazy(() => import("./HomeRoutes"));
+const ProductRoutes = lazy(() => import("./ProductRoutes"));
 const NotFoundPage = lazy(() => import("../pages/NotFound"));
 
 const PageRoutes: FC = () => {
   return (
     <Suspense fallback={<Loading />}>
       <Routes>
-        <Route path={WILDCARD_URL.AUTH} element={<AuthenticationRoutes />} />
+        <Route path={WILDCARD_PATHS.AUTH} element={<AuthenticationRoutes />} />
 
         <Route element={<RouteGuard />}>
           <Route
-            path={AUTHENTICATED_PAGE_URL.HOME}
-            element={<Navigate to={PARENT_URL.HOME} />}
+            path={PATHS.BASE}
+            element={<Navigate to={AUTHENTICATED_URLS.HOME} />}
           />
-          <Route path={WILDCARD_URL.HOME} element={<HomeRoutes />} />
+          <Route path={WILDCARD_PATHS.HOME} element={<HomeRoutes />} />
+          <Route path={WILDCARD_PATHS.PRODUCTS} element={<ProductRoutes />} />
         </Route>
 
         <Route path={WILDCARD} element={<NotFoundPage />} />
