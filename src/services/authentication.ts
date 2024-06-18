@@ -3,7 +3,7 @@ import axios from "axios";
 import { onParseResponse } from "@/utils/axiosUtil";
 import logger from "@/utils/loggerUtil";
 
-import type { LoginForm } from "@/pages/Login/types";
+import type { LoginForm } from "@/pages/Authentication/Login/types";
 
 import { actions } from "@/redux/authentication";
 import { store } from "@/redux/store";

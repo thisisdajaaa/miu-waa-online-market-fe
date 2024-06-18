@@ -7,6 +7,11 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { useAppDispatch } from "@/hooks";
 
+import {
+  AUTHENTICATED_PAGE_URL,
+  NON_AUTHENTICATED_PAGE_URL,
+} from "@/constants/pageUrl";
+
 import Button from "@/components/Button";
 import FormInput from "@/components/Formik/FormInput";
 
@@ -19,7 +24,6 @@ import { AuthenticationDetailResponse } from "@/types/server/authentication";
 import { initialLoginForm } from "./fixtures";
 import type { LoginForm } from "./types";
 import { LoginFormValidationSchema } from "./validations";
-import AppIcon from "../../../public/assets/svgs/ecommerce.svg";
 
 const LoginPage: FC = () => {
   const navigate = useNavigate();
@@ -44,7 +48,7 @@ const LoginPage: FC = () => {
 
     toast.success(message as string);
 
-    navigate("/");
+    navigate(AUTHENTICATED_PAGE_URL.HOME);
   };
 
   const formikBag = useFormik<LoginForm>({
@@ -65,7 +69,7 @@ const LoginPage: FC = () => {
         <div className="w-full space-y-8">
           <div className="flex flex-row justify-center">
             <img
-              src={AppIcon}
+              src="/assets/svgs/ecommerce.svg"
               alt="app-icon"
               className="text-center h-[68px] w-[68px]"
             />
@@ -120,7 +124,7 @@ const LoginPage: FC = () => {
           <p>If you do not have an account yet? </p>
 
           <div className="flex gap-1 sm:ml-1">
-            <Link to="">
+            <Link to={NON_AUTHENTICATED_PAGE_URL.REGISTRATION}>
               <p className="text-blue-600 hover:cursor-pointer">Register</p>
             </Link>
             <p> now.</p>
