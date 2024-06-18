@@ -1,6 +1,9 @@
 import clsx from "clsx";
 import { FC, useCallback, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { BiMenu, BiSearch } from "react-icons/bi";
+import { IoCartSharp } from "react-icons/io5";
+import { MdPeople } from "react-icons/md";
+import { Link, useNavigate } from "react-router-dom";
 
 import { useAppDispatch, useOnClickOutsideElement } from "@/hooks";
 
@@ -13,7 +16,13 @@ import { actions } from "@/redux/authentication";
 
 import { logoutAPI } from "@/services/authentication";
 
-const Header: FC = () => {
+import type { HeaderProps } from "./types";
+import Button from "../Button";
+import Input from "../Input";
+
+const Header: FC<HeaderProps> = (props) => {
+  const { handleToggleSidebar } = props;
+
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
@@ -33,8 +42,6 @@ const Header: FC = () => {
     navigate(NON_AUTHENTICATED_PAGE_URL.LOGIN);
   };
 
-  const handleHome = () => navigate(AUTHENTICATED_PAGE_URL.HOME);
-
   const handleOptions = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -44,57 +51,86 @@ const Header: FC = () => {
   };
 
   return (
-    <div className="navbar z-30 bg-base-100 shadow-md">
-      <div className="flex-1 items-center">
-        <button className="btn btn-ghost text-xl" onClick={handleHome}>
-          <h1 className="text-[1.2rem] sm:text-[1.25rem]">CS545</h1>
-        </button>
-      </div>
-      <div className="flex gap-2">
-        <div
-          ref={dropdownRef}
-          className={clsx(
-            "dropdown-end dropdown",
-            isDropdownOpen ? "dropdown-open" : ""
-          )}
-        >
-          <label tabIndex={0}>
-            <button
-              type="button"
-              className="avatar btn btn-circle btn-ghost m-1"
-              onClick={handleOptions}
-            >
-              <div className="w-10 rounded-full">
-                <img
-                  src="/assets/images/mock-avatar.jpg"
-                  alt="User Avatar"
-                  height={40}
-                  width={40}
-                />
-              </div>
-            </button>
-          </label>
+    <header className="sticky top-0 z-50">
+      <div className="navbar bg-accent shadow-md px-10 justify-between">
+        <div className="flex items-center flex-grow sm:flex-grow-0">
+          <Link to={AUTHENTICATED_PAGE_URL.HOME} className="block">
+            <img
+              src="/assets/svgs/ecommerce.svg"
+              className="h-[48px] w-[48px]"
+            />
+          </Link>
+        </div>
 
-          {isDropdownOpen && (
-            <ul
-              className="menu dropdown-content z-50 w-52 rounded-box bg-base-100 p-2 shadow"
-              tabIndex={0}
-              role="menu"
+        <div className="hidden sm:flex items-center flex-grow mx-8">
+          <Input rightIcon={<BiSearch />} />
+        </div>
+
+        <div className="flex gap-8">
+          <div className="flex gap-2">
+            <div
+              ref={dropdownRef}
+              className={clsx(
+                "dropdown-end dropdown",
+                isDropdownOpen ? "dropdown-open" : ""
+              )}
             >
-              <li>
-                <a>Profile</a>
-              </li>
-              <li>
-                <a>Settings</a>
-              </li>
-              <li onClick={handleLogout}>
-                <a>Logout</a>
-              </li>
-            </ul>
-          )}
+              <label tabIndex={0}>
+                <Button type="button" variant="ghost" onClick={handleOptions}>
+                  <MdPeople className="h-4 w-4 md:h-6 md:w-6" />
+                  <div className="flex flex-col items-start">
+                    <p className="font-normal">Hi, Test User!</p>
+                    <p className="font-bold">Account</p>
+                  </div>
+                </Button>
+              </label>
+
+              {isDropdownOpen && (
+                <ul
+                  className="menu dropdown-content z-50 w-52 rounded-box bg-base-100 p-2 shadow"
+                  tabIndex={0}
+                  role="menu"
+                >
+                  <li>
+                    <a>Profile</a>
+                  </li>
+                  <li>
+                    <a>Settings</a>
+                  </li>
+                  <li onClick={handleLogout}>
+                    <a>Logout</a>
+                  </li>
+                </ul>
+              )}
+            </div>
+          </div>
+
+          <Button className="flex flex-col" variant="ghost">
+            <IoCartSharp className="h-6 w-6" />
+            <p>$0.00</p>
+          </Button>
         </div>
       </div>
-    </div>
+
+      <div className="flex items-center space-x-3 p-2 pl-6 bg-primary text-white text-sm">
+        <p
+          className="link items-center hidden md:flex"
+          onClick={handleToggleSidebar}
+        >
+          <BiMenu className="h-6 w-6 mr-1" />
+          All
+        </p>
+        <p className="link">Prime Video</p>
+        <p className="link">Amazon Business</p>
+        <p className="link">Today's Deals</p>
+        <p className="link hidden lg:inline-flex">Electronics</p>
+        <p className="link hidden lg:inline-flex">Food & Grocery</p>
+        <p className="link hidden lg:inline-flex">Prime</p>
+        <p className="link hidden lg:inline-flex">Buy Again</p>
+        <p className="link hidden lg:inline-flex">Shopper Toolkit</p>
+        <p className="link hidden lg:inline-flex">Health & Personal Care</p>
+      </div>
+    </header>
   );
 };
 

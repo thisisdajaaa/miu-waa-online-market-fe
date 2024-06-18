@@ -1,4 +1,5 @@
 import daisyui from "daisyui";
+import plugin from "tailwindcss/plugin";
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -6,7 +7,20 @@ export default {
   theme: {
     extend: {},
   },
-  plugins: [import("@tailwindcss/forms"), daisyui],
+  variants: {
+    textColor: ({ after }) => after(["invalid"]),
+  },
+  plugins: [
+    import("@tailwindcss/forms"),
+    daisyui,
+    plugin(function ({ addVariant, e }) {
+      addVariant("invalid", ({ modifySelectors, separator }) => {
+        modifySelectors(({ className }) => {
+          return `.${e(`invalid${separator}${className}`)}:invalid`;
+        });
+      });
+    }),
+  ],
   darkMode: "",
   daisyui: {
     themes: ["cupcake"], // false: only light + dark | true: all themes | array: specific themes like this ["light", "dark", "cupcake"]

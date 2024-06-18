@@ -3,6 +3,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 
 import {
   AUTHENTICATED_PAGE_URL,
+  PARENT_URL,
   WILDCARD,
   WILDCARD_URL,
 } from "@/constants/pageUrl";
@@ -23,7 +24,7 @@ const PageRoutes: FC = () => {
         <Route element={<RouteGuard />}>
           <Route
             path={AUTHENTICATED_PAGE_URL.HOME}
-            element={<Navigate to="/home" />}
+            element={<Navigate to={PARENT_URL.HOME} />}
           />
           <Route path={WILDCARD_URL.HOME} element={<HomeRoutes />} />
         </Route>
