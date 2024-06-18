@@ -16,11 +16,10 @@ import { loginAPI } from "@/services/authentication";
 
 import { AuthenticationDetailResponse } from "@/types/server/authentication";
 
-import AppIcon from "@/assets/svgs/ecommerce.svg";
-
 import { initialLoginForm } from "./fixtures";
 import type { LoginForm } from "./types";
 import { LoginFormValidationSchema } from "./validations";
+import AppIcon from "../../../public/assets/svgs/ecommerce.svg";
 
 const LoginPage: FC = () => {
   const navigate = useNavigate();
@@ -62,7 +61,7 @@ const LoginPage: FC = () => {
 
   return (
     <FormikContext.Provider value={formikBag}>
-      <div className="flex w-full max-w-xl flex-col items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="flex w-full max-w-xl flex-col border rounded-md items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
         <div className="w-full space-y-8">
           <div className="flex flex-row justify-center">
             <img
