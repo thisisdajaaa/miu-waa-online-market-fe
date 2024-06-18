@@ -25,7 +25,7 @@ const Select: FC<SelectProps> = (props) => {
   };
 
   return (
-    <>
+    <div>
       <label className="form-control w-full">
         {label && (
           <div className="label">
@@ -58,7 +58,7 @@ const Select: FC<SelectProps> = (props) => {
           ))}
         </select>
       </label>
-    </>
+    </div>
   );
 };
 

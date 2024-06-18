@@ -8,4 +8,39 @@
     opacity: 1;
     font-size: 1rem;
   }
+
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Custom CSS to remove scrollbar */
+  .modal.modal-open .modal-box {
+    max-height: 90vh;
+    overflow-y: auto; /* Allow vertical scroll within modal-box */
+  }
+
+  .modal.modal-open {
+    overflow: hidden; /* Prevent body scroll */
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  /* Add these styles to ensure the modal itself doesn’t show scrollbars */
+  .modal {
+    overflow: hidden !important;
+  }
+
+  .modal-open .modal-box {
+    max-height: 80vh;
+    overflow-y: auto !important;
+  }
 }

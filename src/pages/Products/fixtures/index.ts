@@ -1,5 +1,7 @@
 import type { IProduct } from "@/components/ProductCard/types";
 
+import type { ProductForm } from "../types";
+
 export const mockProducts: IProduct[] = [
   {
     id: 1,
@@ -74,3 +76,21 @@ export const mockProducts: IProduct[] = [
       "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg",
   },
 ];
+
+export const initialProductForm: ProductForm = {
+  details: {
+    name: "",
+    description: "",
+    quantity: 0,
+    category: "",
+    price: 0,
+    image: null,
+  },
+  filters: {
+    name: "",
+    category: "",
+    price: 0,
+    rating: 0,
+  },
+  mode: "add",
+};
