@@ -1,6 +1,12 @@
 import { FC, lazy, Suspense } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 
+import {
+  AUTHENTICATED_PAGE_URL,
+  WILDCARD,
+  WILDCARD_URL,
+} from "@/constants/pageUrl";
+
 import Loading from "@/components/Loading";
 import RouteGuard from "@/components/RouteGuard";
 
@@ -12,14 +18,17 @@ const PageRoutes: FC = () => {
   return (
     <Suspense fallback={<Loading />}>
       <Routes>
-        <Route path="/auth/*" element={<AuthenticationRoutes />} />
+        <Route path={WILDCARD_URL.AUTH} element={<AuthenticationRoutes />} />
 
         <Route element={<RouteGuard />}>
-          <Route path="/" element={<Navigate to="/home" />} />
-          <Route path="/home/*" element={<HomeRoutes />} />
+          <Route
+            path={AUTHENTICATED_PAGE_URL.HOME}
+            element={<Navigate to="/home" />}
+          />
+          <Route path={WILDCARD_URL.HOME} element={<HomeRoutes />} />
         </Route>
 
-        <Route path="*" element={<NotFoundPage />} />
+        <Route path={WILDCARD} element={<NotFoundPage />} />
       </Routes>
     </Suspense>
   );

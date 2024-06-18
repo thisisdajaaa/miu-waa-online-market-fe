@@ -4,11 +4,14 @@ import { useNavigate } from "react-router-dom";
 
 import { useAppDispatch, useOnClickOutsideElement } from "@/hooks";
 
+import {
+  AUTHENTICATED_PAGE_URL,
+  NON_AUTHENTICATED_PAGE_URL,
+} from "@/constants/pageUrl";
+
 import { actions } from "@/redux/authentication";
 
 import { logoutAPI } from "@/services/authentication";
-
-import mockAvatar from "@/assets/images/mock-avatar.jpg";
 
 const Header: FC = () => {
   const navigate = useNavigate();
@@ -27,10 +30,10 @@ const Header: FC = () => {
     await logoutAPI();
     dispatch(actions.callSetResetAuthentication());
     setIsDropdownOpen(false);
-    navigate("/auth/login");
+    navigate(NON_AUTHENTICATED_PAGE_URL.LOGIN);
   };
 
-  const handleHome = () => navigate("/");
+  const handleHome = () => navigate(AUTHENTICATED_PAGE_URL.HOME);
 
   const handleOptions = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -63,7 +66,7 @@ const Header: FC = () => {
             >
               <div className="w-10 rounded-full">
                 <img
-                  src={mockAvatar}
+                  src="/assets/images/mock-avatar.jpg"
                   alt="User Avatar"
                   height={40}
                   width={40}
