@@ -13,8 +13,9 @@ import {
 
 import Button from "@/components/Button";
 import FormInput from "@/components/Formik/FormInput";
+import FormSelect from "@/components/Formik/FormSelect";
 
-import { initialRegistrationForm } from "./fixtures";
+import { initialRegistrationForm, roleList } from "./fixtures";
 import { RegistrationForm } from "./types";
 import { RegistrationFormValidationSchema } from "./validations";
 
@@ -41,13 +42,8 @@ const RegistrationPage: FC = () => {
   });
 
   const handleTogglePasswordVisibility = (action: string) => {
-    if (action == "password") {
-      setIsPasswordVisible((prev) => !prev);
-    }
-
-    if (action == "confirm") {
-      setIsConfirmPasswordVisible((prev) => !prev);
-    }
+    if (action == "password") setIsPasswordVisible((prev) => !prev);
+    if (action == "confirm") setIsConfirmPasswordVisible((prev) => !prev);
   };
 
   return (
@@ -94,6 +90,13 @@ const RegistrationPage: FC = () => {
               isRequired
               placeholder="Enter your email"
               leftIcon={<MdEmail />}
+            />
+
+            <FormSelect
+              name="role"
+              label="Role"
+              isRequired
+              options={roleList}
             />
 
             <FormInput
