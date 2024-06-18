@@ -8,6 +8,9 @@ export const WILDCARD = "*";
 export const PARENT_URL = Object.freeze({
   AUTH: "/auth",
   HOME: "/home",
+  PRODUCTS: "/products",
+  ORDERS: "/orders",
+  SHOP_SETTINGS: "/shop-settings",
 });
 
 export const WILDCARD_URL = Object.freeze({

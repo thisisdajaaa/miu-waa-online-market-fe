@@ -1,13 +1,19 @@
-import { FC, PropsWithChildren } from "react";
+import { FC, PropsWithChildren, useCallback, useState } from "react";
 
+import clsxm from "@/utils/clsxmUtil";
 import { useIsLoggedIn } from "@/hooks";
 
 import Header from "../Header";
+import Sidebar from "../Sidebar";
 
 const Layout: FC<PropsWithChildren> = (props) => {
   const { children } = props;
-
+  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
   const isLoggedIn = useIsLoggedIn();
+
+  const handleToggleSidebar = useCallback(() => {
+    setIsSidebarOpen((prev) => !prev);
+  }, []);
 
   if (!isLoggedIn)
     return (
@@ -20,15 +26,37 @@ const Layout: FC<PropsWithChildren> = (props) => {
     );
 
   return (
-    <div className="flex min-h-screen flex-col">
-      <Header />
-
-      <div className="flex flex-1 flex-col md:flex-row">
-        <main className="flex-1 overflow-x-auto transition-all duration-200 ease-in-out">
-          <div className="m-auto flex max-w-screen-2xl flex-col py-[6rem] px-9">
-            {children}
-          </div>
-        </main>
+    <div aria-expanded={isSidebarOpen} className="flex min-h-screen flex-col">
+      <Header handleToggleSidebar={handleToggleSidebar} />
+      <div
+        className={clsxm("drawer", {
+          "drawer-open": isSidebarOpen,
+        })}
+      >
+        <input
+          type="checkbox"
+          className="drawer-toggle"
+          checked={isSidebarOpen}
+          readOnly
+        />
+        <div
+          className={clsxm("drawer-content flex flex-1 flex-col", {
+            "lg:ml-20": isSidebarOpen,
+          })}
+        >
+          <main
+            className={clsxm("flex-1 overflow-x-auto")}
+            data-testid="content"
+          >
+            <div className="m-auto flex max-w-screen-2xl flex-col py-[3rem] px-9">
+              {children}
+            </div>
+          </main>
+        </div>
+        <Sidebar
+          handleToggleSidebar={handleToggleSidebar}
+          isSidebarOpen={isSidebarOpen}
+        />
       </div>
     </div>
   );
