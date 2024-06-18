@@ -8,8 +8,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch, useOnClickOutsideElement } from "@/hooks";
 
 import {
-  AUTHENTICATED_PAGE_URL,
-  NON_AUTHENTICATED_PAGE_URL,
+  AUTHENTICATED_URLS,
+  NON_AUTHENTICATED_URLS,
 } from "@/constants/pageUrl";
 
 import { actions } from "@/redux/authentication";
@@ -39,7 +39,7 @@ const Header: FC<HeaderProps> = (props) => {
     await logoutAPI();
     dispatch(actions.callSetResetAuthentication());
     setIsDropdownOpen(false);
-    navigate(NON_AUTHENTICATED_PAGE_URL.LOGIN);
+    navigate(NON_AUTHENTICATED_URLS.LOGIN);
   };
 
   const handleOptions = (
@@ -54,7 +54,7 @@ const Header: FC<HeaderProps> = (props) => {
     <header className="sticky top-0 z-50">
       <div className="navbar bg-accent shadow-md px-10 justify-between">
         <div className="flex items-center flex-grow sm:flex-grow-0">
-          <Link to={AUTHENTICATED_PAGE_URL.HOME} className="block">
+          <Link to={AUTHENTICATED_URLS.HOME} className="block">
             <img
               src="/assets/svgs/ecommerce.svg"
               className="h-[3rem] w-[3rem]"

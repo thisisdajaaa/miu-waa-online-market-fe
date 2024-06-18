@@ -22,8 +22,8 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
   const variants: ClassValue[] = [
     variant === "primary" && ["btn-primary"],
     variant === "secondary" && ["btn-secondary"],
-    variant === "danger" && ["btn-accent"],
-    variant === "info" && ["btn-info"],
+    variant === "danger" && ["btn-error"],
+    variant === "info" && ["btn-accent"],
     variant === "ghost" && ["btn-ghost"],
     variant === "active" && ["btn-active"],
     variant === "default" && [],
@@ -55,7 +55,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
         <div
           data-testid="loading-icon"
           className={clsxm(
-            "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white"
+            "absolute btn- top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white"
           )}
         >
           <ImSpinner2 className="animate-spin" />

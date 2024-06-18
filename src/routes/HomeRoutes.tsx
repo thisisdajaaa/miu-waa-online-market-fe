@@ -1,7 +1,7 @@
 import { FC, lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 
-import { AUTHENTICATED_PAGE_URL } from "@/constants/pageUrl";
+import { PATHS } from "@/constants/pageUrl";
 
 import Loading from "@/components/Loading";
 
@@ -11,7 +11,7 @@ const HomeRoutes: FC = () => {
   return (
     <Suspense fallback={<Loading />}>
       <Routes>
-        <Route path={AUTHENTICATED_PAGE_URL.HOME} element={<Home />} />
+        <Route path={PATHS.BASE} element={<Home />} />
       </Routes>
     </Suspense>
   );

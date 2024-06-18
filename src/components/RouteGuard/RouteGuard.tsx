@@ -3,7 +3,7 @@ import { Navigate, Outlet, useLocation } from "react-router-dom";
 
 import { useIsLoggedIn } from "@/hooks";
 
-import { NON_AUTHENTICATED_PAGE_URL } from "@/constants/pageUrl";
+import { NON_AUTHENTICATED_URLS } from "@/constants/pageUrl";
 
 const RouteGuard: FC = () => {
   const isLoggedIn = useIsLoggedIn();
@@ -13,7 +13,7 @@ const RouteGuard: FC = () => {
 
   return (
     <Navigate
-      to={NON_AUTHENTICATED_PAGE_URL.LOGIN}
+      to={NON_AUTHENTICATED_URLS.LOGIN}
       state={{ from: location }}
       replace
     />
