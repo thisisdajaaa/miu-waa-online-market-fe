@@ -17,7 +17,7 @@ const StatisticsSection: FC = () => {
         >
           <div className="w-full h-full">
             <p className="text-primary font-semibold text-xl">$400.00</p>
-            <div className="h-[400px]">
+            <div className="h-[25rem]">
               <LineChart labels={mockLabels} datasets={mockDatasets} />
             </div>
           </div>
@@ -27,7 +27,7 @@ const StatisticsSection: FC = () => {
           containerClassname="lg:col-span-2 xl:row-span-2"
         >
           <div className="w-full h-full ">
-            <div className="h-[400px]">
+            <div className="h-[25rem]">
               <PieChart
                 data={orderStatusData}
                 containerClassname="flex justify-center items-center"

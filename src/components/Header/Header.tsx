@@ -57,7 +57,7 @@ const Header: FC<HeaderProps> = (props) => {
           <Link to={AUTHENTICATED_PAGE_URL.HOME} className="block">
             <img
               src="/assets/svgs/ecommerce.svg"
-              className="h-[48px] w-[48px]"
+              className="h-[3rem] w-[3rem]"
             />
           </Link>
         </div>
