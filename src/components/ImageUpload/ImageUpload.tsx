@@ -10,7 +10,8 @@ import Button from "@/components/Button";
 import type { ImageUploadProps } from "./types";
 
 const ImageUpload: FC<ImageUploadProps> = (props) => {
-  const { value, onChange, label, isRequired, containerClassname } = props;
+  const { value, onChange, label, isRequired, containerClassname, hasError } =
+    props;
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop: (acceptedFiles) => {
@@ -44,7 +45,10 @@ const ImageUpload: FC<ImageUploadProps> = (props) => {
 
       <div
         {...getRootProps({ className: "dropzone" })}
-        className="relative w-full h-64 rounded-lg overflow-hidden border-2 border-dashed border-gray-300 flex items-center justify-center bg-gray-100 cursor-pointer"
+        className={clsxm(
+          "relative w-full h-64 rounded-lg overflow-hidden border-2 border-dashed border-gray-300 flex items-center justify-center bg-gray-100 cursor-pointer",
+          hasError && "border-error"
+        )}
       >
         <input {...getInputProps()} />
         {memoizedValue ? (
@@ -67,7 +71,7 @@ const ImageUpload: FC<ImageUploadProps> = (props) => {
             <div className="text-4xl text-gray-400 mb-2 flex justify-center">
               <BiCamera size={48} />
             </div>
-            <p className="text-gray-500">Add Photos/Videos</p>
+            <p className="text-gray-500">Add Photo</p>
             <p className="text-gray-400 text-sm">or drag and drop</p>
           </div>
         )}

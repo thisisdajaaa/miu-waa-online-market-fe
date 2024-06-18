@@ -14,6 +14,7 @@ import ProductCard from "@/components/ProductCard";
 import ProductFormModal from "./components/ProductFormModal";
 import { initialProductForm, mockProducts } from "./fixtures";
 import type { ProductForm } from "./types";
+import { ProductFormValidationSchema } from "./validations";
 
 const ProductsPage: FC = () => {
   const [products, setProducts] = useState(mockProducts);
@@ -28,25 +29,17 @@ const ProductsPage: FC = () => {
     const { mode } = values;
     const isAdd = mode === "add";
 
-    console.log(values);
     toast.success(`Successfully ${isAdd ? "added" : "edited"} a product!`);
   };
 
   const formikBag = useFormik<ProductForm>({
     initialValues: initialProductForm,
+    validationSchema: ProductFormValidationSchema,
     enableReinitialize: true,
     validateOnChange: false,
     validateOnBlur: false,
     onSubmit: handleSubmit,
   });
-
-  const resetProductFormDetails = useCallback(() => {
-    formikBag.setFieldValue("details.name", "");
-    formikBag.setFieldValue("details.description", "");
-    formikBag.setFieldValue("details.price", 0);
-    formikBag.setFieldValue("details.image", null);
-    formikBag.setFieldValue("mode", "add");
-  }, [formikBag]);
 
   const handleShowProductFormModal = useCallback(() => {
     productFormModalRef.current?.showModal();
@@ -54,8 +47,8 @@ const ProductsPage: FC = () => {
 
   const handleCloseProductFormModal = useCallback(() => {
     productFormModalRef.current?.close();
-    resetProductFormDetails();
-  }, [resetProductFormDetails]);
+    formikBag.resetForm();
+  }, [formikBag]);
 
   const handleEdit = useCallback(() => {
     formikBag.setFieldValue("mode", "edit");

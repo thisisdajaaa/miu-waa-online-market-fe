@@ -1,7 +1,7 @@
 import { useField } from "formik";
 import { FC, useCallback, useState } from "react";
 
-import { useUpdateEffect } from "@/hooks";
+import { useFieldError, useUpdateEffect } from "@/hooks";
 
 import ImageUpload from "@/components/ImageUpload";
 import type { FileWithPreview } from "@/components/ImageUpload/types";
@@ -13,6 +13,9 @@ const FormImageUpload: FC<FormImageUploadProps> = (props) => {
   const { name, handleImageUpload, ...rest } = props;
 
   const [, meta, helpers] = useField(name);
+  const hasError = useFieldError(name);
+
+  console.log("hasError", hasError);
 
   const [currentValue, setCurrentValue] = useState<
     File | FileWithPreview[] | null
@@ -39,6 +42,7 @@ const FormImageUpload: FC<FormImageUploadProps> = (props) => {
       <ImageUpload
         {...rest}
         value={currentValue as File}
+        hasError={hasError}
         onChange={handleChange}
       />
 

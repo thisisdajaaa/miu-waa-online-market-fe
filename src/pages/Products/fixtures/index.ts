@@ -81,6 +81,8 @@ export const initialProductForm: ProductForm = {
   details: {
     name: "",
     description: "",
+    quantity: 0,
+    category: "",
     price: 0,
     image: null,
   },

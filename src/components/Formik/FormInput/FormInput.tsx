@@ -26,9 +26,8 @@ const FormInput: FC<FormInputProps> = (props) => {
     (event: ChangeEvent<HTMLInputElement>) => {
       let value: string | number = event.target.value;
 
-      if (type === "number") {
+      if (type === "number")
         value = event.target.value === "" ? "" : Number(event.target.value);
-      }
 
       if (maxLength !== undefined && value.toString().length > maxLength)
         return;
@@ -37,9 +36,7 @@ const FormInput: FC<FormInputProps> = (props) => {
       helpers.setValue(value);
       helpers.setError("");
 
-      if (handleInputChange) {
-        handleInputChange(value);
-      }
+      if (handleInputChange) handleInputChange(value);
     },
     [helpers, handleInputChange, maxLength, type]
   );

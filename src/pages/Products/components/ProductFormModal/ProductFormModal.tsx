@@ -1,9 +1,12 @@
 import { useFormikContext } from "formik";
 import { forwardRef } from "react";
 
+import { categoryList } from "@/constants/category";
+
 import Button from "@/components/Button";
 import FormImageUpload from "@/components/Formik/FormImageUpload";
 import FormInput from "@/components/Formik/FormInput";
+import FormSelect from "@/components/Formik/FormSelect";
 import FormTextArea from "@/components/Formik/FormTextArea";
 import Modal from "@/components/Modal";
 
@@ -30,11 +33,23 @@ const ProductFormModal = forwardRef<HTMLDialogElement, ProductFormModalProps>(
         </h2>
 
         <div className="grid gap-7">
+          <FormImageUpload
+            name="details.image"
+            label="Image"
+            isRequired
+            containerClassname="max-w-lg flex flex-col items-start"
+          />
           <FormInput
             name="details.name"
             type="text"
             label="Name"
             placeholder="Enter Name"
+            isRequired
+          />
+          <FormSelect
+            name="details.category"
+            options={categoryList}
+            label="Category"
             isRequired
           />
           <FormTextArea
@@ -47,15 +62,17 @@ const ProductFormModal = forwardRef<HTMLDialogElement, ProductFormModalProps>(
             name="details.price"
             type="Number"
             label="Price"
-            placeholder="Enter price"
+            placeholder="Enter Price"
             isRequired
           />
-          <FormImageUpload
-            name="details.image"
-            label="Image"
+          <FormInput
+            name="details.quantity"
+            type="Number"
+            label="Quantity"
+            placeholder="Enter Quantity"
             isRequired
-            containerClassname="max-w-lg flex flex-col items-start"
           />
+
           <div className="mt-14 flex justify-end gap-6">
             <Button
               type="button"

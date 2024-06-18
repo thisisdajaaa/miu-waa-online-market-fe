@@ -16,6 +16,8 @@ export type ProductFormFilters = {
 export type ProducFormtDetails = {
   name: string;
   price: number;
+  quantity: number;
+  category: string;
   image: FileWithPreview | null;
   description: string;
 };
