@@ -23,7 +23,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
     variant === "primary" && ["btn-primary"],
     variant === "secondary" && ["btn-secondary"],
     variant === "danger" && ["btn-error"],
-    variant === "info" && ["btn-accent"],
+    variant === "info" && ["btn-info"],
     variant === "ghost" && ["btn-ghost"],
     variant === "active" && ["btn-active"],
     variant === "default" && [],

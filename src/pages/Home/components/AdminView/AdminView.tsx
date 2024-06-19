@@ -21,10 +21,10 @@ const AdminView: FC = () => {
 
   return (
     <div>
-        {productsToApprove.length === 0 ? (
-          <h2 className="font-bold">No Products to Approve</h2>
-        ) : (
-          <div>
+      {productsToApprove.length === 0 ? (
+        <h2 className="font-bold">No Products to Approve</h2>
+      ) : (
+        <div>
           <h2 className="font-bold">Products To Approve</h2>
           <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {productsToApprove.map((product) => {
@@ -39,8 +39,8 @@ const AdminView: FC = () => {
               );
             })}
           </div>
-          </div>
-        )}
+        </div>
+      )}
     </div>
   );
 };

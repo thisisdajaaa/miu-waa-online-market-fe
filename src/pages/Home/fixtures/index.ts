@@ -1,5 +1,6 @@
 import faker from "faker";
 
+import { IReview } from "@/components/Review/types";
 import type { IProduct } from "@/components/ProductCard/types";
 
 export const mockLabels = [
@@ -110,5 +111,36 @@ export const mockProducts: IProduct[] = [
     description: "This is a description for product 8.",
     imageUrl:
       "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg",
+  },
+];
+
+export const mockReviews: IReview[] = [
+  {
+    id: 1,
+    product: "Product 1",
+    title: "Great product!",
+    comment: "This is a great product. I love it!",
+    rating: 4,
+    date: "2021-09-01",
+    buyer:"John Doe",
+  },
+  {
+    id: 2,
+    product: "Product 2",
+    title: "Fabulous product!",
+    comment: "This is a fabulous product. I love it!",
+    rating: 3,
+    date: "2022-08-01",
+    buyer:"Jane Doe",
+  },
+
+  {
+    id:3,
+    product: "Product 3",
+    title: "Amazing product!",
+    comment: "This is an amazing product. I love it!",
+    rating: 3,
+    date: "2022-08-01",
+    buyer:"Jane Doe",
   },
 ];
