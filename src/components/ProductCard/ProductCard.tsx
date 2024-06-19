@@ -73,7 +73,7 @@ const ProductCard: FC<ProductCardProps> = (props) => {
   };
 
   return (
-    <Link to={`/products/${id}`}>
+    <Link to={`/products/${id}`} state={{ product: payload }}>
       <div className="card w-full bg-base-100 shadow-xl hover:-translate-y-1 cursor-pointer transition duration-200">
         <figure>
           <p className="absolute top-2 right-2 text-xs italic text-white bg-primary px-4 py-1 rounded-lg uppercase">
@@ -96,7 +96,7 @@ const ProductCard: FC<ProductCardProps> = (props) => {
           {showBtnBasket && (
             <>
               {quantityInCart > 0 ? (
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between items-center gap-6">
                   <Button onClick={handleRemoveFromCart}>-</Button>
                   <span>{quantityInCart}</span>
                   <Button onClick={handleAddToCart}>+</Button>

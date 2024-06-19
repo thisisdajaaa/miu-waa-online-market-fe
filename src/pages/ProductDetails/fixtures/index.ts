@@ -1,12 +1,29 @@
-import type { IProduct } from "@/components/ProductCard/types";
-
-export const mockProduct: IProduct = {
-  id: 1,
-  title: "Product 8",
-  price: 800,
-  category: "electronics",
-  rating: 5,
-  description: "This is a description for product 8.",
-  imageUrl:
-    "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg",
-};
+export const reviews = [
+  {
+    id: 1,
+    product: "Product 1",
+    title: "Review 1",
+    comment: "Testing one two three",
+    rating: 5,
+    date: "March 3, 2023",
+    buyer: "Test User",
+  },
+  {
+    id: 2,
+    product: "Product 1",
+    title: "Review 1",
+    comment: "Testing one two three",
+    rating: 5,
+    date: "March 3, 2023",
+    buyer: "Test User",
+  },
+  {
+    id: 3,
+    product: "Product 1",
+    title: "Review 1",
+    comment: "Testing one two three",
+    rating: 5,
+    date: "March 3, 2023",
+    buyer: "Test User",
+  },
+];
