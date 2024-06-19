@@ -1,8 +1,9 @@
-import clsx from "clsx";
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import { BiSquare } from "react-icons/bi";
 
-import { orderStatusList } from "@/constants/order";
+import clsxm from "@/utils/clsxmUtil";
+
+import { orderStatusList, statusColors } from "@/constants/order";
 
 import type { OrderStatus } from "@/types/server/order";
 
@@ -16,20 +17,10 @@ const OrderCard: React.FC<OrderCardProps> = (props) => {
 
   const [status, setStatus] = useState<OrderStatus>("Delivered");
 
-  const statusColors = useMemo(() => {
-    return {
-      Cancelled: "bg-red-500 text-white",
-      Placed: "bg-gray-500 text-white",
-      Shipped: "bg-blue-500 text-white",
-      "On The Way": "bg-yellow-500 text-black",
-      Delivered: "bg-green-500 text-white",
-    };
-  }, []);
-
   return (
     <div className="border rounded-lg shadow-md bg-white mb-4">
       <div
-        className={clsx(
+        className={clsxm(
           "p-4 flex justify-between items-center rounded-t-lg",
           statusColors[status]
         )}
@@ -42,18 +33,18 @@ const OrderCard: React.FC<OrderCardProps> = (props) => {
             onChange={(e) => setStatus(e.target.value as OrderStatus)}
           />
           <Button onClick={onViewDetails} variant="ghost">
-            View details
+            View Details
           </Button>
         </div>
       </div>
       <div className="p-4">
         <div className="flex items-center">
-          <div className={clsx("rounded-full p-2", statusColors[status])}>
+          <div className={clsxm("rounded-full p-2", statusColors[status])}>
             <BiSquare />
           </div>
           <div className="ml-4">
             <div className="text-lg font-semibold">
-              Delivered on {deliveryDate}
+              {status} on {deliveryDate}
             </div>
             <div className="text-sm text-gray-500">
               Sold and shipped by{" "}
