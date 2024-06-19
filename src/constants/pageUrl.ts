@@ -9,7 +9,7 @@ export const PATHS = Object.freeze({
   PRODUCT_DETAILS: "/:id",
   ORDERS: "/orders",
   ORDER_DETAILS: "/orders/:id",
-  SHOP_SETTINGS: "/shop-settings",
+  SHOPPING_CART: "/shopping-cart",
 });
 
 export const WILDCARD = "/*";
@@ -19,6 +19,7 @@ export const WILDCARD_PATHS = Object.freeze({
   HOME: `${PATHS.HOME}${WILDCARD}`,
   PRODUCTS: `${PATHS.PRODUCTS}${WILDCARD}`,
   ORDERS: `${PATHS.ORDERS}${WILDCARD}`,
+  SHOPPING_CART: `${PATHS.SHOPPING_CART}${WILDCARD}`,
 });
 
 export const NON_AUTHENTICATED_URLS = Object.freeze({
@@ -30,4 +31,5 @@ export const AUTHENTICATED_URLS = Object.freeze({
   HOME: PATHS.HOME,
   PRODUCTS: PATHS.PRODUCTS,
   ORDERS: PATHS.ORDERS,
+  SHOPPING_CART: PATHS.SHOPPING_CART,
 });

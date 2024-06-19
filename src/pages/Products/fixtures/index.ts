@@ -6,8 +6,9 @@ export const mockProducts: IProduct[] = [
   {
     id: 1,
     title: "Product 1",
-    price: "$100.00",
+    price: 100,
     category: "Electronics",
+    rating: 5,
     description: "This is a description for product 1.",
     imageUrl:
       "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg",
@@ -15,8 +16,9 @@ export const mockProducts: IProduct[] = [
   {
     id: 2,
     title: "Product 2",
-    price: "$200.00",
+    price: 100,
     category: "Electronics",
+    rating: 5,
     description: "This is a description for product 2.",
     imageUrl:
       "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg",
@@ -24,8 +26,9 @@ export const mockProducts: IProduct[] = [
   {
     id: 3,
     title: "Product 1",
-    price: "$100.00",
+    price: 100,
     category: "Electronics",
+    rating: 5,
     description: "This is a description for product 1.",
     imageUrl:
       "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg",
@@ -33,8 +36,9 @@ export const mockProducts: IProduct[] = [
   {
     id: 4,
     title: "Product 2",
-    price: "$200.00",
+    price: 100,
     category: "Electronics",
+    rating: 5,
     description: "This is a description for product 2.",
     imageUrl:
       "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg",
@@ -42,8 +46,9 @@ export const mockProducts: IProduct[] = [
   {
     id: 5,
     title: "Product 1",
-    price: "$100.00",
+    price: 100,
     category: "Electronics",
+    rating: 5,
     description: "This is a description for product 1.",
     imageUrl:
       "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg",
@@ -51,8 +56,9 @@ export const mockProducts: IProduct[] = [
   {
     id: 6,
     title: "Product 2",
-    price: "$200.00",
+    price: 100,
     category: "Electronics",
+    rating: 5,
     description: "This is a description for product 2.",
     imageUrl:
       "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg",
@@ -60,8 +66,9 @@ export const mockProducts: IProduct[] = [
   {
     id: 7,
     title: "Product 1",
-    price: "$100.00",
+    price: 100,
     category: "Electronics",
+    rating: 5,
     description: "This is a description for product 1.",
     imageUrl:
       "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg",
@@ -69,8 +76,9 @@ export const mockProducts: IProduct[] = [
   {
     id: 8,
     title: "Product 2",
-    price: "$200.00",
+    price: 100,
     category: "Electronics",
+    rating: 5,
     description: "This is a description for product 2.",
     imageUrl:
       "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg",
