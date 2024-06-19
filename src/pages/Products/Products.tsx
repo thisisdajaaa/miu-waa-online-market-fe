@@ -64,7 +64,7 @@ const ProductsPage: FC = () => {
           <FormInput
             name="filters.name"
             label="Product Name"
-            placeholder="Search products..."
+            placeholder="Search Product Name"
             containerClassname="w-64"
             rightIcon={<BiSearch />}
           />
@@ -73,7 +73,7 @@ const ProductsPage: FC = () => {
             name="filters.price"
             type="number"
             label="Price"
-            placeholder="Search price..."
+            placeholder="Search Price"
             containerClassname="w-64"
             rightIcon={<BiSearch />}
           />
