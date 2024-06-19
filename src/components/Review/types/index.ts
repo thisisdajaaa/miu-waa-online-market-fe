@@ -1,13 +1,13 @@
 export type ReviewProps = {
-    onDelete: (id: number) => void;
+  onDelete?: (id: number) => void;
 } & IReview;
 
 export interface IReview {
-    id: number;
-    product : string;
-    title : string;
-    comment: string;
-    rating: number;
-    date: string;
-    buyer: string;
+  id: number;
+  product: string;
+  title: string;
+  comment: string;
+  rating: number;
+  date: string;
+  buyer: string;
 }

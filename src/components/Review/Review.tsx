@@ -1,4 +1,5 @@
 import { FC } from "react";
+
 import type { ReviewProps } from "./types";
 import Button from "../Button";
 
@@ -6,37 +7,42 @@ const Review: FC<ReviewProps> = (props) => {
   const { id, product, title, comment, rating, date, buyer, onDelete } = props;
 
   return (
-    <div className="card w-full bg-base-100 shadow-xl m-3">
-      <figure>
-        <div className="rating">
-          {[1, 2, 3, 4, 5].map((value) => (
-            <input
-              key={value}
-              disabled
-              className={`mask mask-star-2 ${
-                value <= rating ? "bg-orange-400" : "bg-gray-400"
-              }`}
-            ></input>
-          ))}
-        </div>
-      </figure>
-      <div>
-        <h2 className="text-center text-xl">{product}</h2>
-      </div>
-      <div className="card-body">
-        <h2 className="card-title">{title}</h2>
-        <p>{comment}</p>
-      </div>
-      <div className="card-body flex items-center flex-row justify-between">
+    <div className="bg-white rounded-lg shadow-md p-6 mb-4">
+      <div className="flex justify-between items-center">
         <div>
-          <p>{buyer}</p>
-          <p>{date}</p>
+          <h2 className="text-lg font-bold text-gray-900">{buyer}</h2>
+          <div className="flex items-center my-2">
+            {[...Array(5)].map((_star, i) => {
+              const ratingValue = i + 1;
+              return (
+                <span
+                  key={i}
+                  className={`text-xl ${
+                    ratingValue <= rating ? "text-yellow-500" : "text-gray-300"
+                  }`}
+                >
+                  ★
+                </span>
+              );
+            })}
+          </div>
         </div>
         <div>
-          <Button variant="danger" onClick={() => onDelete(id)}>
+          <Button
+            variant="danger"
+            onClick={() => (onDelete ? onDelete(id) : {})}
+          >
             Delete
           </Button>
         </div>
+      </div>
+      <div className="mt-4">
+        <h3 className="text-md font-semibold text-gray-800">{product}</h3>
+        <h4 className="text-md text-gray-700">{title}</h4>
+        <p className="text-gray-600 mt-2">{comment}</p>
+      </div>
+      <div className="flex justify-between items-center mt-4 text-gray-500 text-sm">
+        <p>{date}</p>
       </div>
     </div>
   );
