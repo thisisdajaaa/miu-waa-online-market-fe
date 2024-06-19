@@ -5,14 +5,14 @@ import { PATHS } from "@/constants/pageUrl";
 
 import Loading from "@/components/Loading";
 
-const OrderList = lazy(() => import("@/pages/Orders"));
+const OrdersPage = lazy(() => import("@/pages/Orders"));
 const OrderDetail = lazy(() => import("@/pages/OrderDetail"));
 
 const OrderRoutes: FC = () => {
   return (
     <Suspense fallback={<Loading />}>
       <Routes>
-        <Route path={PATHS.BASE} element={<OrderList />} />
+        <Route path={PATHS.BASE} element={<OrdersPage />} />
         <Route path={PATHS.RECORD} element={<OrderDetail />} />
       </Routes>
     </Suspense>

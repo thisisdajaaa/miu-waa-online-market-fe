@@ -1,12 +1,14 @@
-import { FC, useState } from "react";
+import { FC, MouseEvent } from "react";
 import { BsStarFill } from "react-icons/bs";
+import { Link } from "react-router-dom";
 
-import { MAX_RATING, MIN_RATING } from "@/constants/rating";
+import { useAppDispatch, useAppSelector } from "@/hooks";
 
 import Button from "@/components/Button";
 
+import { actions, selectors } from "@/redux/cart";
+
 import type { IProduct, ProductCardProps } from "./types";
-import { Link } from "react-router-dom";
 
 const ProductCard: FC<ProductCardProps> = (props) => {
   const {
@@ -16,12 +18,16 @@ const ProductCard: FC<ProductCardProps> = (props) => {
     category,
     description,
     imageUrl,
+    rating,
     showBtnBasket = true,
     onEdit,
     onDelete,
     onApprove,
     onReject,
   } = props;
+
+  const dispatch = useAppDispatch();
+  const products = useAppSelector(selectors.products);
 
   const payload: IProduct = {
     id,
@@ -30,11 +36,41 @@ const ProductCard: FC<ProductCardProps> = (props) => {
     category,
     description,
     imageUrl,
+    rating,
   };
 
-  const [rating] = useState<number>(
-    Math.floor(Math.random() * (MAX_RATING - MIN_RATING + 1)) + MIN_RATING
-  );
+  const productInCart = products.find((item) => item.id === id);
+  const quantityInCart = productInCart ? productInCart.quantity : 0;
+
+  const handleAddToCart = (event: MouseEvent) => {
+    event.preventDefault();
+    dispatch(actions.callAddToBasket(payload));
+  };
+
+  const handleRemoveFromCart = (event: MouseEvent) => {
+    event.preventDefault();
+    dispatch(actions.callRemoveToBasket(id));
+  };
+
+  const handleEdit = (event: MouseEvent) => {
+    event.preventDefault();
+    if (onEdit) onEdit(payload);
+  };
+
+  const handleApprove = (event: MouseEvent) => {
+    event.preventDefault();
+    if (onApprove) onApprove(id);
+  };
+
+  const handleReject = (event: MouseEvent) => {
+    event.preventDefault();
+    if (onReject) onReject(id);
+  };
+
+  const handleDelete = (event: MouseEvent) => {
+    event.preventDefault();
+    if (onDelete) onDelete(id);
+  };
 
   return (
     <Link to={`/products/${id}`}>
@@ -55,18 +91,28 @@ const ProductCard: FC<ProductCardProps> = (props) => {
               ))}
           </div>
           <p className="text-xs my-2 line-clamp-2">{description}</p>
-          <div className="mb-5">{price}</div>
+          <div className="mb-5">${price.toFixed(2)}</div>
 
-          {showBtnBasket ? (
-            <Button className="mt-auto button">Add to basket</Button>
-          ) : (
+          {showBtnBasket && (
+            <>
+              {quantityInCart > 0 ? (
+                <div className="flex justify-between items-center">
+                  <Button onClick={handleRemoveFromCart}>-</Button>
+                  <span>{quantityInCart}</span>
+                  <Button onClick={handleAddToCart}>+</Button>
+                </div>
+              ) : (
+                <Button onClick={handleAddToCart} className="mt-auto button">
+                  Add to basket
+                </Button>
+              )}
+            </>
+          )}
+
+          {!showBtnBasket && (
             <div className="flex justify-between">
               {onEdit && (
-                <Button
-                  className="mt-auto"
-                  variant="info"
-                  onClick={() => onEdit(payload)}
-                >
+                <Button className="mt-auto" variant="info" onClick={handleEdit}>
                   Edit
                 </Button>
               )}
@@ -75,7 +121,7 @@ const ProductCard: FC<ProductCardProps> = (props) => {
                 <Button
                   className="mt-auto"
                   variant="primary"
-                  onClick={() => onApprove(id)}
+                  onClick={handleApprove}
                 >
                   Approve
                 </Button>
@@ -85,7 +131,7 @@ const ProductCard: FC<ProductCardProps> = (props) => {
                 <Button
                   className="mt-auto"
                   variant="danger"
-                  onClick={() => onReject(id)}
+                  onClick={handleReject}
                 >
                   Reject
                 </Button>
@@ -95,7 +141,7 @@ const ProductCard: FC<ProductCardProps> = (props) => {
                 <Button
                   className="mt-auto"
                   variant="danger"
-                  onClick={() => onDelete(id)}
+                  onClick={handleDelete}
                 >
                   Delete
                 </Button>

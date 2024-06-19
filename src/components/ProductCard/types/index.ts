@@ -9,8 +9,9 @@ export type ProductCardProps = {
 export interface IProduct {
   id: number;
   title: string;
-  price: string;
+  price: number;
   category: string;
   description: string;
   imageUrl: string;
+  rating: number;
 }

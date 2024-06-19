@@ -15,7 +15,7 @@ const OrderDetailPage: FC = () => {
 
   const [status, setStatus] = useState<OrderStatus>("Delivered");
 
-  const isBuyer = true;
+  const isBuyer = false;
 
   return (
     <div className="container mx-auto mt-8">

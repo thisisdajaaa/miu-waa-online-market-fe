@@ -1,6 +1,7 @@
+import { FC, useState } from "react";
+
 import Review from "@/components/Review";
 import { mockReviews } from "@/pages/Home/fixtures";
-import { FC, useState } from "react";
 
 const AdminReview: FC = () => {
   const [reviews, setReviews] = useState(mockReviews);

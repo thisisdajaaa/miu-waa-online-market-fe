@@ -5,7 +5,11 @@ import { IoCartSharp } from "react-icons/io5";
 import { MdPeople } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 
-import { useAppDispatch, useOnClickOutsideElement } from "@/hooks";
+import {
+  useAppDispatch,
+  useAppSelector,
+  useOnClickOutsideElement,
+} from "@/hooks";
 
 import {
   AUTHENTICATED_URLS,
@@ -13,6 +17,7 @@ import {
 } from "@/constants/pageUrl";
 
 import { actions } from "@/redux/authentication";
+import { selectors } from "@/redux/cart";
 
 import { logoutAPI } from "@/services/authentication";
 
@@ -25,6 +30,9 @@ const Header: FC<HeaderProps> = (props) => {
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+
+  const products = useAppSelector(selectors.products);
+  const total = useAppSelector(selectors.total);
 
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -105,9 +113,19 @@ const Header: FC<HeaderProps> = (props) => {
             </div>
           </div>
 
-          <Button className="flex flex-col" variant="ghost">
-            <IoCartSharp className="h-6 w-6" />
-            <p>$0.00</p>
+          <Button
+            className="flex flex-col"
+            variant="ghost"
+            onClick={() => navigate(AUTHENTICATED_URLS.SHOPPING_CART)}
+          >
+            <div className="indicator">
+              <span className="indicator-item badge badge-primary left-[0.063rem] top-1">
+                {products.length}
+              </span>
+              <IoCartSharp size={24} />
+            </div>
+
+            <p>${total.toFixed(2)}</p>
           </Button>
         </div>
       </div>
@@ -120,15 +138,9 @@ const Header: FC<HeaderProps> = (props) => {
           <BiMenu className="h-6 w-6 mr-1" />
           All
         </p>
-        <p className="link">Prime Video</p>
-        <p className="link">Amazon Business</p>
-        <p className="link">Today's Deals</p>
-        <p className="link hidden lg:inline-flex">Electronics</p>
-        <p className="link hidden lg:inline-flex">Food & Grocery</p>
-        <p className="link hidden lg:inline-flex">Prime</p>
-        <p className="link hidden lg:inline-flex">Buy Again</p>
-        <p className="link hidden lg:inline-flex">Shopper Toolkit</p>
-        <p className="link hidden lg:inline-flex">Health & Personal Care</p>
+        <p className="link">Electronics</p>
+        <p className="link">Clothings</p>
+        <p className="link">Home Appliances</p>
       </div>
     </header>
   );

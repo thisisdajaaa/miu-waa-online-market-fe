@@ -6,8 +6,8 @@ export const categoryList: Option[] = [
     value: "Electronics",
   },
   {
-    label: "Clothing",
-    value: "Clothing",
+    label: "Clothings",
+    value: "Clothings",
   },
   {
     label: "Home Appliances",

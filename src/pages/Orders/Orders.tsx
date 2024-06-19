@@ -12,7 +12,7 @@ import Select from "@/components/Select";
 const OrdersPage: FC = () => {
   const navigate = useNavigate();
 
-  const isBuyer = true;
+  const isBuyer = false;
 
   return (
     <div>
