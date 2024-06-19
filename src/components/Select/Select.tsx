@@ -11,7 +11,7 @@ const Select: FC<SelectProps> = (props) => {
     isReadOnly,
     onFocus,
     label,
-    className,
+    selectClassname,
     isRequired,
     value,
     ...rest
@@ -25,7 +25,7 @@ const Select: FC<SelectProps> = (props) => {
   };
 
   return (
-    <>
+    <div>
       <label className="form-control w-full">
         {label && (
           <div className="label">
@@ -39,10 +39,10 @@ const Select: FC<SelectProps> = (props) => {
           ref={selectRef}
           value={!value ? "" : value}
           className={clsxm(
-            className,
             "select select-bordered w-full bg-white text-blackOut",
             !value ? "select-placeholder" : "text-black",
-            hasError && "select-error"
+            hasError && "select-error",
+            selectClassname
           )}
           onFocus={handleFocus}
           {...rest}
@@ -58,7 +58,7 @@ const Select: FC<SelectProps> = (props) => {
           ))}
         </select>
       </label>
-    </>
+    </div>
   );
 };
 

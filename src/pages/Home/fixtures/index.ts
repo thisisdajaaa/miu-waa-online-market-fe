@@ -1,7 +1,7 @@
 import faker from "faker";
 
-import type { ProductCardProps } from "@/components/ProductCard/types";
-import { IReview, ReviewProps } from "@/components/Review/types";
+import { IReview } from "@/components/Review/types";
+import type { IProduct } from "@/components/ProductCard/types";
 
 export const mockLabels = [
   "January",
@@ -39,8 +39,9 @@ export const orderStatusData = {
   ],
 };
 
-export const mockProducts: ProductCardProps[] = [
+export const mockProducts: IProduct[] = [
   {
+    id: 1,
     title: "Product 1",
     price: "$100.00",
     category: "electronics",
@@ -49,6 +50,7 @@ export const mockProducts: ProductCardProps[] = [
       "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg",
   },
   {
+    id: 2,
     title: "Product 2",
     price: "$200.00",
     category: "electronics",
@@ -57,6 +59,7 @@ export const mockProducts: ProductCardProps[] = [
       "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg",
   },
   {
+    id: 3,
     title: "Product 3",
     price: "$300.00",
     category: "electronics",
@@ -65,6 +68,7 @@ export const mockProducts: ProductCardProps[] = [
       "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg",
   },
   {
+    id: 4,
     title: "Product 4",
     price: "$400.00",
     category: "electronics",
@@ -73,6 +77,7 @@ export const mockProducts: ProductCardProps[] = [
       "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg",
   },
   {
+    id: 5,
     title: "Product 5",
     price: "$500.00",
     category: "electronics",
@@ -81,6 +86,7 @@ export const mockProducts: ProductCardProps[] = [
       "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg",
   },
   {
+    id: 6,
     title: "Product 6",
     price: "$600.00",
     category: "electronics",
@@ -89,6 +95,7 @@ export const mockProducts: ProductCardProps[] = [
       "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg",
   },
   {
+    id: 7,
     title: "Product 7",
     price: "$700.00",
     category: "electronics",
@@ -97,6 +104,7 @@ export const mockProducts: ProductCardProps[] = [
       "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg",
   },
   {
+    id: 8,
     title: "Product 8",
     price: "$800.00",
     category: "electronics",

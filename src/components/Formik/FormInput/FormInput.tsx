@@ -9,7 +9,7 @@ import type { FormInputProps } from "./types";
 import ValidationMessage from "../ValidationMessage";
 
 const FormInput: FC<FormInputProps> = (props) => {
-  const { name, handleInputChange, maxLength, ...rest } = props;
+  const { name, handleInputChange, maxLength, type, ...rest } = props;
 
   const [, meta, helpers] = useField(name);
   const hasError = useFieldError(name);
@@ -24,19 +24,21 @@ const FormInput: FC<FormInputProps> = (props) => {
 
   const handleChange = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
-      const text = event.target.value;
+      let value: string | number = event.target.value;
 
-      if (maxLength !== undefined && text.length > maxLength) return;
+      if (type === "number")
+        value = event.target.value === "" ? "" : Number(event.target.value);
 
-      setCurrentValue(text);
-      helpers.setValue(text);
+      if (maxLength !== undefined && value.toString().length > maxLength)
+        return;
+
+      setCurrentValue(value);
+      helpers.setValue(value);
       helpers.setError("");
 
-      if (handleInputChange) {
-        handleInputChange(text);
-      }
+      if (handleInputChange) handleInputChange(value);
     },
-    [helpers, handleInputChange, maxLength]
+    [helpers, handleInputChange, maxLength, type]
   );
 
   const handleBlur = useCallback(() => {
@@ -47,6 +49,7 @@ const FormInput: FC<FormInputProps> = (props) => {
     <div className="flex flex-col">
       <Input
         {...rest}
+        type={type}
         value={currentValue}
         hasError={hasError}
         onChange={handleChange}

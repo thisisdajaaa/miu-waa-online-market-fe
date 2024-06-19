@@ -8,8 +8,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch } from "@/hooks";
 
 import {
-  AUTHENTICATED_PAGE_URL,
-  NON_AUTHENTICATED_PAGE_URL,
+  AUTHENTICATED_URLS,
+  NON_AUTHENTICATED_URLS,
 } from "@/constants/pageUrl";
 
 import Button from "@/components/Button";
@@ -48,7 +48,7 @@ const LoginPage: FC = () => {
 
     toast.success(message as string);
 
-    navigate(AUTHENTICATED_PAGE_URL.HOME);
+    navigate(AUTHENTICATED_URLS.HOME);
   };
 
   const formikBag = useFormik<LoginForm>({
@@ -124,7 +124,7 @@ const LoginPage: FC = () => {
           <p>If you do not have an account yet? </p>
 
           <div className="flex gap-1 sm:ml-1">
-            <Link to={NON_AUTHENTICATED_PAGE_URL.REGISTRATION}>
+            <Link to={NON_AUTHENTICATED_URLS.REGISTRATION}>
               <p className="text-blue-600 hover:cursor-pointer">Register</p>
             </Link>
             <p> now.</p>

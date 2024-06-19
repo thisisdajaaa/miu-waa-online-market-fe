@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import clsxm from "@/utils/clsxmUtil";
 
-import { PARENT_URL } from "@/constants/pageUrl";
+import { AUTHENTICATED_URLS } from "@/constants/pageUrl";
 
 import type { SidebarProps } from "./types";
 
@@ -25,13 +25,10 @@ const Sidebar: FC<SidebarProps> = (props) => {
           {isSidebarOpen && (
             <Fragment>
               <li>
-                <Link to={PARENT_URL.PRODUCTS}>Products</Link>
+                <Link to={AUTHENTICATED_URLS.PRODUCTS}>Products</Link>
               </li>
               <li>
-                <Link to={PARENT_URL.ORDERS}>Orders</Link>
-              </li>
-              <li>
-                <Link to={PARENT_URL.SHOP_SETTINGS}>Shop Settings</Link>
+                <Link to={AUTHENTICATED_URLS.ORDERS}>Orders</Link>
               </li>
             </Fragment>
           )}

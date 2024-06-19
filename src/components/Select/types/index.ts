@@ -8,4 +8,5 @@ export type SelectProps = {
   options: Option[];
   isReadOnly?: boolean;
   isRequired?: boolean;
+  selectClassname?: string;
 } & SelectHTMLAttributes<HTMLSelectElement>;

@@ -1,28 +1,33 @@
-export const BASE_URL = Object.freeze({
+export const PATHS = Object.freeze({
+  BASE: "/",
+  RECORD: "/:id",
   LOGIN: "/login",
   REGISTRATION: "/registration",
-});
-
-export const WILDCARD = "*";
-
-export const PARENT_URL = Object.freeze({
-  AUTH: "/auth",
   HOME: "/home",
+  AUTH: "/auth",
   PRODUCTS: "/products",
+  PRODUCT_DETAILS: "/products/:id",
   ORDERS: "/orders",
+  ORDER_DETAILS: "/orders/:id",
   SHOP_SETTINGS: "/shop-settings",
 });
 
-export const WILDCARD_URL = Object.freeze({
-  AUTH: `${PARENT_URL.AUTH}${WILDCARD}`,
-  HOME: `${PARENT_URL.HOME}${WILDCARD}`,
+export const WILDCARD = "/*";
+
+export const WILDCARD_PATHS = Object.freeze({
+  AUTH: `${PATHS.AUTH}${WILDCARD}`,
+  HOME: `${PATHS.HOME}${WILDCARD}`,
+  PRODUCTS: `${PATHS.PRODUCTS}${WILDCARD}`,
+  ORDERS: `${PATHS.ORDERS}${WILDCARD}`,
 });
 
-export const NON_AUTHENTICATED_PAGE_URL = Object.freeze({
-  LOGIN: `${PARENT_URL.AUTH}${BASE_URL.LOGIN}`,
-  REGISTRATION: `${PARENT_URL.AUTH}${BASE_URL.REGISTRATION}`,
+export const NON_AUTHENTICATED_URLS = Object.freeze({
+  LOGIN: `${PATHS.AUTH}${PATHS.LOGIN}`,
+  REGISTRATION: `${PATHS.AUTH}${PATHS.REGISTRATION}`,
 });
 
-export const AUTHENTICATED_PAGE_URL = Object.freeze({
-  HOME: "/",
+export const AUTHENTICATED_URLS = Object.freeze({
+  HOME: PATHS.HOME,
+  PRODUCTS: PATHS.PRODUCTS,
+  ORDERS: PATHS.ORDERS,
 });
