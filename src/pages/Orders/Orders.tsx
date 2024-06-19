@@ -12,10 +12,16 @@ import Select from "@/components/Select";
 const OrdersPage: FC = () => {
   const navigate = useNavigate();
 
+  const isBuyer = true;
+
   return (
     <div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-center">
-        <Input label="Order ID" rightIcon={<BiSearch />} />
+        <Input
+          label="Order Number"
+          rightIcon={<BiSearch />}
+          placeholder="Search Order Number"
+        />
         <Select options={orderStatusList} label="Order Status" />
       </div>
 
@@ -25,6 +31,7 @@ const OrdersPage: FC = () => {
           deliveryDate="Feb 23"
           soldBy="TEST USER"
           productImages={["https://picsum.photos/id/237/200/300"]}
+          showOrderStatusSelect={!isBuyer}
           onViewDetails={() =>
             navigate(`${AUTHENTICATED_URLS.ORDERS}/20001766502901`)
           }
@@ -33,6 +40,7 @@ const OrdersPage: FC = () => {
           orderNumber="20001766502901"
           deliveryDate="Feb 23"
           soldBy="TEST USER"
+          showOrderStatusSelect={!isBuyer}
           productImages={["https://picsum.photos/id/237/200/300"]}
           onViewDetails={() =>
             navigate(`${AUTHENTICATED_URLS.ORDERS}/20001766502901`)
@@ -42,6 +50,7 @@ const OrdersPage: FC = () => {
           orderNumber="20001766502901"
           deliveryDate="Feb 23"
           soldBy="TEST USER"
+          showOrderStatusSelect={!isBuyer}
           productImages={["https://picsum.photos/id/237/200/300"]}
           onViewDetails={() =>
             navigate(`${AUTHENTICATED_URLS.ORDERS}/20001766502901`)

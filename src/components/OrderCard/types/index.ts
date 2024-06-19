@@ -4,4 +4,5 @@ export type OrderCardProps = {
   soldBy: string;
   onViewDetails: () => void;
   productImages: string[];
+  showOrderStatusSelect?: boolean;
 };

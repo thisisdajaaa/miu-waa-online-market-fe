@@ -12,8 +12,14 @@ import Button from "../Button";
 import Select from "../Select";
 
 const OrderCard: React.FC<OrderCardProps> = (props) => {
-  const { orderNumber, deliveryDate, soldBy, onViewDetails, productImages } =
-    props;
+  const {
+    orderNumber,
+    deliveryDate,
+    soldBy,
+    onViewDetails,
+    productImages,
+    showOrderStatusSelect = true,
+  } = props;
 
   const [status, setStatus] = useState<OrderStatus>("Delivered");
 
@@ -27,11 +33,14 @@ const OrderCard: React.FC<OrderCardProps> = (props) => {
       >
         <div className="text-sm">Order# {orderNumber}</div>
         <div className="flex gap-5 items-center">
-          <Select
-            options={orderStatusList}
-            value={status}
-            onChange={(e) => setStatus(e.target.value as OrderStatus)}
-          />
+          {showOrderStatusSelect && (
+            <Select
+              options={orderStatusList}
+              value={status}
+              onChange={(e) => setStatus(e.target.value as OrderStatus)}
+            />
+          )}
+
           <Button onClick={onViewDetails} variant="ghost">
             View Details
           </Button>
