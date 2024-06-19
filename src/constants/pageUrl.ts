@@ -1,5 +1,6 @@
 export const PATHS = Object.freeze({
   BASE: "/",
+  RECORD: "/:id",
   LOGIN: "/login",
   REGISTRATION: "/registration",
   HOME: "/home",
