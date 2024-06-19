@@ -28,10 +28,7 @@ const Sidebar: FC<SidebarProps> = (props) => {
                 <Link to={AUTHENTICATED_URLS.PRODUCTS}>Products</Link>
               </li>
               <li>
-                <Link to={AUTHENTICATED_URLS.PRODUCTS}>Orders</Link>
-              </li>
-              <li>
-                <Link to={AUTHENTICATED_URLS.PRODUCTS}>Shop Settings</Link>
+                <Link to={AUTHENTICATED_URLS.ORDERS}>Orders</Link>
               </li>
             </Fragment>
           )}

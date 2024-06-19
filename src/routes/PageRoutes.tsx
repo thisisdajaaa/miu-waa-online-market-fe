@@ -14,6 +14,7 @@ import RouteGuard from "@/components/RouteGuard";
 const AuthenticationRoutes = lazy(() => import("./AuthenticationRoutes"));
 const HomeRoutes = lazy(() => import("./HomeRoutes"));
 const ProductRoutes = lazy(() => import("./ProductRoutes"));
+const OrderRoutes = lazy(() => import("./OrderRoutes"));
 const NotFoundPage = lazy(() => import("../pages/NotFound"));
 
 const PageRoutes: FC = () => {
@@ -29,6 +30,7 @@ const PageRoutes: FC = () => {
           />
           <Route path={WILDCARD_PATHS.HOME} element={<HomeRoutes />} />
           <Route path={WILDCARD_PATHS.PRODUCTS} element={<ProductRoutes />} />
+          <Route path={WILDCARD_PATHS.ORDERS} element={<OrderRoutes />} />
         </Route>
 
         <Route path={WILDCARD} element={<NotFoundPage />} />
