@@ -5,7 +5,7 @@ export const PATHS = Object.freeze({
   HOME: "/home",
   AUTH: "/auth",
   PRODUCTS: "/products",
-  PRODUCT_DETAILS: "/products/:id",
+  PRODUCT_DETAILS: "/:id",
   ORDERS: "/orders",
   SHOP_SETTINGS: "/shop-settings",
 });
