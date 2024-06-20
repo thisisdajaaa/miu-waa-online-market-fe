@@ -1,7 +1,10 @@
 import { FormikContext, useFormik } from "formik";
+import { debounce } from "lodash";
 import { FC, useCallback, useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { BiSearch } from "react-icons/bi";
+
+import { useUpdateEffect } from "@/hooks";
 
 import { categoryList } from "@/constants/category";
 import { ratingList } from "@/constants/rating";
@@ -44,16 +47,9 @@ const ProductsPage: FC = () => {
     onSubmit: handleSubmit,
   });
 
-  const handleLoad = useCallback(async () => {
+  const loadProducts = useCallback(async () => {
     try {
-      const filters: Record<string, string> = {
-        name: formikBag.values.filters.name || "",
-        price: formikBag.values.filters.price.toString() || "",
-        category: formikBag.values.filters.category || "",
-        rating: formikBag.values.filters.rating.toString() || "",
-      };
-      const response = await getProductsBySellerAPI(1, filters);
-
+      const response = await getProductsBySellerAPI(1, {});
       const formattedResponse: IProduct[] = response.map((item) => ({
         id: item.id,
         title: item.name,
@@ -68,6 +64,43 @@ const ProductsPage: FC = () => {
     } catch (error) {
       toast.error("Failed to fetch products");
     }
+  }, []);
+
+  const debouncedLoadRef = useRef(
+    debounce(async (sellerId: number, filters: Record<string, string>) => {
+      try {
+        const response = await getProductsBySellerAPI(sellerId, filters);
+
+        const formattedResponse: IProduct[] = response.map((item) => ({
+          id: item.id,
+          title: item.name,
+          category: item.category,
+          description: item.description,
+          imageUrl: `data:image/jpeg;base64,${item.base64Image}`,
+          price: item.price,
+          rating: item.rating,
+        }));
+
+        setProducts(formattedResponse);
+      } catch (error) {
+        toast.error("Failed to fetch products");
+      }
+    }, 500)
+  );
+
+  const handleLoadFilter = useCallback(() => {
+    const filters = {
+      name: formikBag.values.filters.name || "",
+      price: !formikBag.values.filters.price
+        ? ""
+        : formikBag.values.filters.price.toString(),
+      category: formikBag.values.filters.category || "",
+      rating: !formikBag.values.filters.rating
+        ? ""
+        : formikBag.values.filters.rating.toString(),
+    };
+
+    debouncedLoadRef.current(1, filters);
   }, [
     formikBag.values.filters.name,
     formikBag.values.filters.price,
@@ -76,8 +109,12 @@ const ProductsPage: FC = () => {
   ]);
 
   useEffect(() => {
-    handleLoad();
-  }, [handleLoad]);
+    loadProducts();
+  }, [loadProducts]);
+
+  useUpdateEffect(() => {
+    handleLoadFilter();
+  }, [handleLoadFilter]);
 
   const handleShowProductFormModal = useCallback(() => {
     productFormModalRef.current?.showModal();
@@ -98,7 +135,7 @@ const ProductsPage: FC = () => {
       <h2 className="font-bold">Your Products</h2>
 
       <div className="mt-8 flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-center">
+        <div className="flex flex-wrap gap-4 items-center">
           <FormInput
             name="filters.name"
             label="Product Name"
@@ -140,15 +177,19 @@ const ProductsPage: FC = () => {
       </div>
 
       <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {products.map((product) => (
-          <ProductCard
-            key={product.id}
-            {...product}
-            showBtnBasket={false}
-            onEdit={handleEdit}
-            onDelete={() => handleDeleteProduct(product.id)}
-          />
-        ))}
+        {!products.length ? (
+          <h2 className="font-bold">No Products found.</h2>
+        ) : (
+          products.map((product) => (
+            <ProductCard
+              key={product.id}
+              {...product}
+              showBtnBasket={false}
+              onEdit={handleEdit}
+              onDelete={() => handleDeleteProduct(product.id)}
+            />
+          ))
+        )}
       </div>
 
       <ProductFormModal

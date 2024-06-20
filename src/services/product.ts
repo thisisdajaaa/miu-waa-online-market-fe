@@ -4,12 +4,14 @@ import { ProductDetailResponse } from "@/types/server/product";
 
 export const getProductsBySellerAPI = async (
   sellerId: number,
-  filters: Record<string, string>
+  filters?: Record<string, string>
 ): Promise<ProductDetailResponse[]> => {
-  const queryParams = new URLSearchParams(filters).toString();
+  const queryParams = new URLSearchParams(filters);
+
   const response = await onParseResponse<ProductDetailResponse[]>({
     method: "get",
-    url: `/products/seller/${sellerId}?${queryParams}`,
+    url: `/products/seller/${sellerId}`,
+    params: queryParams,
   });
 
   return response;

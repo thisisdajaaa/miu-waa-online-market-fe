@@ -15,8 +15,6 @@ const FormImageUpload: FC<FormImageUploadProps> = (props) => {
   const [, meta, helpers] = useField(name);
   const hasError = useFieldError(name);
 
-  console.log("hasError", hasError);
-
   const [currentValue, setCurrentValue] = useState<
     File | FileWithPreview[] | null
   >(meta.value || meta.initialValue);

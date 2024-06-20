@@ -8,16 +8,16 @@ export const onParseResponse = async <T>(args: AxiosRequestConfig) => {
   let formattedResponse: T;
 
   try {
-    const { data, status } = await baseInstance({ ...args });
+    const { data } = await baseInstance({ ...args });
 
-    formattedResponse = { ...data, status };
+    formattedResponse = data;
   } catch (error) {
     const axiosError = error as AxiosError;
     const data = axiosError.response?.data as T;
 
     logger(axiosError);
 
-    formattedResponse = { ...data, status: axiosError.status };
+    formattedResponse = data;
   }
 
   return formattedResponse;
