@@ -28,7 +28,7 @@ const ProductsPage: FC = () => {
   const handleSubmit = async (values: ProductForm) => {
     const { mode } = values;
     const isAdd = mode === "add";
-
+    productFormModalRef.current?.close();
     toast.success(`Successfully ${isAdd ? "added" : "edited"} a product!`);
   };
 

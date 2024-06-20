@@ -10,7 +10,7 @@ import Button from "@/components/Button";
 import type { ItemListSectionProps } from "./types";
 
 const ItemListSection: FC<ItemListSectionProps> = (props) => {
-  const { status } = props;
+  const { status, showReviewModal } = props;
 
   const isBuyer = true;
 
@@ -53,7 +53,9 @@ const ItemListSection: FC<ItemListSectionProps> = (props) => {
 
         {isBuyer && (
           <div className="mt-2 self-end flex gap-2">
-            <Button variant="primary">Write a review</Button>
+            <Button variant="primary" onClick={showReviewModal}>
+              Write a review
+            </Button>
             <Button variant="secondary">Add to cart</Button>
           </div>
         )}
@@ -82,7 +84,9 @@ const ItemListSection: FC<ItemListSectionProps> = (props) => {
 
         {isBuyer && (
           <div className="mt-2 self-end flex gap-2">
-            <Button variant="primary">Write a review</Button>
+            <Button variant="primary" onClick={showReviewModal}>
+              Write a review
+            </Button>
             <Button variant="secondary">Add to cart</Button>
           </div>
         )}
