@@ -1,5 +1,5 @@
 import { FormikContext, useFormik } from "formik";
-import { FC, useCallback, useRef, useState } from "react";
+import { FC, useCallback, useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { BiSearch } from "react-icons/bi";
 
@@ -10,14 +10,17 @@ import Button from "@/components/Button";
 import FormInput from "@/components/Formik/FormInput";
 import FormSelect from "@/components/Formik/FormSelect";
 import ProductCard from "@/components/ProductCard";
+import type { IProduct } from "@/components/ProductCard/types";
+
+import { getProductsBySellerAPI } from "@/services/product";
 
 import ProductFormModal from "./components/ProductFormModal";
-import { initialProductForm, mockProducts } from "./fixtures";
+import { initialProductForm } from "./fixtures";
 import type { ProductForm } from "./types";
 import { ProductFormValidationSchema } from "./validations";
 
 const ProductsPage: FC = () => {
-  const [products, setProducts] = useState(mockProducts);
+  const [products, setProducts] = useState<IProduct[]>([]);
 
   const productFormModalRef = useRef<HTMLDialogElement | null>(null);
 
@@ -40,6 +43,41 @@ const ProductsPage: FC = () => {
     validateOnBlur: false,
     onSubmit: handleSubmit,
   });
+
+  const handleLoad = useCallback(async () => {
+    try {
+      const filters: Record<string, string> = {
+        name: formikBag.values.filters.name || "",
+        price: formikBag.values.filters.price.toString() || "",
+        category: formikBag.values.filters.category || "",
+        rating: formikBag.values.filters.rating.toString() || "",
+      };
+      const response = await getProductsBySellerAPI(1, filters);
+
+      const formattedResponse: IProduct[] = response.map((item) => ({
+        id: item.id,
+        title: item.name,
+        category: item.category,
+        description: item.description,
+        imageUrl: `data:image/jpeg;base64,${item.base64Image}`,
+        price: item.price,
+        rating: item.rating,
+      }));
+
+      setProducts(formattedResponse);
+    } catch (error) {
+      toast.error("Failed to fetch products");
+    }
+  }, [
+    formikBag.values.filters.name,
+    formikBag.values.filters.price,
+    formikBag.values.filters.category,
+    formikBag.values.filters.rating,
+  ]);
+
+  useEffect(() => {
+    handleLoad();
+  }, [handleLoad]);
 
   const handleShowProductFormModal = useCallback(() => {
     productFormModalRef.current?.showModal();
