@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 import { BiSearch } from "react-icons/bi";
 
 import { getImageUrl } from "@/utils/imageUtil";
-import { useUpdateEffect } from "@/hooks";
+import { useAppSelector, useUpdateEffect } from "@/hooks";
 
 import { categoryList } from "@/constants/category";
 import { ratingList } from "@/constants/rating";
@@ -15,6 +15,8 @@ import FormInput from "@/components/Formik/FormInput";
 import FormSelect from "@/components/Formik/FormSelect";
 import ProductCard from "@/components/ProductCard";
 import type { IProduct } from "@/components/ProductCard/types";
+
+import { selectors } from "@/redux/authentication";
 
 import { deleteProductAPI, getProductsBySellerAPI } from "@/services/product";
 import { addProductAPI, updateProductAPI } from "@/services/product";
@@ -28,6 +30,8 @@ const ProductsPage: FC = () => {
   const [products, setProducts] = useState<IProduct[]>([]);
 
   const productFormModalRef = useRef<HTMLDialogElement | null>(null);
+
+  const userDetails = useAppSelector(selectors.userDetails);
 
   const handleSubmit = async (values: ProductForm) => {
     const { mode } = values;
@@ -61,7 +65,7 @@ const ProductsPage: FC = () => {
 
   const handleLoad = useCallback(async () => {
     try {
-      const response = await getProductsBySellerAPI(1, {});
+      const response = await getProductsBySellerAPI(userDetails.id, {});
 
       const formattedResponse: IProduct[] = response.map((item) => ({
         id: item.id,
@@ -78,7 +82,7 @@ const ProductsPage: FC = () => {
     } catch (error) {
       toast.error("Failed to fetch products!");
     }
-  }, []);
+  }, [userDetails.id]);
 
   const debouncedLoadRef = useRef(
     debounce(async (sellerId: number, filters: Record<string, string>) => {
@@ -115,12 +119,13 @@ const ProductsPage: FC = () => {
         : formikBag.values.filters.rating.toString(),
     };
 
-    debouncedLoadRef.current(1, filters);
+    debouncedLoadRef.current(userDetails.id, filters);
   }, [
     formikBag.values.filters.name,
     formikBag.values.filters.price,
     formikBag.values.filters.category,
     formikBag.values.filters.rating,
+    userDetails.id,
   ]);
 
   useEffect(() => {
