@@ -102,26 +102,3 @@ export const mockTableHeader: TableHeader = [
   { value: "Seller Name" },
   { value: "Approve / Reject" },
 ];
-// body: [
-//   {
-//     items: [
-//       { value: "1" },
-//       { value: "marccolina@gmail.com" },
-//       { value: "Marc Lennard Colina" },
-//     ],
-//   },
-//   {
-//     items: [
-//       { value: "2" },
-//       { value: "marycolina@gmail.com" },
-//       { value: "Mary Therese Colina" },
-//     ],
-//   },
-//   {
-//     items: [
-//       { value: "3" },
-//       { value: "rosemabelle@gmail.com" },
-//       { value: "Rose Mabelle Seares" },
-//     ],
-//   },
-// ],

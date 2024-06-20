@@ -6,7 +6,6 @@ import Button from "@/components/Button";
 import { TableHeader, TableBody } from "@/components/Table/types";
 
 const SellerApproval = () => {
-  //   const [tableData, setTableData] = useState(mockTableData);
   const tableHeader = mockTableHeader;
   const [tableBody, setTableBody] = useState<TableBody>([
     {
