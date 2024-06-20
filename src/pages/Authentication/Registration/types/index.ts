@@ -1,7 +1,5 @@
 export type RegistrationForm = {
-  firstName: string;
-  middleName?: string;
-  lastName: string;
+  name: string;
   email: string;
   password: string;
   confirmPassword: string;

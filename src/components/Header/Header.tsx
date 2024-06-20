@@ -16,8 +16,8 @@ import {
   NON_AUTHENTICATED_URLS,
 } from "@/constants/pageUrl";
 
-import { actions } from "@/redux/authentication";
-import { selectors } from "@/redux/cart";
+import { actions, selectors as authSelectors } from "@/redux/authentication";
+import { selectors as cartSelectors } from "@/redux/cart";
 
 import { logoutAPI } from "@/services/authentication";
 
@@ -31,8 +31,10 @@ const Header: FC<HeaderProps> = (props) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const products = useAppSelector(selectors.products);
-  const total = useAppSelector(selectors.total);
+  const products = useAppSelector(cartSelectors.products);
+  const total = useAppSelector(cartSelectors.total);
+  const userDetails = useAppSelector(authSelectors.userDetails);
+  const isBuyer = userDetails.role === "BUYER";
 
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -70,9 +72,11 @@ const Header: FC<HeaderProps> = (props) => {
           </Link>
         </div>
 
-        <div className="hidden sm:flex items-center flex-grow mx-8">
-          <Input rightIcon={<BiSearch />} />
-        </div>
+        {isBuyer && (
+          <div className="hidden sm:flex items-center flex-grow mx-8">
+            <Input rightIcon={<BiSearch />} />
+          </div>
+        )}
 
         <div className="flex gap-8">
           <div className="flex gap-2">
@@ -87,7 +91,7 @@ const Header: FC<HeaderProps> = (props) => {
                 <Button type="button" variant="ghost" onClick={handleOptions}>
                   <MdPeople className="h-4 w-4 md:h-6 md:w-6" />
                   <div className="flex flex-col items-start">
-                    <p className="font-normal">Hi, Test User!</p>
+                    <p className="font-normal">Hi, {userDetails.name}!</p>
                     <p className="font-bold">Account</p>
                   </div>
                 </Button>
@@ -113,20 +117,22 @@ const Header: FC<HeaderProps> = (props) => {
             </div>
           </div>
 
-          <Button
-            className="flex flex-col"
-            variant="ghost"
-            onClick={() => navigate(AUTHENTICATED_URLS.SHOPPING_CART)}
-          >
-            <div className="indicator">
-              <span className="indicator-item badge badge-primary left-[0.063rem] top-1">
-                {products.length}
-              </span>
-              <IoCartSharp size={24} />
-            </div>
+          {isBuyer && (
+            <Button
+              className="flex flex-col"
+              variant="ghost"
+              onClick={() => navigate(AUTHENTICATED_URLS.SHOPPING_CART)}
+            >
+              <div className="indicator">
+                <span className="indicator-item badge badge-primary left-[0.063rem] top-1">
+                  {products.length}
+                </span>
+                <IoCartSharp size={24} />
+              </div>
 
-            <p>${total.toFixed(2)}</p>
-          </Button>
+              <p>${total.toFixed(2)}</p>
+            </Button>
+          )}
         </div>
       </div>
 
