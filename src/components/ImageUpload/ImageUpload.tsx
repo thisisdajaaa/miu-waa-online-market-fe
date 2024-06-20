@@ -7,7 +7,7 @@ import clsxm from "@/utils/clsxmUtil";
 
 import Button from "@/components/Button";
 
-import type { ImageUploadProps } from "./types";
+import type { FileWithPreview, ImageUploadProps } from "./types";
 
 const ImageUpload: FC<ImageUploadProps> = (props) => {
   const { value, onChange, label, isRequired, containerClassname, hasError } =
@@ -22,11 +22,21 @@ const ImageUpload: FC<ImageUploadProps> = (props) => {
   });
 
   const memoizedValue = useMemo(() => {
-    return value
-      ? typeof value !== "string" && value instanceof File
-        ? URL.createObjectURL(value as File)
-        : value
-      : null;
+    if (!value) return null;
+
+    if (typeof value === "string") {
+      return value;
+    }
+
+    if (value instanceof File) {
+      return URL.createObjectURL(value);
+    }
+
+    if ((value as FileWithPreview).preview) {
+      return (value as FileWithPreview).preview;
+    }
+
+    return null;
   }, [value]);
 
   const handleClearImage = () => onChange(null);

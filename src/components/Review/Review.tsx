@@ -4,10 +4,10 @@ import type { ReviewProps } from "./types";
 import Button from "../Button";
 
 const Review: FC<ReviewProps> = (props) => {
-  const { id, product, title, comment, rating, date, buyer, onDelete } = props;
+  const { id, product, comment, rating, date, buyer, onDelete } = props;
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 mb-4">
+    <div className="bg-white rounded-lg border shadow-md p-6 mb-4">
       <div className="flex justify-between items-center">
         <div>
           <h2 className="text-lg font-bold text-gray-900">{buyer}</h2>
@@ -27,18 +27,15 @@ const Review: FC<ReviewProps> = (props) => {
             })}
           </div>
         </div>
-        <div>
-          <Button
-            variant="danger"
-            onClick={() => (onDelete ? onDelete(id) : {})}
-          >
+
+        {onDelete && (
+          <Button variant="danger" onClick={() => onDelete(id)}>
             Delete
           </Button>
-        </div>
+        )}
       </div>
       <div className="mt-4">
         <h3 className="text-md font-semibold text-gray-800">{product}</h3>
-        <h4 className="text-md text-gray-700">{title}</h4>
         <p className="text-gray-600 mt-2">{comment}</p>
       </div>
       <div className="flex justify-between items-center mt-4 text-gray-500 text-sm">

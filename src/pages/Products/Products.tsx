@@ -4,6 +4,7 @@ import { FC, useCallback, useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { BiSearch } from "react-icons/bi";
 
+import { getImageUrl } from "@/utils/imageUtil";
 import { useUpdateEffect } from "@/hooks";
 
 import { categoryList } from "@/constants/category";
@@ -15,7 +16,8 @@ import FormSelect from "@/components/Formik/FormSelect";
 import ProductCard from "@/components/ProductCard";
 import type { IProduct } from "@/components/ProductCard/types";
 
-import { getProductsBySellerAPI } from "@/services/product";
+import { deleteProductAPI, getProductsBySellerAPI } from "@/services/product";
+import { addProductAPI, updateProductAPI } from "@/services/product";
 
 import ProductFormModal from "./components/ProductFormModal";
 import { initialProductForm } from "./fixtures";
@@ -27,15 +29,25 @@ const ProductsPage: FC = () => {
 
   const productFormModalRef = useRef<HTMLDialogElement | null>(null);
 
-  const handleDeleteProduct = (productId: number) => {
-    setProducts(products.filter((product) => product.id !== productId));
-  };
-
   const handleSubmit = async (values: ProductForm) => {
     const { mode } = values;
     const isAdd = mode === "add";
 
-    toast.success(`Successfully ${isAdd ? "added" : "edited"} a product!`);
+    try {
+      if (isAdd) {
+        await addProductAPI(1, values);
+        toast.success("Successfully added a product!");
+      } else {
+        await updateProductAPI(values.details.id, values);
+        toast.success("Successfully edited a product!");
+      }
+
+      await handleLoad();
+    } catch (error) {
+      toast.error(`Failed to ${isAdd ? "add" : "edit"} the product`);
+    }
+
+    handleCloseProductFormModal();
   };
 
   const formikBag = useFormik<ProductForm>({
@@ -47,22 +59,24 @@ const ProductsPage: FC = () => {
     onSubmit: handleSubmit,
   });
 
-  const loadProducts = useCallback(async () => {
+  const handleLoad = useCallback(async () => {
     try {
       const response = await getProductsBySellerAPI(1, {});
+
       const formattedResponse: IProduct[] = response.map((item) => ({
         id: item.id,
         title: item.name,
         category: item.category,
         description: item.description,
-        imageUrl: `data:image/jpeg;base64,${item.base64Image}`,
+        imageUrl: getImageUrl(item.base64Image),
         price: item.price,
         rating: item.rating,
+        quantity: item.stockQuantity,
       }));
 
       setProducts(formattedResponse);
     } catch (error) {
-      toast.error("Failed to fetch products");
+      toast.error("Failed to fetch products!");
     }
   }, []);
 
@@ -76,14 +90,15 @@ const ProductsPage: FC = () => {
           title: item.name,
           category: item.category,
           description: item.description,
-          imageUrl: `data:image/jpeg;base64,${item.base64Image}`,
+          imageUrl: getImageUrl(item.base64Image),
           price: item.price,
           rating: item.rating,
+          quantity: item.stockQuantity,
         }));
 
         setProducts(formattedResponse);
       } catch (error) {
-        toast.error("Failed to fetch products");
+        toast.error("Failed to fetch products!");
       }
     }, 500)
   );
@@ -109,8 +124,8 @@ const ProductsPage: FC = () => {
   ]);
 
   useEffect(() => {
-    loadProducts();
-  }, [loadProducts]);
+    handleLoad();
+  }, [handleLoad]);
 
   useUpdateEffect(() => {
     handleLoadFilter();
@@ -125,10 +140,34 @@ const ProductsPage: FC = () => {
     formikBag.resetForm();
   }, [formikBag]);
 
-  const handleEdit = useCallback(() => {
-    formikBag.setFieldValue("mode", "edit");
-    handleShowProductFormModal();
-  }, [formikBag, handleShowProductFormModal]);
+  const handleEdit = useCallback(
+    (product: IProduct) => {
+      console.log("product: ", product);
+      formikBag.setFieldValue("mode", "edit");
+      formikBag.setFieldValue("details.id", product.id);
+      formikBag.setFieldValue("details.name", product.title);
+      formikBag.setFieldValue("details.description", product.description);
+      formikBag.setFieldValue("details.price", product.price);
+      formikBag.setFieldValue("details.quantity", product.quantity);
+      formikBag.setFieldValue("details.category", product.category);
+      formikBag.setFieldValue("details.image", { preview: product.imageUrl });
+      handleShowProductFormModal();
+    },
+    [formikBag, handleShowProductFormModal]
+  );
+
+  const handleDelete = useCallback(
+    async (id: number) => {
+      try {
+        await deleteProductAPI(id);
+        toast.success("Successfully deleted a product!");
+        await handleLoad();
+      } catch (error) {
+        toast.error("Failed to delete products");
+      }
+    },
+    [handleLoad]
+  );
 
   return (
     <FormikContext.Provider value={formikBag}>
@@ -186,7 +225,7 @@ const ProductsPage: FC = () => {
               {...product}
               showBtnBasket={false}
               onEdit={handleEdit}
-              onDelete={() => handleDeleteProduct(product.id)}
+              onDelete={() => handleDelete(product.id)}
             />
           ))
         )}

@@ -2,7 +2,7 @@ import type { FileWithPreview } from "@/components/ImageUpload/types";
 
 export type ProductForm = {
   filters: ProductFormFilters;
-  details: ProducFormtDetails;
+  details: ProductFormDetails;
   mode: "add" | "edit";
 };
 
@@ -13,7 +13,8 @@ export type ProductFormFilters = {
   rating: number;
 };
 
-export type ProducFormtDetails = {
+export type ProductFormDetails = {
+  id: number;
   name: string;
   price: number;
   quantity: number;
