@@ -5,7 +5,6 @@ export type ReviewProps = {
 export interface IReview {
   id: number;
   product: string;
-  title: string;
   comment: string;
   rating: number;
   date: string;

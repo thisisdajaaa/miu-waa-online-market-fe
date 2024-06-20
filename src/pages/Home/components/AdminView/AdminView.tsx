@@ -5,6 +5,10 @@ import { IReview } from "@/components/Review/types";
 import SellerApproval from "@/pages/SellerApproval";
 import { onParseResponse } from "@/utils/axiosUtil";
 
+import ProductCard from "@/components/ProductCard";
+
+import { mockProducts } from "../../fixtures";
+
 const AdminView: FC = () => {
   const [reviews, setReviews] = useState<IReview[]>([]);
 

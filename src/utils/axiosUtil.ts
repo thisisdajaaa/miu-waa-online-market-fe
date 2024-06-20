@@ -2,24 +2,22 @@ import { AxiosError, AxiosRequestConfig } from "axios";
 
 import { baseInstance } from "@/config/instance";
 
-import type { ApiResponse } from "@/types/server/config";
-
 import logger from "./loggerUtil";
 
 export const onParseResponse = async <T>(args: AxiosRequestConfig) => {
-  let formattedResponse: ApiResponse<T>;
+  let formattedResponse: T;
 
   try {
-    const { data, status } = await baseInstance({ ...args });
+    const { data } = await baseInstance({ ...args });
 
-    formattedResponse = { ...data, status };
+    formattedResponse = data;
   } catch (error) {
     const axiosError = error as AxiosError;
-    const data = axiosError.response?.data as ApiResponse<T>;
+    const data = axiosError.response?.data as T;
 
     logger(axiosError);
 
-    formattedResponse = { ...data, status: axiosError.status };
+    formattedResponse = data;
   }
 
   return formattedResponse;
