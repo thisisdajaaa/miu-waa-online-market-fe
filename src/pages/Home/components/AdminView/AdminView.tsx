@@ -1,6 +1,8 @@
 import { FC, useState } from "react";
-import { mockProducts } from "../../fixtures";
+
 import ProductCard from "@/components/ProductCard";
+
+import { mockProducts } from "../../fixtures";
 
 const AdminView: FC = () => {
   const [productsToApprove, setProductsToApprove] = useState(mockProducts);

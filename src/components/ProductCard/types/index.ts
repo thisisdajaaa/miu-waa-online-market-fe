@@ -1,3 +1,5 @@
+import { ReviewDetailResponse } from "@/types/server/review";
+
 export type ProductCardProps = {
   showBtnBasket?: boolean;
   onEdit?: (product: IProduct) => void;
@@ -14,4 +16,6 @@ export interface IProduct {
   description: string;
   imageUrl: string;
   rating: number;
+  quantity: number;
+  reviews?: ReviewDetailResponse[];
 }

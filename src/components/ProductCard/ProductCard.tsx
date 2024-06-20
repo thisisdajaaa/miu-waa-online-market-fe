@@ -19,6 +19,7 @@ const ProductCard: FC<ProductCardProps> = (props) => {
     description,
     imageUrl,
     rating,
+    quantity,
     showBtnBasket = true,
     onEdit,
     onDelete,
@@ -37,6 +38,7 @@ const ProductCard: FC<ProductCardProps> = (props) => {
     description,
     imageUrl,
     rating,
+    quantity,
   };
 
   const productInCart = products.find((item) => item.id === id);
@@ -79,10 +81,14 @@ const ProductCard: FC<ProductCardProps> = (props) => {
           <p className="absolute top-2 right-2 text-xs italic text-white bg-primary px-4 py-1 rounded-lg uppercase">
             {category}
           </p>
-          <img src={imageUrl} alt={title} className="w-full" />
+          <img
+            src={imageUrl}
+            alt={title}
+            className="w-full h-96 object-cover"
+          />
         </figure>
         <div className="card-body p">
-          <h4 className="text-xl">{title}</h4>
+          <h4 className="text-xl font-bold">{title}</h4>
           <div className="flex">
             {Array(rating)
               .fill(rating)
@@ -90,8 +96,11 @@ const ProductCard: FC<ProductCardProps> = (props) => {
                 <BsStarFill key={i} className="h-5 text-yellow-500" />
               ))}
           </div>
-          <p className="text-xs my-2 line-clamp-2">{description}</p>
-          <div className="mb-5">${price.toFixed(2)}</div>
+          <p className="text-xs my-2 line-clamp-1">{description}</p>
+          <p className="font-semibold">${price.toFixed(2)}</p>
+          <p className="text-xs mb-5">
+            <span className="font-semibold">Stock:</span> {quantity || 0}
+          </p>
 
           {showBtnBasket && (
             <>
