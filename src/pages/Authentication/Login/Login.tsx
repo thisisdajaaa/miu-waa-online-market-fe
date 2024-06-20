@@ -17,9 +17,7 @@ import FormInput from "@/components/Formik/FormInput";
 
 import { actions } from "@/redux/authentication";
 
-import { loginAPI } from "@/services/authentication";
-
-import { AuthenticationDetailResponse } from "@/types/server/authentication";
+import { getLoggedInUserAPI, loginAPI } from "@/services/authentication";
 
 import { initialLoginForm } from "./fixtures";
 import type { LoginForm } from "./types";
@@ -31,24 +29,19 @@ const LoginPage: FC = () => {
 
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
 
-  const storeStateValues = (data: AuthenticationDetailResponse) => {
-    dispatch(actions.callSetAccessToken(data?.accessToken || ""));
-    dispatch(actions.callSetRefreshToken(data?.refreshToken || ""));
-  };
-
   const handleSubmit = async (values: LoginForm) => {
-    const { success, data, message } = await loginAPI(values);
+    try {
+      await loginAPI(values);
 
-    if (!success) {
-      toast.error(message as string);
-      return;
+      const response = await getLoggedInUserAPI();
+      dispatch(actions.callSetUserDetails(response));
+
+      toast.success("Successfully logged in!");
+
+      navigate(AUTHENTICATED_URLS.HOME);
+    } catch (error) {
+      toast.error("Something went wrong!");
     }
-
-    storeStateValues(data as AuthenticationDetailResponse);
-
-    toast.success(message as string);
-
-    navigate(AUTHENTICATED_URLS.HOME);
   };
 
   const formikBag = useFormik<LoginForm>({

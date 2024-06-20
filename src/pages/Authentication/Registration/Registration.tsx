@@ -6,14 +6,13 @@ import { FaArrowLeftLong } from "react-icons/fa6";
 import { MdEmail, MdKey, MdPeople } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 
-import {
-  AUTHENTICATED_URLS,
-  NON_AUTHENTICATED_URLS,
-} from "@/constants/pageUrl";
+import { NON_AUTHENTICATED_URLS } from "@/constants/pageUrl";
 
 import Button from "@/components/Button";
 import FormInput from "@/components/Formik/FormInput";
 import FormSelect from "@/components/Formik/FormSelect";
+
+import { registrationAPI } from "@/services/authentication";
 
 import { initialRegistrationForm, roleList } from "./fixtures";
 import { RegistrationForm } from "./types";
@@ -27,9 +26,13 @@ const RegistrationPage: FC = () => {
     useState<boolean>(false);
 
   const handleSubmit = async (values: RegistrationForm) => {
-    console.log(values);
-    navigate(AUTHENTICATED_URLS.HOME);
-    toast.success("Successfully registered and logged in user!");
+    try {
+      await registrationAPI(values);
+      navigate(NON_AUTHENTICATED_URLS.LOGIN);
+      toast.success("Successfully registered and logged in user!");
+    } catch (error) {
+      toast.error("Something went wrong!");
+    }
   };
 
   const formikBag = useFormik<RegistrationForm>({
@@ -62,25 +65,10 @@ const RegistrationPage: FC = () => {
           </h2>
           <div className="flex flex-col gap-4 rounded-md">
             <FormInput
-              name="firstName"
-              label="First Name"
+              name="name"
+              label="Full Name"
               isRequired
-              placeholder="Enter your First Name"
-              leftIcon={<MdPeople />}
-            />
-
-            <FormInput
-              name="middleName"
-              label="Middle Name"
-              placeholder="Enter your Middle Name"
-              leftIcon={<MdPeople />}
-            />
-
-            <FormInput
-              name="lastName"
-              label="Last Name"
-              isRequired
-              placeholder="Enter your Last Name"
+              placeholder="Enter your Full Name"
               leftIcon={<MdPeople />}
             />
 

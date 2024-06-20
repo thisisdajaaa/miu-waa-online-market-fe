@@ -1,19 +1,14 @@
+import type { UserDetailResponse } from "@/types/server/user";
+
 import { authenticationActions } from "./slices";
 import { AppDispatch, AppThunk } from "../store";
 
-const { setAccessToken, setRefreshToken, setResetAuthentication } =
-  authenticationActions;
+const { setUserDetails, setResetAuthentication } = authenticationActions;
 
-const callSetAccessToken =
-  (accessToken: string): AppThunk =>
+const callSetUserDetails =
+  (userDetails: UserDetailResponse): AppThunk =>
   (dispatch: AppDispatch) => {
-    dispatch(setAccessToken(accessToken));
-  };
-
-const callSetRefreshToken =
-  (refreshToken: string): AppThunk =>
-  (dispatch: AppDispatch) => {
-    dispatch(setRefreshToken(refreshToken));
+    dispatch(setUserDetails(userDetails));
   };
 
 const callSetResetAuthentication = (): AppThunk => (dispatch: AppDispatch) => {
@@ -21,8 +16,7 @@ const callSetResetAuthentication = (): AppThunk => (dispatch: AppDispatch) => {
 };
 
 const actions = {
-  callSetAccessToken,
-  callSetRefreshToken,
+  callSetUserDetails,
   callSetResetAuthentication,
 };
 

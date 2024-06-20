@@ -3,9 +3,7 @@ import type { Option } from "@/types/client";
 import type { RegistrationForm } from "../types";
 
 export const initialRegistrationForm: RegistrationForm = {
-  firstName: "",
-  middleName: "",
-  lastName: "",
+  name: "",
   password: "",
   email: "",
   confirmPassword: "",
@@ -15,10 +13,10 @@ export const initialRegistrationForm: RegistrationForm = {
 export const roleList: Option[] = [
   {
     label: "Seller",
-    value: "Seller",
+    value: "SELLER",
   },
   {
     label: "Buyer",
-    value: "Buyer",
+    value: "BUYER",
   },
 ];
