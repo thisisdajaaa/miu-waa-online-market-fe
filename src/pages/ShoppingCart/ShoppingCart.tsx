@@ -1,8 +1,11 @@
 import { FC } from "react";
 import { BsStarFill } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
 
 import clsxm from "@/utils/clsxmUtil";
 import { useAppDispatch, useAppSelector } from "@/hooks";
+
+import { AUTHENTICATED_URLS } from "@/constants/pageUrl";
 
 import Button from "@/components/Button";
 import type { IProduct } from "@/components/ProductCard/types";
@@ -10,6 +13,7 @@ import type { IProduct } from "@/components/ProductCard/types";
 import { actions, selectors } from "@/redux/cart";
 
 const ShoppingCartPage: FC = () => {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const cart = useAppSelector(selectors.products);
   const total = useAppSelector(selectors.total);
@@ -71,7 +75,11 @@ const ShoppingCartPage: FC = () => {
             <span>Subtotal ({cart.length} items):</span>
             <span>${total.toFixed(2)}</span>
           </div>
-          <Button variant="secondary" className="w-full">
+          <Button
+            variant="secondary"
+            className="w-full"
+            onClick={() => navigate(AUTHENTICATED_URLS.PAYMENT)}
+          >
             Proceed to Checkout
           </Button>
         </div>
