@@ -27,6 +27,7 @@ const OrdersPage: FC = () => {
 
       <div className="mt-12">
         <OrderCard
+          id={1}
           orderNumber="20001766502901"
           deliveryDate="Feb 23"
           soldBy="TEST USER"
@@ -37,6 +38,7 @@ const OrdersPage: FC = () => {
           }
         />
         <OrderCard
+          id={2}
           orderNumber="20001766502901"
           deliveryDate="Feb 23"
           soldBy="TEST USER"
@@ -47,6 +49,7 @@ const OrdersPage: FC = () => {
           }
         />
         <OrderCard
+          id={3}
           orderNumber="20001766502901"
           deliveryDate="Feb 23"
           soldBy="TEST USER"
