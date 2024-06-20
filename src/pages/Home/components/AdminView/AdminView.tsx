@@ -1,48 +1,68 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
+import axios from 'axios';
+import Review from "@/components/Review";
+import { IReview } from "@/components/Review/types";
+import SellerApproval from "@/pages/SellerApproval";
+import { onParseResponse } from "@/utils/axiosUtil";
 
 import ProductCard from "@/components/ProductCard";
 
 import { mockProducts } from "../../fixtures";
 
 const AdminView: FC = () => {
-  const [productsToApprove, setProductsToApprove] = useState(mockProducts);
+  const [reviews, setReviews] = useState<IReview[]>([]);
 
-  function approveProduct(productId: number) {
-    //Insert endpoint call to approve product
-    setProductsToApprove(
-      productsToApprove.filter((product) => product.id !== productId)
-    );
+  useEffect(() => {
+    getInappropriateReviews();
+  }, []);
+
+  async function getInappropriateReviews() {
+    const response = await onParseResponse<any>({
+      method: "get",
+      url: "/reviews/inappropriates",
+      data: null,
+    });
+    
+    if (!response) return;
+    response.data.forEach((review: IReview) => {
+      review.comment = review.content;
+    });
+    setReviews(response.data);
   }
 
-  function rejectProduct(productId: number) {
-    //Insert endpoint call to reject product
-    setProductsToApprove(
-      productsToApprove.filter((product) => product.id !== productId)
-    );
+  const handleDelete = async (id: number) => {
+    const response = await onParseResponse<any>({
+      method: "delete",
+      url: `/reviews/${id}`,
+      data: null,
+    });
+    
+    if (!response) return;
+    setReviews(reviews.filter((review) => review.id !== id));
   }
 
   return (
     <div>
-      {productsToApprove.length === 0 ? (
-        <h2 className="font-bold">No Products to Approve</h2>
-      ) : (
-        <div>
-          <h2 className="font-bold">Products To Approve</h2>
+      {reviews.length === 0 ? (
+        <div className="mt-8">
+          <h2 className="font-bold mt-12">Inappropriate Reviews</h2>
           <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {productsToApprove.map((product) => {
+            <p>No inappropriate reviews found.</p>
+          </div>
+        </div>
+      ) : (
+        <div className="mt-8">
+          <h2 className="font-bold mt-12">Inappropriate Reviews</h2>
+          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {reviews.map((review) => {
               return (
-                <ProductCard
-                  key={product.id}
-                  {...product}
-                  showBtnBasket={false}
-                  onApprove={approveProduct}
-                  onReject={rejectProduct}
-                />
+                <Review key={review.id} {...review} onDelete={handleDelete} />
               );
             })}
           </div>
         </div>
       )}
+      <SellerApproval />
     </div>
   );
 };

@@ -3,51 +3,70 @@ import React, { ReactNode, useEffect, useState } from "react";
 
 import { mockTableHeader } from "../Products/fixtures";
 import Button from "@/components/Button";
-import { TableHeader, TableBody } from "@/components/Table/types";
+import { TableBody } from "@/components/Table/types";
+
+import toast from "react-hot-toast";
+import { onParseResponse } from "@/utils/axiosUtil";
 
 const SellerApproval = () => {
   const tableHeader = mockTableHeader;
-  const [tableBody, setTableBody] = useState<TableBody>([
-    {
-      items: [
-        { value: "1" },
-        { value: "marccolina@gmail.com" },
-        { value: "Marc Lennard Colina" },
-      ],
-    },
-    {
-      items: [
-        { value: "2" },
-        { value: "marycolina@gmail.com" },
-        { value: "Mary Therese Colina" },
-      ],
-    },
-    {
-      items: [
-        { value: "3" },
-        { value: "rosemabelle@gmail.com" },
-        { value: "Rose Mabelle Seares" },
-      ],
-    },
-  ]);
+  const [sellers, setSellers] = useState<TableBody>([]);
+  const [tableBody, setTableBody] = useState<TableBody>([]);
 
-  function approveSeller(sellerID: string | ReactNode) {
-    //Insert endpoint to approveSeller here
-    console.log("Approved Seller! " + sellerID);
-    setTableBody((prevBody) =>
-      prevBody.filter((tableRow) => tableRow.items[0].value !== sellerID)
-    );
+  useEffect(() => {
+    getPendingSellers();
+  }, []);
+
+  useEffect(() => {
+    updatedTableBody();
+  }, [sellers]);
+
+  async function getPendingSellers() {
+    const response = await onParseResponse<any>({
+      method: "get",
+      url: "/sellers/pending",
+      data: null,
+    });
+    
+    if (!response) return;
+    const sellers = response.data.map((seller: any) => {
+      return {
+        items: [
+          { value: seller.id },
+          { value: seller.email },
+          { value: seller.username },
+        ],
+      };
+    });
+    setSellers(sellers);
   }
 
-  function rejectSeller(sellerID: string | ReactNode) {
-    //Insert endpoint to rejectSeller here
-    setTableBody((prevBody) =>
-      prevBody.filter((tableRow) => tableRow.items[0].value !== sellerID)
-    );
+  const handleReprove = async (sellerID: string | ReactNode) => {
+      const response = await onParseResponse<any>({
+        method: "put",
+        url: `/sellers/${sellerID}/disapprove`,
+        data: null,
+      });
+      
+      if (!response) return;
+      setSellers(sellers.filter((seller) => seller.items[0].value !== sellerID));
+      toast.success(`Seller ${sellerID} has been rejected.`);
+  }
+
+  const handleApprove = async (sellerID: string | ReactNode) => {
+      const response = await onParseResponse<any>({
+        method: "put",
+        url: `/sellers/${sellerID}/approve`,
+        data: null,
+      });
+      
+      if (!response) return;
+      setSellers(sellers.filter((seller) => seller.items[0].value !== sellerID));
+      toast.success(`Seller ${sellerID} has been approved.`);
   }
 
   function updatedTableBody() {
-    const updatedTableBody = tableBody.map((tableRow) => {
+    const updatedTableBody = sellers.map((tableRow) => {
       // Check if buttons are already added to avoid adding them multiple times
       const hasButtons = tableRow.items.some(
         (item) => React.isValidElement(item.value) && item.value.type === "div"
@@ -67,14 +86,14 @@ const SellerApproval = () => {
                 <Button
                   className="mt-auto mr-2"
                   variant="primary"
-                  onClick={() => approveSeller(tableRow.items[0].value)}
+                  onClick={() => handleApprove(tableRow.items[0].value)}
                 >
                   Approve
                 </Button>
                 <Button
                   className="mt-auto mr-2"
                   variant="danger"
-                  onClick={() => rejectSeller(tableRow.items[0].value)}
+                  onClick={() => handleReprove(tableRow.items[0].value)}
                 >
                   Reject
                 </Button>
@@ -88,12 +107,8 @@ const SellerApproval = () => {
     setTableBody(updatedTableBody);
   }
 
-  useEffect(() => {
-    updatedTableBody();
-  }, []);
-
   return (
-    <div>
+    <div className="mt-8">
       <h2 className="font-bold">Sellers To Approve</h2>
       <Table header={tableHeader} body={tableBody}></Table>
     </div>
