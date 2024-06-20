@@ -12,7 +12,7 @@ import { actions, selectors } from "@/redux/cart";
 
 import { reviews } from "./fixtures";
 
-const ProductDetails: FC = () => {
+const ProductDetailsPage: FC = () => {
   const { id } = useParams();
   const location = useLocation();
   const dispatch = useAppDispatch();
@@ -103,4 +103,4 @@ const ProductDetails: FC = () => {
   );
 };
 
-export default ProductDetails;
+export default ProductDetailsPage;
