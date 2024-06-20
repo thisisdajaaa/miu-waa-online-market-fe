@@ -10,4 +10,6 @@ export interface IReview {
   rating: number;
   date: string;
   buyer: string;
+  content: string;
+  isFlagged: boolean;
 }

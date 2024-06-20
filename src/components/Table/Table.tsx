@@ -39,7 +39,11 @@ export const Table: FC<TableProps> = (props) => {
           <tr>{renderHeader}</tr>
         </thead>
         {/* body */}
-        <tbody>{renderBody}</tbody>
+        <tbody>{body.length > 0 ? renderBody : (
+          <tr>
+            <td className="text-center" colSpan={header.length}>No data available</td>
+          </tr>
+        )}</tbody>
       </table>
     </div>
   );
