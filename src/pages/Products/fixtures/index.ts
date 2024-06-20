@@ -1,6 +1,7 @@
 import type { IProduct } from "@/components/ProductCard/types";
 
 import type { ProductForm } from "../types";
+import { TableHeader } from "@/components/Table/types";
 
 export const mockProducts: IProduct[] = [
   {
@@ -94,3 +95,33 @@ export const initialProductForm: ProductForm = {
   },
   mode: "add",
 };
+
+export const mockTableHeader: TableHeader = [
+  { value: "Seller ID" },
+  { value: "Username" },
+  { value: "Seller Name" },
+  { value: "Approve / Reject" },
+];
+// body: [
+//   {
+//     items: [
+//       { value: "1" },
+//       { value: "marccolina@gmail.com" },
+//       { value: "Marc Lennard Colina" },
+//     ],
+//   },
+//   {
+//     items: [
+//       { value: "2" },
+//       { value: "marycolina@gmail.com" },
+//       { value: "Mary Therese Colina" },
+//     ],
+//   },
+//   {
+//     items: [
+//       { value: "3" },
+//       { value: "rosemabelle@gmail.com" },
+//       { value: "Rose Mabelle Seares" },
+//     ],
+//   },
+// ],
