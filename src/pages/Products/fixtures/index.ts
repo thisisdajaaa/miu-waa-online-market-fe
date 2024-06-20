@@ -1,7 +1,7 @@
 import type { IProduct } from "@/components/ProductCard/types";
 import { TableHeader } from "@/components/Table/types";
-
 import type { ProductForm } from "../types";
+import { BuyerReviewForm } from "@/pages/OrderDetail/types";
 
 export const mockProducts: IProduct[] = [
   {
@@ -119,3 +119,8 @@ export const mockTableHeader: TableHeader = [
   { value: "Seller Name" },
   { value: "Approve / Reject" },
 ];
+
+export const initialBuyerReviewForm: BuyerReviewForm = {
+  rating: 1,
+  content: "",
+};

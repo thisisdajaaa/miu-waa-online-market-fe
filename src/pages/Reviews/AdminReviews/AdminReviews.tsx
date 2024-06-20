@@ -16,7 +16,9 @@ const AdminReview: FC = () => {
       <h2 className=" text-2xl">Flagged Reviews</h2>
       <div className="flex flex-row">
         {reviews.map((review) => (
-          <Review key={review.id} {...review} onDelete={onDelete} />
+          <div className="m-4">
+            <Review key={review.id} {...review} onDelete={onDelete} />
+          </div>
         ))}
       </div>
     </div>
