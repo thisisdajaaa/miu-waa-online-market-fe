@@ -1,34 +1,59 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { FC, MouseEvent, useEffect } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import moment from "moment";
+import { FC, MouseEvent, useCallback, useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { useParams } from "react-router-dom";
 
+import { getImageUrl } from "@/utils/imageUtil";
 import { useAppDispatch, useAppSelector } from "@/hooks";
 
 import Button from "@/components/Button";
-import { IProduct } from "@/components/ProductCard/types";
+import type { IProduct } from "@/components/ProductCard/types";
 import Review from "@/components/Review";
+import type { ReviewProps } from "@/components/Review/types";
 
 import { actions, selectors } from "@/redux/cart";
 
-import { reviews } from "./fixtures";
+import { getProductByIdAPI } from "@/services/product";
 
 const ProductDetailsPage: FC = () => {
   const { id } = useParams();
-  const location = useLocation();
   const dispatch = useAppDispatch();
   const products = useAppSelector(selectors.products);
-  const product: IProduct = location.state.product;
+
+  const [product, setProducts] = useState<IProduct | null>(null);
+
+  const handleLoad = useCallback(async () => {
+    try {
+      const response = await getProductByIdAPI(Number(id));
+
+      const formattedProduct: IProduct = {
+        id: response.id,
+        title: response.name,
+        category: response.category,
+        description: response.description,
+        imageUrl: getImageUrl(response.base64Image),
+        price: response.price,
+        rating: response.rating,
+        quantity: response.stockQuantity,
+        reviews: response.reviews,
+      };
+
+      setProducts(formattedProduct);
+    } catch (error) {
+      toast.error("Failed to fetch product!");
+    }
+  }, [id]);
 
   useEffect(() => {
-    // Fetch product details based on id
-  }, [id]);
+    handleLoad();
+  }, [handleLoad]);
 
   const productInCart = products.find((item) => item.id === Number(id));
   const quantityInCart = productInCart ? productInCart.quantity : 0;
 
   const handleAddToCart = (event: MouseEvent) => {
     event.preventDefault();
-    dispatch(actions.callAddToBasket(product));
+    dispatch(actions.callAddToBasket(product as IProduct));
   };
 
   const handleRemoveFromCart = (event: MouseEvent) => {
@@ -44,18 +69,18 @@ const ProductDetailsPage: FC = () => {
           style={{ maxWidth: "500px" }}
         >
           <img
-            src={product.imageUrl}
-            alt={product.imageUrl}
+            src={product?.imageUrl}
+            alt={product?.imageUrl}
             className="h-full w-full object-cover object-center"
           />
         </div>
 
         <div className="w-full">
           <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
-            {product.title}
+            {product?.title}
           </h1>
           <p className="text-3xl tracking-tight text-gray-900 mt-2">
-            ${product.price.toFixed(2)}
+            ${product?.price.toFixed(2)}
           </p>
 
           <div className="mt-6 flex justify-between items-center">
@@ -81,21 +106,32 @@ const ProductDetailsPage: FC = () => {
         <div className="mt-10 w-full">
           <h3 className="text-sm font-medium text-gray-900">Category</h3>
           <p className="mt-4 text-sm text-gray-600 capitalize">
-            {product.category}
+            {product?.category}
           </p>
         </div>
 
         <div className="mt-10 w-full">
           <h3 className="text-sm font-medium text-gray-900">About this item</h3>
-          <p className="mt-4 text-sm text-gray-600">{product.description}</p>
+          <p className="mt-4 text-sm text-gray-600">{product?.description}</p>
         </div>
 
         <div className="mt-10 w-full">
           <h3 className="text-sm font-medium text-gray-900">Reviews</h3>
           <div className="mt-4 flex flex-col gap-3">
-            {reviews.map((review) => (
-              <Review key={review.id} {...review} />
-            ))}
+            {product?.reviews?.map((review) => {
+              const reviewProps: ReviewProps = {
+                id: review.id,
+                comment: review.content,
+                date: !review.createdDate
+                  ? moment().format("MMM DD, YYYY, h:mm a")
+                  : moment(review.createdDate).format("MMM DD, YYYY, h:mm a"),
+                product: product?.title,
+                rating: review.rating,
+                buyer: "Test User",
+              };
+
+              return <Review key={review.id} {...reviewProps} />;
+            })}
           </div>
         </div>
       </div>
