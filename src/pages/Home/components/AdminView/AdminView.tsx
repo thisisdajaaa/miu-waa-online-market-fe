@@ -3,31 +3,38 @@ import axios from 'axios';
 import Review from "@/components/Review";
 import { IReview } from "@/components/Review/types";
 import SellerApproval from "@/pages/SellerApproval";
+import { onParseResponse } from "@/utils/axiosUtil";
 
 const AdminView: FC = () => {
   const [reviews, setReviews] = useState<IReview[]>([]);
 
   useEffect(() => {
-    axios.get('http://localhost:8080/api/reviews/inappropriates')
-      .then((res) => {
-        res.data.forEach((review: IReview) => {
-          review.comment = review.content;
-        });
-        setReviews(res.data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    getInappropriateReviews();
   }, []);
 
-  const handleDelete = (id: number) => {
-    axios.delete(`http://localhost:8080/api/reviews/${id}`)
-      .then(() => {
-        setReviews(reviews.filter((review) => review.id !== id));
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+  async function getInappropriateReviews() {
+    const response = await onParseResponse<any>({
+      method: "get",
+      url: "/reviews/inappropriates",
+      data: null,
+    });
+    
+    if (!response) return;
+    response.data.forEach((review: IReview) => {
+      review.comment = review.content;
+    });
+    setReviews(response.data);
+  }
+
+  const handleDelete = async (id: number) => {
+    const response = await onParseResponse<any>({
+      method: "delete",
+      url: `/reviews/${id}`,
+      data: null,
+    });
+    
+    if (!response) return;
+    setReviews(reviews.filter((review) => review.id !== id));
   }
 
   return (

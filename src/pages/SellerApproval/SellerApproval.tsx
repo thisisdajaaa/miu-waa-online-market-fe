@@ -1,12 +1,12 @@
 import Table from "@/components/Table";
 import React, { ReactNode, useEffect, useState } from "react";
-import axios from 'axios';
 
 import { mockTableHeader } from "../Products/fixtures";
 import Button from "@/components/Button";
 import { TableBody } from "@/components/Table/types";
 
 import toast from "react-hot-toast";
+import { onParseResponse } from "@/utils/axiosUtil";
 
 const SellerApproval = () => {
   const tableHeader = mockTableHeader;
@@ -14,57 +14,55 @@ const SellerApproval = () => {
   const [tableBody, setTableBody] = useState<TableBody>([]);
 
   useEffect(() => {
-    axios.get('http://localhost:8080/api/sellers/pending')
-      .then((res) => {
-        const sellers = res.data.map((seller: any) => {
-          return {
-            items: [
-              { value: seller.id },
-              { value: seller.email },
-              { value: seller.username },
-            ],
-          };
-        });
-        setSellers(sellers);
-      })
-      .catch((err) => {
-        if (err.response.data.message)
-          toast.error(err.response.data.message as string);
-        else
-          toast.error(err.message as string);
-      });
+    getPendingSellers();
   }, []);
 
   useEffect(() => {
     updatedTableBody();
   }, [sellers]);
 
-  const handleReprove = (sellerID: string | ReactNode) => {
-    axios.put(`http://localhost:8080/api/sellers/${sellerID}/disapprove`)
-      .then(() => {
-        setSellers(sellers.filter((seller) => seller.items[0].value !== sellerID));
-        toast.success(`Seller ${sellerID} has been rejected.`);
-      })
-      .catch((err) => {
-        if (err.response.data.message)
-          toast.error(err.response.data.message as string);
-        else
-          toast.error(err.message as string);
-      });
+  async function getPendingSellers() {
+    const response = await onParseResponse<any>({
+      method: "get",
+      url: "/sellers/pending",
+      data: null,
+    });
+    
+    if (!response) return;
+    const sellers = response.data.map((seller: any) => {
+      return {
+        items: [
+          { value: seller.id },
+          { value: seller.email },
+          { value: seller.username },
+        ],
+      };
+    });
+    setSellers(sellers);
   }
 
-  const handleApprove = (sellerID: string | ReactNode) => {
-    axios.put(`http://localhost:8080/api/sellers/${sellerID}/approve`)
-      .then(() => {
-        setSellers(sellers.filter((seller) => seller.items[0].value !== sellerID));
-        toast.success(`Seller ${sellerID} has been approved.`);
-      })
-      .catch((err) => {
-        if (err.response.data.message)
-          toast.error(err.response.data.message as string);
-        else
-          toast.error(err.message as string);
+  const handleReprove = async (sellerID: string | ReactNode) => {
+      const response = await onParseResponse<any>({
+        method: "put",
+        url: `/sellers/${sellerID}/disapprove`,
+        data: null,
       });
+      
+      if (!response) return;
+      setSellers(sellers.filter((seller) => seller.items[0].value !== sellerID));
+      toast.success(`Seller ${sellerID} has been rejected.`);
+  }
+
+  const handleApprove = async (sellerID: string | ReactNode) => {
+      const response = await onParseResponse<any>({
+        method: "put",
+        url: `/sellers/${sellerID}/approve`,
+        data: null,
+      });
+      
+      if (!response) return;
+      setSellers(sellers.filter((seller) => seller.items[0].value !== sellerID));
+      toast.success(`Seller ${sellerID} has been approved.`);
   }
 
   function updatedTableBody() {
