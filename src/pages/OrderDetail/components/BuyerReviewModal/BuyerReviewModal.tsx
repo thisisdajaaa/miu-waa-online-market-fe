@@ -20,7 +20,7 @@ const BuyerReviewModal = forwardRef<HTMLDialogElement, BuyerReviewModalProps>(
         handleClose={handleClose}
         bodyClassname="w-5/12 max-w-7xl"
       >
-        <h2 className="mb-6 text-lg font-bold uppercase"></h2>
+        <h2 className="mb-6 text-lg font-bold uppercase">Product 1</h2>
         <div className="rating">
           {[1, 2, 3, 4, 5].map((ratingValue) => (
             <label key={ratingValue}>
@@ -60,7 +60,7 @@ const BuyerReviewModal = forwardRef<HTMLDialogElement, BuyerReviewModalProps>(
             className="w-3/12"
             isLoading={isSubmitting}
           >
-            Save
+            Submit
           </Button>
         </div>
       </Modal>
