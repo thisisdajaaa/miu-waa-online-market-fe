@@ -28,3 +28,26 @@ export default {
 - Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
 - Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
 - Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+
+## README FOR BUSINGE_PIUS
+
+- Working on returning a json response with the following data
+```
+{
+  labels: ["Pending", "Processing", "Shipped", "Delivered", "Canceled"],
+  datasets: [
+    {
+      data: [10, 15, 5, 50, 5],
+      backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#F7464A"],
+      hoverBackgroundColor: [
+        "#FF6384",
+        "#36A2EB",
+        "#FFCE56",
+        "#4BC0C0",
+        "#F7464A",
+      ],
+    },
+  ],
+};
+
+```
