@@ -17,5 +17,6 @@ export interface IProduct {
   imageUrl: string;
   rating: number;
   quantity: number;
+  isOutOfStock?: boolean;
   reviews?: ReviewDetailResponse[];
 }

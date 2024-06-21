@@ -113,7 +113,7 @@ export const initialProductForm: ProductForm = {
   mode: "add",
 };
 
-export const mockTableHeader: TableHeader = [
+export const pendingSellerHeaders: TableHeader = [
   { value: "Seller ID" },
   { value: "Username" },
   { value: "Seller Name" },

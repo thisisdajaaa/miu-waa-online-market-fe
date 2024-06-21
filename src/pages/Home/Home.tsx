@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useMemo } from "react";
 
 import { useAppSelector } from "@/hooks";
 
@@ -12,23 +12,29 @@ const HomePage: FC = () => {
   const userDetails = useAppSelector(selectors.userDetails);
   const role = userDetails.role;
 
-  if (role === "BUYER")
+  const renderView = useMemo(() => {
+    if (role === "BUYER")
+      return (
+        <div>
+          <BuyerView />
+        </div>
+      );
+
+    if (role === "ADMIN")
+      return (
+        <div>
+          <AdminView />
+        </div>
+      );
+
     return (
       <div>
-        <BuyerView />
+        <SellerView />
       </div>
     );
+  }, [role]);
 
-  if (role === "SELLER")
-    <div>
-      <SellerView />
-    </div>;
-
-  return (
-    <div>
-      <AdminView />
-    </div>
-  );
+  return <>{renderView}</>;
 };
 
 export default HomePage;

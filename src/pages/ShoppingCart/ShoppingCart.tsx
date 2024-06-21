@@ -130,7 +130,7 @@ const ShoppingCartPage: FC = () => {
                         {item.product.description}
                       </p>
                       <p className="text-lg font-semibold">
-                        ₱{totalProductPrice.toFixed(2)}
+                        ${totalProductPrice ? totalProductPrice?.toFixed(2) : 0}
                       </p>
                     </div>
                   </div>
@@ -151,7 +151,7 @@ const ShoppingCartPage: FC = () => {
             <h3 className="text-lg font-bold mb-4">Order Summary</h3>
             <div className="flex justify-between mb-8">
               <span>Subtotal ({cart?.lineItems?.length} items):</span>
-              <span>${total.toFixed(2)}</span>
+              <span>${total.toFixed(2) || 0}</span>
             </div>
             <Button
               variant="secondary"

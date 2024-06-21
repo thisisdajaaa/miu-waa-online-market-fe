@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import { BuyerDetailResponse } from "@/types/server/user";
 
-import { initialCartState } from "./data";
+import { initialBuyer, initialCartState } from "./data";
 import { CartProduct } from "./models";
 
 const cartSlice = createSlice({
@@ -53,6 +53,9 @@ const cartSlice = createSlice({
     setResetCart: (state) => {
       state.products = [];
       state.total = 0;
+    },
+    setResetBuyerDetails: (state) => {
+      state.buyerDetails = initialBuyer;
     },
   },
 });

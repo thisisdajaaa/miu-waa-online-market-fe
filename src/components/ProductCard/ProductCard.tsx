@@ -25,6 +25,7 @@ const ProductCard: FC<ProductCardProps> = (props) => {
     onDelete,
     onApprove,
     onReject,
+    isOutOfStock = false,
   } = props;
 
   const dispatch = useAppDispatch();
@@ -99,7 +100,7 @@ const ProductCard: FC<ProductCardProps> = (props) => {
             className="w-full h-96 object-cover"
           />
         </figure>
-        <div className="card-body p">
+        <div className="card-body h-72">
           <h4 className="text-xl font-bold">{title}</h4>
           <div className="flex">
             {Array(rating)
@@ -114,16 +115,29 @@ const ProductCard: FC<ProductCardProps> = (props) => {
             <span className="font-semibold">Stock:</span> {quantity || 0}
           </p>
 
+          {isOutOfStock && (
+            <p className="text-red-600 font-semibold">Out of Stock</p>
+          )}
+
           {showBtnBasket && (
             <>
               {quantityInCart > 0 ? (
                 <div className="flex justify-between items-center gap-6">
                   <Button onClick={handleRemoveFromCart}>-</Button>
                   <span>{quantityInCart}</span>
-                  <Button onClick={handleAddToCart}>+</Button>
+                  <Button
+                    onClick={handleAddToCart}
+                    disabled={quantityInCart >= quantity}
+                  >
+                    +
+                  </Button>
                 </div>
               ) : (
-                <Button onClick={handleAddToCart} className="mt-auto button">
+                <Button
+                  onClick={handleAddToCart}
+                  className="mt-auto button"
+                  disabled={quantity === 0}
+                >
                   Add to basket
                 </Button>
               )}

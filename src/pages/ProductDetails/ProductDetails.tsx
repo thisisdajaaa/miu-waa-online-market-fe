@@ -11,15 +11,18 @@ import type { IProduct } from "@/components/ProductCard/types";
 import Review from "@/components/Review";
 import type { ReviewProps } from "@/components/Review/types";
 
-import { actions, selectors } from "@/redux/cart";
+import { selectors as authenticationSelectors } from "@/redux/authentication";
+import { actions, selectors as cartSelectors } from "@/redux/cart";
 
 import { getProductByIdAPI } from "@/services/product";
 
 const ProductDetailsPage: FC = () => {
   const { id } = useParams();
   const dispatch = useAppDispatch();
-  const products = useAppSelector(selectors.products);
-  const buyerDetails = useAppSelector(selectors.buyerDetails);
+  const products = useAppSelector(cartSelectors.products);
+  const buyerDetails = useAppSelector(cartSelectors.buyerDetails);
+  const userDetails = useAppSelector(authenticationSelectors.userDetails);
+  const isBuyer = userDetails.role === "BUYER";
 
   const [product, setProducts] = useState<IProduct | null>(null);
 
@@ -98,19 +101,30 @@ const ProductDetailsPage: FC = () => {
           <div className="mt-6 flex justify-between items-center">
             <div>
               <h3 className="text-sm font-medium text-gray-900">Stock</h3>
-              <p className="text-base text-gray-600">11 in stock</p>
+              <p className="text-base text-gray-600">
+                {product?.quantity} in stock
+              </p>
             </div>
 
-            {quantityInCart > 0 ? (
-              <div className="flex justify-between items-center mt-4 gap-6">
-                <Button onClick={handleRemoveFromCart}>-</Button>
-                <span>{quantityInCart}</span>
-                <Button onClick={handleAddToCart}>+</Button>
-              </div>
-            ) : (
-              <Button onClick={handleAddToCart} className="mt-4">
-                Add to basket
-              </Button>
+            {isBuyer && (
+              <>
+                {quantityInCart > 0 ? (
+                  <div className="flex justify-between items-center mt-4 gap-6">
+                    <Button onClick={handleRemoveFromCart}>-</Button>
+                    <span>{quantityInCart}</span>
+                    <Button
+                      onClick={handleAddToCart}
+                      disabled={quantityInCart >= (product?.quantity as number)}
+                    >
+                      +
+                    </Button>
+                  </div>
+                ) : (
+                  <Button onClick={handleAddToCart} className="mt-4">
+                    Add to basket
+                  </Button>
+                )}
+              </>
             )}
           </div>
         </div>
