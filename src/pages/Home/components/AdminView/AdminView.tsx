@@ -1,44 +1,51 @@
-import { FC, useEffect, useState } from "react";
-import axios from "axios";
+import moment from "moment";
+import { FC, useCallback, useEffect, useState } from "react";
+import toast from "react-hot-toast";
+
 import Review from "@/components/Review";
 import { IReview } from "@/components/Review/types";
-import { onParseResponse } from "@/utils/axiosUtil";
 
-import ProductCard from "@/components/ProductCard";
+import {
+  deleteFlaggedReviewsAPI,
+  getFlaggedReviewsAPI,
+} from "@/services/admin";
 
-import { mockProducts } from "../../fixtures";
 import SellerApproval from "../SellerApproval";
 
 const AdminView: FC = () => {
   const [reviews, setReviews] = useState<IReview[]>([]);
 
-  useEffect(() => {
-    getInappropriateReviews();
+  const handleLoad = useCallback(async () => {
+    try {
+      const response = await getFlaggedReviewsAPI();
+
+      const formattedResponse: IReview[] = response.map((item) => ({
+        id: item.id,
+        buyer: item.buyer,
+        comment: item.content,
+        date: moment(item.createdDate).format("MMM DD, YYYY, h:mm a"),
+        product: item.product,
+        rating: item.rating,
+      }));
+
+      setReviews(formattedResponse);
+    } catch (error) {
+      toast.error("Failed to fetch reviews!");
+    }
   }, []);
 
-  async function getInappropriateReviews() {
-    const response = await onParseResponse<any>({
-      method: "get",
-      url: "/reviews/inappropriates",
-      data: null,
-    });
-
-    if (!response) return;
-    response.data.forEach((review: IReview) => {
-      review.comment = review.content;
-    });
-    setReviews(response.data);
-  }
+  useEffect(() => {
+    handleLoad();
+  }, [handleLoad]);
 
   const handleDelete = async (id: number) => {
-    const response = await onParseResponse<any>({
-      method: "delete",
-      url: `/reviews/${id}`,
-      data: null,
-    });
-
-    if (!response) return;
-    setReviews(reviews.filter((review) => review.id !== id));
+    try {
+      await deleteFlaggedReviewsAPI(id);
+      setReviews(reviews.filter((review) => review.id !== id));
+      toast.success("Successfully deleted the review!");
+    } catch (error) {
+      toast.error("Failed to delete the review!");
+    }
   };
 
   return (
@@ -62,6 +69,7 @@ const AdminView: FC = () => {
           </div>
         </div>
       )}
+
       <SellerApproval />
     </div>
   );

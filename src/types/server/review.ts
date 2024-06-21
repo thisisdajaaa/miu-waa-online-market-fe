@@ -4,4 +4,6 @@ export type ReviewDetailResponse = {
   rating: number;
   isFlagged: boolean;
   createdDate?: string;
+  buyer: string;
+  product: string;
 };
