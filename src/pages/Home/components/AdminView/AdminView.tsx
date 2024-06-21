@@ -1,13 +1,13 @@
 import { FC, useEffect, useState } from "react";
-import axios from 'axios';
+import axios from "axios";
 import Review from "@/components/Review";
 import { IReview } from "@/components/Review/types";
-import SellerApproval from "@/pages/SellerApproval";
 import { onParseResponse } from "@/utils/axiosUtil";
 
 import ProductCard from "@/components/ProductCard";
 
 import { mockProducts } from "../../fixtures";
+import SellerApproval from "../SellerApproval";
 
 const AdminView: FC = () => {
   const [reviews, setReviews] = useState<IReview[]>([]);
@@ -22,7 +22,7 @@ const AdminView: FC = () => {
       url: "/reviews/inappropriates",
       data: null,
     });
-    
+
     if (!response) return;
     response.data.forEach((review: IReview) => {
       review.comment = review.content;
@@ -36,10 +36,10 @@ const AdminView: FC = () => {
       url: `/reviews/${id}`,
       data: null,
     });
-    
+
     if (!response) return;
     setReviews(reviews.filter((review) => review.id !== id));
-  }
+  };
 
   return (
     <div>

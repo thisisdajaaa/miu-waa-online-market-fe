@@ -1,5 +1,6 @@
 import { AddressDetailResponse } from "./address";
 import { OrderDetailResponse } from "./order";
+import { ProductDetailResponse } from "./product";
 import { ReviewDetailResponse } from "./review";
 import { ShoppingCartDetailResponse } from "./shoppingCart";
 
@@ -18,4 +19,13 @@ export type BuyerDetailResponse = {
   orders: OrderDetailResponse[];
   reviews: ReviewDetailResponse[];
   shoppingCart: ShoppingCartDetailResponse;
+};
+
+export type SellerDetailResponse = {
+  id: number;
+  isApproved: boolean;
+  name: string;
+  email: string;
+  products: ProductDetailResponse[];
+  myOrders: OrderDetailResponse[];
 };
