@@ -19,6 +19,7 @@ const ProductDetailsPage: FC = () => {
   const { id } = useParams();
   const dispatch = useAppDispatch();
   const products = useAppSelector(selectors.products);
+  const buyerDetails = useAppSelector(selectors.buyerDetails);
 
   const [product, setProducts] = useState<IProduct | null>(null);
 
@@ -53,12 +54,23 @@ const ProductDetailsPage: FC = () => {
 
   const handleAddToCart = (event: MouseEvent) => {
     event.preventDefault();
-    dispatch(actions.callAddToBasket(product as IProduct));
+    dispatch(
+      actions.callAddToBasket(
+        buyerDetails.id,
+        buyerDetails.shoppingCart.id,
+        product as IProduct
+      )
+    );
   };
 
   const handleRemoveFromCart = (event: MouseEvent) => {
     event.preventDefault();
-    dispatch(actions.callRemoveToBasket(Number(id)));
+    dispatch(
+      actions.callRemoveFromBasket(
+        buyerDetails.id,
+        productInCart?.lineItem as number
+      )
+    );
   };
 
   return (

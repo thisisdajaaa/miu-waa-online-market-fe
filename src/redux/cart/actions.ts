@@ -1,25 +1,58 @@
-import type { IProduct } from "@/components/ProductCard/types";
+import { IProduct } from "@/components/ProductCard/types";
+
+import { addLineItemAPI, removeLineItemAPI } from "@/services/shoppingCart";
+import { getBuyerDetailsAPI } from "@/services/user";
 
 import { cartActions } from "./slices";
 import { AppDispatch, AppThunk } from "../store";
 
-const { addToBasket, removeFromBasket } = cartActions;
+const { addToBasket, removeFromBasket, setBuyerDetails, setResetCart } =
+  cartActions;
 
 const callAddToBasket =
-  (product: IProduct): AppThunk =>
-  (dispatch: AppDispatch) => {
-    dispatch(addToBasket(product));
+  (buyerId: number, shoppingCartId: number, product: IProduct): AppThunk =>
+  async (dispatch: AppDispatch) => {
+    try {
+      const payload = {
+        productId: product.id,
+        shoppingCartId,
+        quantity: 1,
+      };
+
+      const response = await addLineItemAPI(buyerId, payload);
+      dispatch(addToBasket({ lineItem: response.id, ...product }));
+    } catch (error) {
+      console.error("Failed to add item to basket:", error);
+    }
   };
 
-const callRemoveToBasket =
-  (id: number): AppThunk =>
-  (dispatch: AppDispatch) => {
-    dispatch(removeFromBasket(id));
+const callRemoveFromBasket =
+  (buyerId: number, lineItemId: number): AppThunk =>
+  async (dispatch: AppDispatch) => {
+    try {
+      await removeLineItemAPI(buyerId, lineItemId);
+      dispatch(removeFromBasket(lineItemId));
+    } catch (error) {
+      console.error("Failed to remove item from basket:", error);
+    }
   };
+
+const callSetBuyerDetails =
+  (id: number): AppThunk =>
+  async (dispatch: AppDispatch) => {
+    const response = await getBuyerDetailsAPI(id);
+    dispatch(setBuyerDetails(response));
+  };
+
+const callSetResetCart = (): AppThunk => (dispatch: AppDispatch) => {
+  dispatch(setResetCart());
+};
 
 const actions = {
   callAddToBasket,
-  callRemoveToBasket,
+  callRemoveFromBasket,
+  callSetBuyerDetails,
+  callSetResetCart,
 };
 
 export default actions;

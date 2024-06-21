@@ -6,6 +6,9 @@ const products = (state: RootState) =>
 
 const total = (state: RootState) => state.cart.total || initialCartState.total;
 
-const selectors = { products, total };
+const buyerDetails = (state: RootState) =>
+  state.cart.buyerDetails || initialCartState.buyerDetails;
+
+const selectors = { products, total, buyerDetails };
 
 export default selectors;

@@ -1,14 +1,15 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import type { IProduct } from "@/components/ProductCard/types";
+import { BuyerDetailResponse } from "@/types/server/user";
 
 import { initialCartState } from "./data";
+import { CartProduct } from "./models";
 
 const cartSlice = createSlice({
   name: "cart",
   initialState: initialCartState,
   reducers: {
-    addToBasket: (state, action: PayloadAction<IProduct>) => {
+    addToBasket: (state, action: PayloadAction<CartProduct>) => {
       const product = action.payload;
 
       const existingProduct = state.products.find(
@@ -24,10 +25,10 @@ const cartSlice = createSlice({
       state.total += +product.price;
     },
     removeFromBasket: (state, action: PayloadAction<number>) => {
-      const productId = action.payload;
+      const lineItem = action.payload;
 
       const existingProduct = state.products.find(
-        (item) => item.id === productId
+        (item) => item.lineItem === lineItem
       );
 
       if (existingProduct) {
@@ -35,16 +36,23 @@ const cartSlice = createSlice({
           existingProduct.quantity -= 1;
         } else {
           state.products = state.products.filter(
-            (item) => item.id !== productId
+            (item) => item.lineItem !== lineItem
           );
         }
 
         state.total -= +existingProduct.price;
       } else {
         console.warn(
-          `Can't remove product (id: ${productId}) as it is not in the basket`
+          `Can't remove product (id: ${lineItem}) as it is not in the basket`
         );
       }
+    },
+    setBuyerDetails: (state, action: PayloadAction<BuyerDetailResponse>) => {
+      state.buyerDetails = action.payload;
+    },
+    setResetCart: (state) => {
+      state.products = [];
+      state.total = 0;
     },
   },
 });

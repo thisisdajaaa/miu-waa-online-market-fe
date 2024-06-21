@@ -15,7 +15,8 @@ import {
 import Button from "@/components/Button";
 import FormInput from "@/components/Formik/FormInput";
 
-import { actions } from "@/redux/authentication";
+import { actions as authenticationActions } from "@/redux/authentication";
+import { actions as cartActions } from "@/redux/cart";
 
 import { getLoggedInUserAPI, loginAPI } from "@/services/authentication";
 
@@ -34,7 +35,10 @@ const LoginPage: FC = () => {
       await loginAPI(values);
 
       const response = await getLoggedInUserAPI();
-      dispatch(actions.callSetUserDetails(response));
+      dispatch(authenticationActions.callSetUserDetails(response));
+
+      if (response.role === "BUYER")
+        dispatch(cartActions.callSetBuyerDetails(response.id));
 
       toast.success("Successfully logged in!");
 
