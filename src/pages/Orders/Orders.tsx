@@ -36,6 +36,7 @@ const OrdersPage: FC = () => {
       <div className="mt-12">
         {orders.map((order) => (
           <OrderCard
+            id={order.id}
             orderNumber={order.orderNumber}
             deliveryDate={order.deliveryDate}
             soldBy={order.soldBy}

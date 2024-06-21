@@ -3,6 +3,7 @@ export type OrderCardProps = {
 } & OrderCard;
 
 export interface OrderCard {
+  id: number;
   orderNumber: string;
   deliveryDate: string;
   soldBy: string;

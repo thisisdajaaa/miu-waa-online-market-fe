@@ -118,20 +118,24 @@ const ProductDetailsPage: FC = () => {
         <div className="mt-10 w-full">
           <h3 className="text-sm font-medium text-gray-900">Reviews</h3>
           <div className="mt-4 flex flex-col gap-3">
-            {product?.reviews?.map((review) => {
-              const reviewProps: ReviewProps = {
-                id: review.id,
-                comment: review.content,
-                date: !review.createdDate
-                  ? moment().format("MMM DD, YYYY, h:mm a")
-                  : moment(review.createdDate).format("MMM DD, YYYY, h:mm a"),
-                product: product?.title,
-                rating: review.rating,
-                buyer: "Test User",
-              };
+            {product?.reviews && product?.reviews?.length > 0 ? (
+              product?.reviews?.map((review) => {
+                const reviewProps: ReviewProps = {
+                  id: review.id,
+                  comment: review.content,
+                  date: !review.createdDate
+                    ? moment().format("MMM DD, YYYY, h:mm a")
+                    : moment(review.createdDate).format("MMM DD, YYYY, h:mm a"),
+                  product: product?.title,
+                  rating: review.rating,
+                  buyer: "Test User",
+                };
 
-              return <Review key={review.id} {...reviewProps} />;
-            })}
+                return <Review key={review.id} {...reviewProps} />;
+              })
+            ) : (
+              <h2 className="font-bold">No reviews found.</h2>
+            )}
           </div>
         </div>
       </div>
