@@ -1,4 +1,5 @@
 import { AddressDetailResponse } from "./address";
+import { ProductDetailResponse } from "./product";
 
 export type OrderStatus =
   | "CANCELED"
@@ -22,4 +23,20 @@ export type OrderDetailRequest = {
   orderDate: Date;
   shippingAddress: AddressDetailResponse;
   billingAddress: AddressDetailResponse;
+};
+
+export type OrderRequest = {
+  id: number;
+  totalAmount: number;
+  orderDate: Date;
+  status: string;
+  shippingAddress: AddressDetailResponse;
+  billingAddress: AddressDetailResponse;
+  orderItems: OrderItemDetailResponse[];
+};
+
+export type OrderItemDetailResponse = {
+  id: number;
+  quantity: number;
+  product: ProductDetailResponse;
 };

@@ -79,12 +79,10 @@ const OrderCard: React.FC<OrderCardProps> = (props) => {
               {status} on {deliveryDate}
             </div>
             <div className="text-sm text-gray-500">
-              Sold and shipped by{" "}
-              <span className="text-blue-500">{soldBy}</span>
+              Shipping Address: <span className="text-blue-500">{soldBy}</span>
             </div>
           </div>
         </div>
-
         <div className="mt-4 flex flex-wrap items-center gap-4">
           {productImages.map((image, index) => (
             <img

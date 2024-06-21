@@ -6,7 +6,7 @@ export interface OrderCard {
   id: number;
   orderNumber: string;
   deliveryDate: string;
-  soldBy: string;
+  soldBy?: string;
   productImages: string[];
   showOrderStatusSelect?: boolean;
   orderStatus: string;

@@ -7,6 +7,7 @@ import type {
 import type {
   OrderDetailRequest,
   OrderDetailResponse,
+  OrderRequest,
 } from "@/types/server/order";
 import type {
   PaymentDetailRequest,
@@ -60,6 +61,28 @@ export const createOrderAPI = async (
     method: "post",
     url: `/orders/create`,
     data: payload,
+  });
+
+  return response;
+};
+
+export const getBuyerOrdersAPI = async (
+  buyerId: number
+): Promise<OrderRequest[]> => {
+  const response = await onParseResponse<OrderRequest[]>({
+    method: "get",
+    url: `/orders/buyer/${buyerId}`,
+  });
+
+  return response;
+};
+
+export const getSellerOrdersAPI = async (
+  sellerId: number
+): Promise<OrderRequest[]> => {
+  const response = await onParseResponse<OrderRequest[]>({
+    method: "get",
+    url: `/orders/seller/${sellerId}`,
   });
 
   return response;
