@@ -6,8 +6,13 @@ import { getBuyerDetailsAPI } from "@/services/user";
 import { cartActions } from "./slices";
 import { AppDispatch, AppThunk } from "../store";
 
-const { addToBasket, removeFromBasket, setBuyerDetails, setResetCart } =
-  cartActions;
+const {
+  addToBasket,
+  removeFromBasket,
+  setBuyerDetails,
+  setResetCart,
+  setResetBuyerDetails,
+} = cartActions;
 
 const callAddToBasket =
   (buyerId: number, shoppingCartId: number, product: IProduct): AppThunk =>
@@ -48,11 +53,16 @@ const callSetResetCart = (): AppThunk => (dispatch: AppDispatch) => {
   dispatch(setResetCart());
 };
 
+const callSetResetBuyerDetails = (): AppThunk => (dispatch: AppDispatch) => {
+  dispatch(setResetBuyerDetails());
+};
+
 const actions = {
   callAddToBasket,
   callRemoveFromBasket,
   callSetBuyerDetails,
   callSetResetCart,
+  callSetResetBuyerDetails,
 };
 
 export default actions;

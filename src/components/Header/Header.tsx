@@ -16,8 +16,14 @@ import {
   NON_AUTHENTICATED_URLS,
 } from "@/constants/pageUrl";
 
-import { actions, selectors as authSelectors } from "@/redux/authentication";
-import { selectors as cartSelectors } from "@/redux/cart";
+import {
+  actions as authenticationActions,
+  selectors as authSelectors,
+} from "@/redux/authentication";
+import {
+  actions as cartActions,
+  selectors as cartSelectors,
+} from "@/redux/cart";
 
 import { logoutAPI } from "@/services/authentication";
 
@@ -35,6 +41,7 @@ const Header: FC<HeaderProps> = (props) => {
   const total = useAppSelector(cartSelectors.total);
   const userDetails = useAppSelector(authSelectors.userDetails);
   const isBuyer = userDetails.role === "BUYER";
+  const isAdmin = userDetails.role === "ADMIN";
 
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -47,7 +54,9 @@ const Header: FC<HeaderProps> = (props) => {
 
   const handleLogout = async () => {
     await logoutAPI();
-    dispatch(actions.callSetResetAuthentication());
+    dispatch(cartActions.callSetResetBuyerDetails());
+    dispatch(cartActions.callSetResetCart());
+    dispatch(authenticationActions.callSetResetAuthentication());
     setIsDropdownOpen(false);
     navigate(NON_AUTHENTICATED_URLS.LOGIN);
   };
@@ -137,13 +146,16 @@ const Header: FC<HeaderProps> = (props) => {
       </div>
 
       <div className="flex items-center space-x-3 p-2 pl-6 bg-primary text-white text-sm">
-        <p
-          className="link items-center hidden md:flex"
-          onClick={handleToggleSidebar}
-        >
-          <BiMenu className="h-6 w-6 mr-1" />
-          All
-        </p>
+        {!isAdmin && (
+          <p
+            className="link items-center hidden md:flex"
+            onClick={handleToggleSidebar}
+          >
+            <BiMenu className="h-6 w-6 mr-1" />
+          </p>
+        )}
+
+        <p className="link">All</p>
         <p className="link">Electronics</p>
         <p className="link">Clothings</p>
         <p className="link">Home Appliances</p>
