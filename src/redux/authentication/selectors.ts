@@ -1,12 +1,9 @@
 import { initialAuthenticationState } from "./data";
 import { RootState } from "../store";
 
-const accessToken = (state: RootState) =>
-  state.authentication.accessToken || initialAuthenticationState.accessToken;
+const userDetails = (state: RootState) =>
+  state.authentication.userDetails || initialAuthenticationState.userDetails;
 
-const refreshToken = (state: RootState) =>
-  state.authentication.refreshToken || initialAuthenticationState.refreshToken;
-
-const selectors = { accessToken, refreshToken };
+const selectors = { userDetails };
 
 export default selectors;

@@ -104,7 +104,7 @@ export const getProductByIdAPI = async (
 ): Promise<ProductDetailResponse> => {
   const response = await onParseResponse<ProductDetailResponse>({
     method: "get",
-    url: `/products/${id}`,
+    url: `/products/getSingleProduct/${id}`,
   });
 
   return response;

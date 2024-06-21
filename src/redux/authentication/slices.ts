@@ -1,20 +1,18 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { initialAuthenticationState } from "./data";
+import type { UserDetailResponse } from "@/types/server/user";
+
+import { initialAuthenticationState, initialUserDetails } from "./data";
 
 const authenticationSlice = createSlice({
   name: "authentication",
   initialState: initialAuthenticationState,
   reducers: {
-    setAccessToken: (state, { payload }: PayloadAction<string>) => {
-      state.accessToken = payload;
-    },
-    setRefreshToken: (state, { payload }: PayloadAction<string>) => {
-      state.refreshToken = payload;
+    setUserDetails: (state, { payload }: PayloadAction<UserDetailResponse>) => {
+      state.userDetails = payload;
     },
     setResetAuthentication: (state) => {
-      state.accessToken = "";
-      state.refreshToken = "";
+      state.userDetails = initialUserDetails;
     },
   },
 });
