@@ -20,6 +20,8 @@ import type {
   OrderRequest,
   OrdersResponse,
 } from "@/types/server/order";
+import { orderStatusList } from "@/constants/order";
+import moment from "moment";
 
 const OrdersPage: FC = () => {
   const userDetails = useAppSelector(selectors.userDetails);
@@ -59,12 +61,12 @@ const OrdersPage: FC = () => {
   return (
     <div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-center">
-        {/* <Input
+        <Input
           label="Order Number"
           rightIcon={<BiSearch />}
           placeholder="Search Order Number"
-        /> */}
-        {/* <Select options={orderStatusList} label="Order Status" defaultValue={}/> */}
+        />
+        <Select options={orderStatusList} label="Order Status" />
       </div>
 
       <div className="mt-12">
@@ -73,7 +75,9 @@ const OrdersPage: FC = () => {
             key={order.id}
             id={order.id}
             orderNumber={order.id.toString()}
-            deliveryDate={order?.orderDate?.toString()}
+            deliveryDate={moment(order?.orderDate).format(
+              "MMM DD, YYYY, h:mm a"
+            )}
             showOrderStatusSelect={!isBuyer}
             orderStatus={order.status}
             productImages={order?.orderItems?.map(
