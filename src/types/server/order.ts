@@ -35,6 +35,8 @@ export type OrderRequest = {
   orderItems: OrderItemDetailResponse[];
 };
 
+export type OrdersResponse = OrderRequest[];
+
 export type OrderItemDetailResponse = {
   id: number;
   quantity: number;

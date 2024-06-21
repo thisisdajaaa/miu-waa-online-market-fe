@@ -84,7 +84,7 @@ const OrderCard: React.FC<OrderCardProps> = (props) => {
           </div>
         </div>
         <div className="mt-4 flex flex-wrap items-center gap-4">
-          {productImages.map((image, index) => (
+          {productImages?.map((image, index) => (
             <img
               src={image}
               alt={`${image}-${index}`}

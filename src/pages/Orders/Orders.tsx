@@ -1,31 +1,34 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { BiSearch } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 
-import { orderStatusList } from "@/constants/order";
+import { useAppSelector } from "@/hooks";
+
 import { AUTHENTICATED_URLS } from "@/constants/pageUrl";
 
 import Input from "@/components/Input";
 import OrderCard from "@/components/OrderCard";
 import Select from "@/components/Select";
-import { getBuyerOrdersAPI, getSellerOrdersAPI } from "@/services/order";
-import toast from "react-hot-toast";
-import type { OrderRequest } from "@/types/server/order";
-import { useAppSelector } from "@/hooks";
+
 import { selectors } from "@/redux/authentication";
 
+import { getBuyerOrdersAPI, getSellerOrdersAPI } from "@/services/order";
+
+import type {
+  OrderDetailResponse,
+  OrderRequest,
+  OrdersResponse,
+} from "@/types/server/order";
+
 const OrdersPage: FC = () => {
-  console.log("I AM AT ORDERS");
   const userDetails = useAppSelector(selectors.userDetails);
-  let isBuyer = false;
+  const isBuyer = userDetails.role == "BUYER";
 
-  if (userDetails.role == "BUYER") {
-    isBuyer = true;
-  }
   const navigate = useNavigate();
-  const [orders, setOrders] = useState<OrderRequest[]>([]);
+  const [orders, setOrders] = useState<OrdersResponse>([]);
 
-  const handleLoadBuyerOrders = async () => {
+  const handleLoadBuyerOrders = useCallback(async () => {
     try {
       const response = await getBuyerOrdersAPI(userDetails.id);
       console.log("I AM AT BUYER RESPONSE " + response);
@@ -33,9 +36,9 @@ const OrdersPage: FC = () => {
     } catch (error) {
       toast.error("Failed to fetch Orders!");
     }
-  };
+  }, [userDetails.id]);
 
-  const handleLoadSellerOrders = async () => {
+  const handleLoadSellerOrders = useCallback(async () => {
     try {
       const response = await getSellerOrdersAPI(userDetails.id);
       console.log("I AM AT SELLER RESPONSE " + response);
@@ -43,7 +46,7 @@ const OrdersPage: FC = () => {
     } catch (error) {
       toast.error("Failed to fetch Orders!");
     }
-  };
+  }, [userDetails.id]);
 
   useEffect(() => {
     if (isBuyer) {
@@ -51,7 +54,7 @@ const OrdersPage: FC = () => {
     } else {
       handleLoadSellerOrders();
     }
-  }, []);
+  }, [handleLoadBuyerOrders, handleLoadSellerOrders, isBuyer]);
 
   return (
     <div>
@@ -67,12 +70,13 @@ const OrdersPage: FC = () => {
       <div className="mt-12">
         {orders.map((order) => (
           <OrderCard
+            key={order.id}
             id={order.id}
             orderNumber={order.id.toString()}
-            deliveryDate={order.orderDate.toString()}
+            deliveryDate={order?.orderDate?.toString()}
             showOrderStatusSelect={!isBuyer}
             orderStatus={order.status}
-            productImages={order.orderItems.map(
+            productImages={order?.orderItems?.map(
               (item) => item.product.base64Image
             )}
             onViewDetails={() =>
