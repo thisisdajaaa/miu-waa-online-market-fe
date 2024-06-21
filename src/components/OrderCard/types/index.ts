@@ -11,6 +11,7 @@ export interface OrderCard {
   showOrderStatusSelect?: boolean;
   orderStatus: string;
   orderItems?: OrderItem[];
+  shippingAddress?: string;
 }
 
 export interface OrderItem {

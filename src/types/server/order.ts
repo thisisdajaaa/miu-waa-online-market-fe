@@ -1,4 +1,5 @@
 import { AddressDetailResponse } from "./address";
+import { LineItemDetailResponse } from "./lineItem";
 import { ProductDetailResponse } from "./product";
 
 export type OrderStatus =
@@ -11,8 +12,14 @@ export type OrderStatus =
 export type OrderDetailResponse = {
   id: number;
   totalAmount: number;
+  status: OrderStatus;
+  orderDate: Date;
+  seller: string;
+  buyer: string;
+  last4Digits: string;
   billingAddress: AddressDetailResponse;
   shippingAddress: AddressDetailResponse;
+  lineItems: LineItemDetailResponse[];
 };
 
 export type OrderDetailRequest = {
@@ -41,4 +48,8 @@ export type OrderItemDetailResponse = {
   id: number;
   quantity: number;
   product: ProductDetailResponse;
+};
+
+export type OrderStatusRequest = {
+  orderStatus: OrderStatus;
 };

@@ -1,11 +1,14 @@
+import { Field, useFormikContext } from "formik";
 import { forwardRef } from "react";
-import { useFormikContext, Field } from "formik";
-import type { BuyerReviewModalProps } from "./types";
-import { BuyerReviewForm } from "../../types";
-import Modal from "@/components/Modal";
+
+import clsxm from "@/utils/clsxmUtil";
+
 import Button from "@/components/Button";
 import FormTextArea from "@/components/Formik/FormTextArea";
-import clsxm from "@/utils/clsxmUtil";
+import Modal from "@/components/Modal";
+
+import type { BuyerReviewModalProps } from "./types";
+import { BuyerReviewForm } from "../../types";
 
 const BuyerReviewModal = forwardRef<HTMLDialogElement, BuyerReviewModalProps>(
   (props, ref) => {
@@ -20,7 +23,9 @@ const BuyerReviewModal = forwardRef<HTMLDialogElement, BuyerReviewModalProps>(
         handleClose={handleClose}
         bodyClassname="w-5/12 max-w-7xl"
       >
-        <h2 className="mb-6 text-lg font-bold uppercase">Product 1</h2>
+        <h2 className="mb-6 text-lg font-bold uppercase">
+          {values.productName}
+        </h2>
         <div className="rating">
           {[1, 2, 3, 4, 5].map((ratingValue) => (
             <label key={ratingValue}>

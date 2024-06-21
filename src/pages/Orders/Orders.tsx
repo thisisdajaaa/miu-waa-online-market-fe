@@ -1,27 +1,19 @@
+import moment from "moment";
 import { FC, useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { BiSearch } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 
 import { useAppSelector } from "@/hooks";
 
 import { AUTHENTICATED_URLS } from "@/constants/pageUrl";
 
-import Input from "@/components/Input";
 import OrderCard from "@/components/OrderCard";
-import Select from "@/components/Select";
 
 import { selectors } from "@/redux/authentication";
 
 import { getBuyerOrdersAPI, getSellerOrdersAPI } from "@/services/order";
 
-import type {
-  OrderDetailResponse,
-  OrderRequest,
-  OrdersResponse,
-} from "@/types/server/order";
-import { orderStatusList } from "@/constants/order";
-import moment from "moment";
+import type { OrdersResponse } from "@/types/server/order";
 
 const OrdersPage: FC = () => {
   const userDetails = useAppSelector(selectors.userDetails);
@@ -50,7 +42,7 @@ const OrdersPage: FC = () => {
     }
   }, [userDetails.id]);
 
-  useEffect(() => {
+  const handleLoad = useCallback(() => {
     if (isBuyer) {
       handleLoadBuyerOrders();
     } else {
@@ -58,16 +50,20 @@ const OrdersPage: FC = () => {
     }
   }, [handleLoadBuyerOrders, handleLoadSellerOrders, isBuyer]);
 
+  useEffect(() => {
+    handleLoad();
+  }, [handleLoad]);
+
   return (
     <div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-center">
+      {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-center">
         <Input
           label="Order Number"
           rightIcon={<BiSearch />}
           placeholder="Search Order Number"
         />
         <Select options={orderStatusList} label="Order Status" />
-      </div>
+      </div> */}
 
       <div className="mt-12">
         {orders.map((order) => (
@@ -78,6 +74,7 @@ const OrdersPage: FC = () => {
             deliveryDate={moment(order?.orderDate).format(
               "MMM DD, YYYY, h:mm a"
             )}
+            shippingAddress={String(order?.shippingAddress)}
             showOrderStatusSelect={!isBuyer}
             orderStatus={order.status}
             productImages={order?.orderItems?.map(

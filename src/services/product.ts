@@ -44,6 +44,7 @@ export const addProductAPI = async (
           price: product.details.price,
           category: product.details.category,
           stockQuantity: product.details.quantity,
+          isInStock: true,
         }),
       ],
       {
@@ -78,6 +79,7 @@ export const updateProductAPI = async (id: number, product: ProductForm) => {
           price: product.details.price,
           category: product.details.category,
           stockQuantity: product.details.quantity,
+          isInStock: true,
         }),
       ],
       {

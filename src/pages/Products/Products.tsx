@@ -39,7 +39,7 @@ const ProductsPage: FC = () => {
 
     try {
       if (isAdd) {
-        await addProductAPI(1, values);
+        await addProductAPI(userDetails.id, values);
         toast.success("Successfully added a product!");
       } else {
         await updateProductAPI(values.details.id, values);

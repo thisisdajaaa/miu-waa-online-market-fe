@@ -8,6 +8,8 @@ import type {
   OrderDetailRequest,
   OrderDetailResponse,
   OrderRequest,
+  OrderStatus,
+  OrderStatusRequest,
 } from "@/types/server/order";
 import type {
   PaymentDetailRequest,
@@ -83,6 +85,34 @@ export const getSellerOrdersAPI = async (
   const response = await onParseResponse<OrderRequest[]>({
     method: "get",
     url: `/orders/seller/${sellerId}`,
+  });
+
+  return response;
+};
+
+export const updateOrderStatusAPI = async (
+  orderId: number,
+  status: OrderStatus
+): Promise<OrderDetailResponse> => {
+  const payload: OrderStatusRequest = {
+    orderStatus: status,
+  };
+
+  const response = await onParseResponse<OrderDetailResponse>({
+    method: "put",
+    url: `/orders/myorderstatus/${orderId}`,
+    data: payload,
+  });
+
+  return response;
+};
+
+export const getOrderDetailsAPI = async (
+  orderId: number
+): Promise<OrderDetailResponse> => {
+  const response = await onParseResponse<OrderDetailResponse>({
+    method: "get",
+    url: `/orders/${orderId}`,
   });
 
   return response;

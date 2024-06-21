@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import React, { ChangeEvent, useCallback, useState } from "react";
+import toast from "react-hot-toast";
 import { BiSquare } from "react-icons/bi";
 
+import { onParseResponse } from "@/utils/axiosUtil";
 import clsxm from "@/utils/clsxmUtil";
 
 import { orderStatusList, statusColors } from "@/constants/order";
+
+import { updateOrderStatusAPI } from "@/services/order";
 
 import type { OrderStatus } from "@/types/server/order";
 
@@ -11,29 +15,26 @@ import type { OrderCardProps } from "./types";
 import Button from "../Button";
 import Select from "../Select";
 
-import { onParseResponse } from "@/utils/axiosUtil";
-import toast from "react-hot-toast";
-
 const OrderCard: React.FC<OrderCardProps> = (props) => {
   const {
     id,
     orderNumber,
     deliveryDate,
-    soldBy,
     onViewDetails,
     productImages,
     showOrderStatusSelect = true,
     orderStatus,
+    shippingAddress,
   } = props;
 
   const [status, setStatus] = useState<OrderStatus>(orderStatus as OrderStatus);
 
   const onGenerateReceipt = async () => {
-
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const response = await onParseResponse<any>({
       method: "get",
       url: `/orders/receipt/${id}`,
-      responseType: 'blob'
+      responseType: "blob",
     });
     if (response.size === 0) {
       toast.error("Failed to generate receipt");
@@ -41,6 +42,14 @@ const OrderCard: React.FC<OrderCardProps> = (props) => {
     }
     window.open(URL.createObjectURL(response));
   };
+
+  const handleChangeStatus = useCallback(
+    async (e: ChangeEvent<HTMLSelectElement>) => {
+      setStatus(e.target.value as OrderStatus);
+      await updateOrderStatusAPI(id, e.target.value as OrderStatus);
+    },
+    [id]
+  );
 
   return (
     <div className="border rounded-lg shadow-md bg-white mb-4">
@@ -56,7 +65,7 @@ const OrderCard: React.FC<OrderCardProps> = (props) => {
             <Select
               options={orderStatusList}
               value={status}
-              onChange={(e) => setStatus(e.target.value as OrderStatus)}
+              onChange={handleChangeStatus}
             />
           )}
 
@@ -79,7 +88,8 @@ const OrderCard: React.FC<OrderCardProps> = (props) => {
               {status} on {deliveryDate}
             </div>
             <div className="text-sm text-gray-500">
-              Shipping Address: <span className="text-blue-500">{soldBy}</span>
+              <p className="font-semibold">Shipping Address:</p>
+              <p>{shippingAddress}</p>
             </div>
           </div>
         </div>
