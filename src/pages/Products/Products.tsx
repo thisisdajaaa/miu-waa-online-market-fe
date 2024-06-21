@@ -222,7 +222,7 @@ const ProductsPage: FC = () => {
 
       <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {!products.length ? (
-          <h2 className="font-bold">No Products found.</h2>
+          <h2 className="font-bold">No products found.</h2>
         ) : (
           products.map((product) => (
             <ProductCard
