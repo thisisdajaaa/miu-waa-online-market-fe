@@ -29,6 +29,7 @@ const ProductCard: FC<ProductCardProps> = (props) => {
 
   const dispatch = useAppDispatch();
   const products = useAppSelector(selectors.products);
+  const buyerDetails = useAppSelector(selectors.buyerDetails);
 
   const payload: IProduct = {
     id,
@@ -46,12 +47,23 @@ const ProductCard: FC<ProductCardProps> = (props) => {
 
   const handleAddToCart = (event: MouseEvent) => {
     event.preventDefault();
-    dispatch(actions.callAddToBasket(payload));
+    dispatch(
+      actions.callAddToBasket(
+        buyerDetails.id,
+        buyerDetails.shoppingCart.id,
+        payload as IProduct
+      )
+    );
   };
 
   const handleRemoveFromCart = (event: MouseEvent) => {
     event.preventDefault();
-    dispatch(actions.callRemoveToBasket(id));
+    dispatch(
+      actions.callRemoveFromBasket(
+        buyerDetails.id,
+        productInCart?.lineItem as number
+      )
+    );
   };
 
   const handleEdit = (event: MouseEvent) => {

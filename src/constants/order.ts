@@ -1,17 +1,12 @@
 import type { Option } from "@/types/client";
 
-export const statuses = [
-  "Cancelled",
-  "Placed",
-  "Shipped",
-  "On The Way",
-  "Delivered",
+export const orderStatusList: Option[] = [
+  { label: "Cancelled", value: "CANCELED" },
+  { label: "Placed", value: "PLACED" },
+  { label: "Shipped", value: "SHIPPED" },
+  { label: "On The Way", value: "ON_THE_WAY" },
+  { label: "Delivered", value: "DELIVERED" },
 ];
-
-export const orderStatusList: Option[] = statuses.map((item) => ({
-  label: item,
-  value: item,
-}));
 
 export const statusColors = {
   Cancelled: "bg-red-500 text-white",

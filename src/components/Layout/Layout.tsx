@@ -1,10 +1,14 @@
-import { FC, PropsWithChildren, useCallback, useState } from "react";
+import { FC, PropsWithChildren, useCallback, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 import clsxm from "@/utils/clsxmUtil";
-import { useIsLoggedIn } from "@/hooks";
+import { useAppDispatch, useAppSelector, useIsLoggedIn } from "@/hooks";
 
 import { AUTHENTICATED_URLS } from "@/constants/pageUrl";
+
+import { selectors as authenticationSelectors } from "@/redux/authentication";
+import { selectors as cartSelectors } from "@/redux/cart";
+import { actions } from "@/redux/cart";
 
 import BackButton from "../BackButton";
 import Header from "../Header";
@@ -15,10 +19,20 @@ const Layout: FC<PropsWithChildren> = (props) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
   const isLoggedIn = useIsLoggedIn();
   const location = useLocation();
+  const userDetails = useAppSelector(authenticationSelectors.userDetails);
+  const buyerDetails = useAppSelector(cartSelectors.buyerDetails);
+  const isBuyer = userDetails.role === "BUYER";
+  const dispatch = useAppDispatch();
 
   const handleToggleSidebar = useCallback(() => {
     setIsSidebarOpen((prev) => !prev);
   }, []);
+
+  useEffect(() => {
+    if (isLoggedIn && isBuyer && buyerDetails.id) {
+      dispatch(actions.callSetBuyerDetails(buyerDetails.id));
+    }
+  }, [isLoggedIn, isBuyer, dispatch, buyerDetails.id]);
 
   if (!isLoggedIn)
     return (
