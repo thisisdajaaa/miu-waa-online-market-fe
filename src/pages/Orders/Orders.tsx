@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import { BiSearch } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 
@@ -8,11 +8,19 @@ import { AUTHENTICATED_URLS } from "@/constants/pageUrl";
 import Input from "@/components/Input";
 import OrderCard from "@/components/OrderCard";
 import Select from "@/components/Select";
+import { mockOrders } from "../Home/fixtures";
 
 const OrdersPage: FC = () => {
   const navigate = useNavigate();
+  const [orders, setOrders] = useState(mockOrders);
 
-  const isBuyer = false;
+  useEffect(() => {
+    //fetch orders here
+    //setOrders(orders);
+  });
+
+  //Fetch if user is buyer or seller
+  const isBuyer = true;
 
   return (
     <div>
@@ -26,36 +34,21 @@ const OrdersPage: FC = () => {
       </div>
 
       <div className="mt-12">
-        <OrderCard
-          orderNumber="20001766502901"
-          deliveryDate="Feb 23"
-          soldBy="TEST USER"
-          productImages={["https://picsum.photos/id/237/200/300"]}
-          showOrderStatusSelect={!isBuyer}
-          onViewDetails={() =>
-            navigate(`${AUTHENTICATED_URLS.ORDERS}/20001766502901`)
-          }
-        />
-        <OrderCard
-          orderNumber="20001766502901"
-          deliveryDate="Feb 23"
-          soldBy="TEST USER"
-          showOrderStatusSelect={!isBuyer}
-          productImages={["https://picsum.photos/id/237/200/300"]}
-          onViewDetails={() =>
-            navigate(`${AUTHENTICATED_URLS.ORDERS}/20001766502901`)
-          }
-        />
-        <OrderCard
-          orderNumber="20001766502901"
-          deliveryDate="Feb 23"
-          soldBy="TEST USER"
-          showOrderStatusSelect={!isBuyer}
-          productImages={["https://picsum.photos/id/237/200/300"]}
-          onViewDetails={() =>
-            navigate(`${AUTHENTICATED_URLS.ORDERS}/20001766502901`)
-          }
-        />
+        {orders.map((order) => (
+          <OrderCard
+            orderNumber={order.orderNumber}
+            deliveryDate={order.deliveryDate}
+            soldBy={order.soldBy}
+            productImages={order.productImages}
+            showOrderStatusSelect={!isBuyer}
+            orderStatus={order.orderStatus}
+            onViewDetails={() =>
+              navigate(`${AUTHENTICATED_URLS.ORDERS}/${order.orderNumber}`, {
+                state: { orderItems: order.orderItems },
+              })
+            }
+          />
+        ))}
       </div>
     </div>
   );

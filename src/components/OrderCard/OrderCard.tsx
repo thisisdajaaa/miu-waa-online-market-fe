@@ -19,9 +19,10 @@ const OrderCard: React.FC<OrderCardProps> = (props) => {
     onViewDetails,
     productImages,
     showOrderStatusSelect = true,
+    orderStatus,
   } = props;
 
-  const [status, setStatus] = useState<OrderStatus>("Delivered");
+  const [status, setStatus] = useState<OrderStatus>(orderStatus as OrderStatus);
 
   return (
     <div className="border rounded-lg shadow-md bg-white mb-4">
