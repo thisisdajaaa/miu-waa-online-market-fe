@@ -11,4 +11,5 @@ export type ProductDetailResponse = {
   base64Image: string;
   rating: number;
   reviews: ReviewDetailResponse[];
+  inStock: boolean;
 };

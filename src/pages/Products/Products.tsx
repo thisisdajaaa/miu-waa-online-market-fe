@@ -76,6 +76,7 @@ const ProductsPage: FC = () => {
         price: item.price,
         rating: item.rating,
         quantity: item.stockQuantity,
+        isOutOfStock: !item.inStock,
       }));
 
       setProducts(formattedResponse);
@@ -229,6 +230,7 @@ const ProductsPage: FC = () => {
               key={product.id}
               {...product}
               showBtnBasket={false}
+              isOutOfStock={product.quantity === 0}
               onEdit={handleEdit}
               onDelete={() => handleDelete(product.id)}
             />

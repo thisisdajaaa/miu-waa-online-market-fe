@@ -112,7 +112,12 @@ const ProductDetailsPage: FC = () => {
                   <div className="flex justify-between items-center mt-4 gap-6">
                     <Button onClick={handleRemoveFromCart}>-</Button>
                     <span>{quantityInCart}</span>
-                    <Button onClick={handleAddToCart}>+</Button>
+                    <Button
+                      onClick={handleAddToCart}
+                      disabled={quantityInCart >= (product?.quantity as number)}
+                    >
+                      +
+                    </Button>
                   </div>
                 ) : (
                   <Button onClick={handleAddToCart} className="mt-4">
