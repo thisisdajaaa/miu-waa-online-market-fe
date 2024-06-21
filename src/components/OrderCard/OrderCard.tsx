@@ -11,6 +11,9 @@ import type { OrderCardProps } from "./types";
 import Button from "../Button";
 import Select from "../Select";
 
+import { onParseResponse } from "@/utils/axiosUtil";
+import toast from "react-hot-toast";
+
 const OrderCard: React.FC<OrderCardProps> = (props) => {
   const {
     id,
@@ -25,10 +28,18 @@ const OrderCard: React.FC<OrderCardProps> = (props) => {
 
   const [status, setStatus] = useState<OrderStatus>(orderStatus as OrderStatus);
 
-  const onGenerateReceipt = () => {
-    const baseUrl = import.meta.env.VITE_PUBLIC_BASE_URL;
-    const url = `${baseUrl}/orders/receipt/${id}`;
-    window.open(url, "_blank");
+  const onGenerateReceipt = async () => {
+
+    const response = await onParseResponse<any>({
+      method: "get",
+      url: `/orders/receipt/${id}`,
+      responseType: 'blob'
+    });
+    if (response.size === 0) {
+      toast.error("Failed to generate receipt");
+      return;
+    }
+    window.open(URL.createObjectURL(response));
   };
 
   return (

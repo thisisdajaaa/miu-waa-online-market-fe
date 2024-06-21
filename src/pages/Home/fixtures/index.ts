@@ -168,6 +168,7 @@ export const mockReviews: IReview[] = [
 
 export const mockOrders: OrderCard[] = [
   {
+    id: 1,
     orderNumber: "123456",
     deliveryDate: "2023-04-01",
     soldBy: "Company A",
@@ -190,6 +191,7 @@ export const mockOrders: OrderCard[] = [
     ],
   },
   {
+    id: 2,
     orderNumber: "789012",
     deliveryDate: "2023-05-15",
     soldBy: "Company B",
@@ -212,6 +214,7 @@ export const mockOrders: OrderCard[] = [
     ],
   },
   {
+    id: 3,
     orderNumber: "345678",
     deliveryDate: "2023-06-20",
     soldBy: "Company C",
