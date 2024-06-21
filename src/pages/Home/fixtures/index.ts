@@ -2,6 +2,7 @@ import faker from "faker";
 
 import type { IProduct } from "@/components/ProductCard/types";
 import type { IReview } from "@/components/Review/types";
+import type { OrderCard, OrderItem } from "@/components/OrderCard/types";
 
 export const mockLabels = [
   "January",
@@ -50,6 +51,7 @@ export const mockProducts: IProduct[] = [
     rating: 5,
     imageUrl:
       "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg",
+    quantity: 4,
   },
   {
     id: 2,
@@ -60,6 +62,7 @@ export const mockProducts: IProduct[] = [
     description: "This is a description for product 2.",
     imageUrl:
       "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg",
+    quantity: 4,
   },
   {
     id: 3,
@@ -70,6 +73,7 @@ export const mockProducts: IProduct[] = [
     rating: 5,
     imageUrl:
       "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg",
+    quantity: 4,
   },
   {
     id: 4,
@@ -80,6 +84,7 @@ export const mockProducts: IProduct[] = [
     rating: 5,
     imageUrl:
       "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg",
+    quantity: 4,
   },
   {
     id: 5,
@@ -90,6 +95,7 @@ export const mockProducts: IProduct[] = [
     rating: 5,
     imageUrl:
       "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg",
+    quantity: 4,
   },
   {
     id: 6,
@@ -100,6 +106,7 @@ export const mockProducts: IProduct[] = [
     rating: 5,
     imageUrl:
       "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg",
+    quantity: 4,
   },
   {
     id: 7,
@@ -110,6 +117,7 @@ export const mockProducts: IProduct[] = [
     rating: 5,
     imageUrl:
       "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg",
+    quantity: 4,
   },
   {
     id: 8,
@@ -120,6 +128,7 @@ export const mockProducts: IProduct[] = [
     rating: 5,
     imageUrl:
       "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg",
+    quantity: 4,
   },
 ];
 
@@ -127,29 +136,100 @@ export const mockReviews: IReview[] = [
   {
     id: 1,
     product: "Product 1",
-    title: "Great product!",
-    comment: "This is a great product. I love it!",
+    content: "This is a great product. I love it!",
     rating: 4,
     date: "2021-09-01",
     buyer: "John Doe",
+    isFlagged: false,
+    comment: "Lala",
   },
   {
     id: 2,
     product: "Product 2",
-    title: "Fabulous product!",
+    content: "Fabulous product!",
     comment: "This is a fabulous product. I love it!",
     rating: 3,
     date: "2022-08-01",
     buyer: "Jane Doe",
+    isFlagged: false,
   },
 
   {
     id: 3,
     product: "Product 3",
-    title: "Amazing product!",
+    content: "Amazing product!",
     comment: "This is an amazing product. I love it!",
     rating: 3,
     date: "2022-08-01",
     buyer: "Jane Doe",
+    isFlagged: false,
+  },
+];
+
+export const mockOrders: OrderCard[] = [
+  {
+    orderNumber: "123456",
+    deliveryDate: "2023-04-01",
+    soldBy: "Company A",
+    productImages: ["https://picsum.photos/id/237/200/300"],
+    showOrderStatusSelect: true,
+    orderStatus: "Delivered",
+    orderItems: [
+      {
+        quantity: 1,
+        name: "Product 1",
+        price: 100,
+        image: "https://picsum.photos/id/237/200/300",
+      },
+      {
+        quantity: 3,
+        name: "Product 2",
+        price: 100,
+        image: "https://picsum.photos/id/237/200/300",
+      },
+    ],
+  },
+  {
+    orderNumber: "789012",
+    deliveryDate: "2023-05-15",
+    soldBy: "Company B",
+    productImages: ["https://picsum.photos/id/237/200/300"],
+    showOrderStatusSelect: false,
+    orderStatus: "Placed",
+    orderItems: [
+      {
+        quantity: 1,
+        name: "Product 1",
+        price: 100,
+        image: "https://picsum.photos/id/237/200/300",
+      },
+      {
+        quantity: 3,
+        name: "Product 2",
+        price: 100,
+        image: "https://picsum.photos/id/237/200/300",
+      },
+    ],
+  },
+  {
+    orderNumber: "345678",
+    deliveryDate: "2023-06-20",
+    soldBy: "Company C",
+    productImages: ["https://picsum.photos/id/237/200/300"],
+    orderStatus: "Shipped",
+    orderItems: [
+      {
+        quantity: 1,
+        name: "Product 1",
+        price: 100,
+        image: "https://picsum.photos/id/237/200/300",
+      },
+      {
+        quantity: 3,
+        name: "Product 2",
+        price: 100,
+        image: "https://picsum.photos/id/237/200/300",
+      },
+    ],
   },
 ];

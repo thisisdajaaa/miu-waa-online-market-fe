@@ -1,5 +1,5 @@
 import { FC, useCallback, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 
 import { orderStatusList } from "@/constants/order";
 import toast from "react-hot-toast";
@@ -18,6 +18,8 @@ import BuyerReviewModal from "./components/BuyerReviewModal";
 
 const OrderDetailPage: FC = () => {
   const { id } = useParams();
+  const location = useLocation();
+  const { orderDetails } = location.state || {}; // Ensure to handle the case where state might be undefined
 
   const [status, setStatus] = useState<OrderStatus>("Delivered");
   const buyerReviewModalRef = useRef<HTMLDialogElement | null>(null);
@@ -76,6 +78,7 @@ const OrderDetailPage: FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <ItemListSection
             status={status}
+            orderDetails={orderDetails}
             showReviewModal={handleShowReviewModal}
           />
 

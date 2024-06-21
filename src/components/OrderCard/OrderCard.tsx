@@ -20,14 +20,15 @@ const OrderCard: React.FC<OrderCardProps> = (props) => {
     onViewDetails,
     productImages,
     showOrderStatusSelect = true,
+    orderStatus,
   } = props;
 
-  const [status, setStatus] = useState<OrderStatus>("Delivered");
-  
+  const [status, setStatus] = useState<OrderStatus>(orderStatus as OrderStatus);
+
   const onGenerateReceipt = () => {
     const baseUrl = import.meta.env.VITE_PUBLIC_BASE_URL;
     const url = `${baseUrl}/orders/receipt/${id}`;
-    window.open(url, '_blank');
+    window.open(url, "_blank");
   };
 
   return (
