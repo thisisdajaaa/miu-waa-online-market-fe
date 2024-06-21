@@ -13,6 +13,7 @@ import Select from "../Select";
 
 const OrderCard: React.FC<OrderCardProps> = (props) => {
   const {
+    id,
     orderNumber,
     deliveryDate,
     soldBy,
@@ -22,6 +23,12 @@ const OrderCard: React.FC<OrderCardProps> = (props) => {
   } = props;
 
   const [status, setStatus] = useState<OrderStatus>("Delivered");
+  
+  const onGenerateReceipt = () => {
+    const baseUrl = import.meta.env.VITE_PUBLIC_BASE_URL;
+    const url = `${baseUrl}/orders/receipt/${id}`;
+    window.open(url, '_blank');
+  };
 
   return (
     <div className="border rounded-lg shadow-md bg-white mb-4">
@@ -40,6 +47,10 @@ const OrderCard: React.FC<OrderCardProps> = (props) => {
               onChange={(e) => setStatus(e.target.value as OrderStatus)}
             />
           )}
+
+          <Button onClick={onGenerateReceipt} variant="info">
+            Generate Receipt
+          </Button>
 
           <Button onClick={onViewDetails} variant="ghost">
             View Details
