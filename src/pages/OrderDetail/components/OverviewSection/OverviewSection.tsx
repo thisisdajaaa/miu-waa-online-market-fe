@@ -8,7 +8,7 @@ import { statusColors } from "@/constants/order";
 import type { OverviewSectionProps } from "./types";
 
 const OverviewSection: FC<OverviewSectionProps> = (props) => {
-  const { status } = props;
+  const { status, details } = props;
 
   return (
     <div className="border rounded-lg shadow-md bg-white p-6">
@@ -22,16 +22,16 @@ const OverviewSection: FC<OverviewSectionProps> = (props) => {
       </div>
       <div className="mb-4">
         <h6 className="font-bold">Shipping Address</h6>
-        <p>Test User</p>
-        <p>N Fourth Street, Mr #26, Fairfield, IA 52557</p>
+        <p>{details?.buyer}</p>
+        <p>{String(details?.shippingAddress)}</p>
       </div>
 
       <div className="divider" />
 
       <div className="mb-4">
         <h6 className="font-bold">Billing Address</h6>
-        <p>Test User</p>
-        <p>N Fourth Street, Mr #26, Fairfield, IA 52557</p>
+        <p>{details?.buyer}</p>
+        <p>{String(details?.billingAddress)}</p>
       </div>
 
       <div className="divider" />
@@ -42,32 +42,18 @@ const OverviewSection: FC<OverviewSectionProps> = (props) => {
         <div className="flex justify-between items-center">
           <div className="flex gap-3 items-center">
             <IoCard />
-            <p>Ending in 7996</p>
+            <p>Ending in {details?.last4Digits}</p>
           </div>
 
-          <span>$40.20</span>
+          <span>${details?.totalAmount.toFixed(2)}</span>
         </div>
       </div>
 
       <div className="divider" />
 
       <div className="mb-4 flex justify-between items-center">
-        <h6 className="font-bold">Subtotal</h6>
-        <p>$39.45</p>
-      </div>
-
-      <div className="divider" />
-
-      <div className="mb-4 flex justify-between items-center">
-        <h6 className="font-bold">Tax</h6>
-        <p>$2.75</p>
-      </div>
-
-      <div className="divider" />
-
-      <div className="mb-4 flex justify-between items-center">
         <h6 className="font-bold">Total</h6>
-        <p className="text-lg font-bold">$42.20</p>
+        <p className="text-lg font-bold">${details?.totalAmount.toFixed(2)}</p>
       </div>
     </div>
   );
