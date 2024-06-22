@@ -7,7 +7,7 @@ import clsxm from "@/utils/clsxmUtil";
 
 import { orderStatusList, statusColors } from "@/constants/order";
 
-import { updateOrderStatusAPI } from "@/services/order";
+import { updateOrderStatusAPI, cancelOrderAPI } from "@/services/order";
 
 import type { OrderStatus } from "@/types/server/order";
 
@@ -25,9 +25,11 @@ const OrderCard: React.FC<OrderCardProps> = (props) => {
     showOrderStatusSelect = true,
     orderStatus,
     shippingAddress,
+    handleLoad,
   } = props;
 
   const [status, setStatus] = useState<OrderStatus>(orderStatus as OrderStatus);
+  const isOrderCancellable = status === ("PLACED" as OrderStatus);
 
   const onGenerateReceipt = async () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -51,6 +53,17 @@ const OrderCard: React.FC<OrderCardProps> = (props) => {
     [id]
   );
 
+  const handleCancelOrder = useCallback(async (orderId: number) => {
+    setStatus("CANCELED" as OrderStatus);
+    try {
+      await cancelOrderAPI(orderId);
+      handleLoad();
+      toast.success("Order cancelled successfully");
+    } catch (error) {
+      toast.error("Failed to cancel order");
+    }
+  }, []);
+
   return (
     <div className="border rounded-lg shadow-md bg-white mb-4">
       <div
@@ -72,6 +85,12 @@ const OrderCard: React.FC<OrderCardProps> = (props) => {
           <Button onClick={onGenerateReceipt} variant="info">
             Generate Receipt
           </Button>
+
+          {!showOrderStatusSelect && isOrderCancellable && (
+            <Button onClick={() => handleCancelOrder(id)} variant="danger">
+              Cancel Order
+            </Button>
+          )}
 
           <Button onClick={onViewDetails} variant="ghost">
             View Details

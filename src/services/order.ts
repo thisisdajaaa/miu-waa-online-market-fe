@@ -117,3 +117,11 @@ export const getOrderDetailsAPI = async (
 
   return response;
 };
+
+export const cancelOrderAPI = async (orderId: number): Promise<void> => {
+  const response = await onParseResponse<void>({
+    method: "delete",
+    url: `/orders/${orderId}`,
+  });
+  return response;
+};
