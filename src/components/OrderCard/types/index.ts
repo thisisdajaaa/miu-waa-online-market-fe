@@ -12,6 +12,7 @@ export interface OrderCard {
   orderStatus: string;
   orderItems?: OrderItem[];
   shippingAddress?: string;
+  handleLoad: () => void;
 }
 
 export interface OrderItem {
