@@ -94,22 +94,26 @@ export const mockProducts: IProduct[] = [
   },
 ];
 
+export const initialFilters: ProductForm["filters"] = {
+  name: "",
+  category: "",
+  price: 0,
+  rating: 0,
+};
+
+export const initialDetails: ProductForm["details"] = {
+  id: 0,
+  name: "",
+  description: "",
+  quantity: 0,
+  category: "",
+  price: 0,
+  image: null,
+};
+
 export const initialProductForm: ProductForm = {
-  details: {
-    id: 0,
-    name: "",
-    description: "",
-    quantity: 0,
-    category: "",
-    price: 0,
-    image: null,
-  },
-  filters: {
-    name: "",
-    category: "",
-    price: 0,
-    rating: 0,
-  },
+  details: initialDetails,
+  filters: initialFilters,
   mode: "add",
 };
 

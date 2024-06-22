@@ -23,7 +23,7 @@ export type BuyerDetailResponse = {
 
 export type SellerDetailResponse = {
   id: number;
-  isApproved: boolean;
+  approved: boolean;
   name: string;
   email: string;
   products: ProductDetailResponse[];

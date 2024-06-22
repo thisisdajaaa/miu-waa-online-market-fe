@@ -3,6 +3,7 @@ import { debounce } from "lodash";
 import { FC, useCallback, useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { BiSearch } from "react-icons/bi";
+import { useLocation } from "react-router-dom";
 
 import { getImageUrl } from "@/utils/imageUtil";
 import { useAppSelector, useUpdateEffect } from "@/hooks";
@@ -20,18 +21,30 @@ import { selectors } from "@/redux/authentication";
 
 import { deleteProductAPI, getProductsBySellerAPI } from "@/services/product";
 import { addProductAPI, updateProductAPI } from "@/services/product";
+import { getSellerDetailsAPI } from "@/services/user";
+
+import { SellerDetailResponse } from "@/types/server/user";
 
 import ProductFormModal from "./components/ProductFormModal";
-import { initialProductForm } from "./fixtures";
+import { initialFilters, initialProductForm } from "./fixtures";
 import type { ProductForm } from "./types";
 import { ProductFormValidationSchema } from "./validations";
 
 const ProductsPage: FC = () => {
   const [products, setProducts] = useState<IProduct[]>([]);
+  const [sellerDetails, setSellerDetails] =
+    useState<SellerDetailResponse | null>(null);
+
+  const location = useLocation();
+
+  const sellerId: number = location?.state?.sellerId;
+
+  console.log("sellerId: ", sellerId);
 
   const productFormModalRef = useRef<HTMLDialogElement | null>(null);
 
   const userDetails = useAppSelector(selectors.userDetails);
+  const isBuyer = userDetails.role === "BUYER";
 
   const handleSubmit = async (values: ProductForm) => {
     const { mode } = values;
@@ -65,7 +78,13 @@ const ProductsPage: FC = () => {
 
   const handleLoad = useCallback(async () => {
     try {
-      const response = await getProductsBySellerAPI(userDetails.id, {});
+      const response = await getProductsBySellerAPI(
+        sellerId || userDetails.id,
+        {}
+      );
+      const sellerResponse = await getSellerDetailsAPI(
+        sellerId || userDetails.id
+      );
 
       const formattedResponse: IProduct[] = response.map((item) => ({
         id: item.id,
@@ -77,13 +96,15 @@ const ProductsPage: FC = () => {
         rating: item.rating,
         quantity: item.stockQuantity,
         isOutOfStock: !item.inStock,
+        isDeletable: item.isDeletable,
       }));
 
       setProducts(formattedResponse);
+      setSellerDetails(sellerResponse);
     } catch (error) {
       toast.error("Failed to fetch products!");
     }
-  }, [userDetails.id]);
+  }, [sellerId, userDetails.id]);
 
   const debouncedLoadRef = useRef(
     debounce(async (sellerId: number, filters: Record<string, string>) => {
@@ -120,12 +141,13 @@ const ProductsPage: FC = () => {
         : formikBag.values.filters.rating.toString(),
     };
 
-    debouncedLoadRef.current(userDetails.id, filters);
+    debouncedLoadRef.current(sellerId || userDetails.id, filters);
   }, [
     formikBag.values.filters.name,
     formikBag.values.filters.price,
     formikBag.values.filters.category,
     formikBag.values.filters.rating,
+    sellerId,
     userDetails.id,
   ]);
 
@@ -177,7 +199,9 @@ const ProductsPage: FC = () => {
 
   return (
     <FormikContext.Provider value={formikBag}>
-      <h2 className="font-bold">Your Products</h2>
+      <h2 className="font-bold">
+        {isBuyer ? sellerDetails?.name : "Your"} Products
+      </h2>
 
       <div className="mt-8 flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4">
         <div className="flex flex-wrap gap-4 items-center">
@@ -213,12 +237,24 @@ const ProductsPage: FC = () => {
           />
         </div>
 
-        <Button
-          className="mt-4 sm:mt-0 sm:self-end"
-          onClick={handleShowProductFormModal}
-        >
-          Add Product
-        </Button>
+        <div className="sm:self-end flex gap-4">
+          <Button
+            variant="active"
+            onClick={() => formikBag.setFieldValue("filters", initialFilters)}
+          >
+            Clear Filter
+          </Button>
+
+          {!isBuyer && (
+            <Button
+              className="mt-4 sm:mt-0 "
+              onClick={handleShowProductFormModal}
+              disabled={!sellerDetails?.approved}
+            >
+              Add Product
+            </Button>
+          )}
+        </div>
       </div>
 
       <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -229,10 +265,11 @@ const ProductsPage: FC = () => {
             <ProductCard
               key={product.id}
               {...product}
-              showBtnBasket={false}
+              showBtnBasket={isBuyer}
               isOutOfStock={product.quantity === 0}
-              onEdit={handleEdit}
-              onDelete={() => handleDelete(product.id)}
+              onEdit={isBuyer ? undefined : handleEdit}
+              onDelete={isBuyer ? undefined : () => handleDelete(product.id)}
+              isDeletable={product.isDeletable}
             />
           ))
         )}

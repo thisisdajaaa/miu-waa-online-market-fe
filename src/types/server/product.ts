@@ -12,4 +12,6 @@ export type ProductDetailResponse = {
   rating: number;
   reviews: ReviewDetailResponse[];
   inStock: boolean;
+  isDeletable: boolean;
+  sellerName: string;
 };

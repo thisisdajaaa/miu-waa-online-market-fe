@@ -19,4 +19,7 @@ export interface IProduct {
   quantity: number;
   isOutOfStock?: boolean;
   reviews?: ReviewDetailResponse[];
+  isDeletable?: boolean;
+  sellerName?: string;
+  sellerId?: number;
 }

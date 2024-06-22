@@ -1,10 +1,12 @@
 import moment from "moment";
 import { FC, MouseEvent, useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import { getImageUrl } from "@/utils/imageUtil";
 import { useAppDispatch, useAppSelector } from "@/hooks";
+
+import { AUTHENTICATED_URLS } from "@/constants/pageUrl";
 
 import Button from "@/components/Button";
 import type { IProduct } from "@/components/ProductCard/types";
@@ -40,6 +42,8 @@ const ProductDetailsPage: FC = () => {
         rating: response.rating,
         quantity: response.stockQuantity,
         reviews: response.reviews,
+        sellerName: response.sellerName,
+        sellerId: response.sellerId,
       };
 
       setProducts(formattedProduct);
@@ -130,6 +134,16 @@ const ProductDetailsPage: FC = () => {
         </div>
 
         <div className="mt-10 w-full">
+          <h3 className="text-sm font-medium text-gray-900">Seller</h3>
+          <Link
+            to={AUTHENTICATED_URLS.PRODUCTS}
+            state={{ sellerId: product?.sellerId }}
+          >
+            {product?.sellerName}
+          </Link>
+        </div>
+
+        <div className="mt-10 w-full">
           <h3 className="text-sm font-medium text-gray-900">Category</h3>
           <p className="mt-4 text-sm text-gray-600 capitalize">
             {product?.category}
@@ -154,7 +168,7 @@ const ProductDetailsPage: FC = () => {
                     : moment(review.createdDate).format("MMM DD, YYYY, h:mm a"),
                   product: product?.title,
                   rating: review.rating,
-                  buyer: "Test User",
+                  buyer: review.buyer,
                 };
 
                 return <Review key={review.id} {...reviewProps} />;

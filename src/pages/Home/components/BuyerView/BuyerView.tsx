@@ -1,5 +1,6 @@
 import { FC, useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { useLocation } from "react-router-dom";
 
 import { getImageUrl } from "@/utils/imageUtil";
 
@@ -11,10 +12,14 @@ import { getProductsAPI } from "@/services/product";
 
 const BuyerView: FC = () => {
   const [products, setProducts] = useState<IProduct[]>([]);
+  const location = useLocation();
 
   const handleLoad = useCallback(async () => {
     try {
-      const response = await getProductsAPI();
+      const queryParams = new URLSearchParams(location.search);
+      const category = queryParams.get("category") || "all";
+
+      const response = await getProductsAPI({ category });
 
       const formattedResponse: IProduct[] = response.map((item) => ({
         id: item.id,
@@ -31,7 +36,7 @@ const BuyerView: FC = () => {
     } catch (error) {
       toast.error("Failed to fetch products!");
     }
-  }, []);
+  }, [location.search]);
 
   useEffect(() => {
     handleLoad();
@@ -40,7 +45,6 @@ const BuyerView: FC = () => {
   return (
     <div>
       <Banner />
-
       <ProductFeed products={products} />
     </div>
   );

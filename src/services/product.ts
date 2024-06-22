@@ -4,10 +4,15 @@ import type { ProductForm } from "@/pages/Products/types";
 
 import { ProductDetailResponse } from "@/types/server/product";
 
-export const getProductsAPI = async (): Promise<ProductDetailResponse[]> => {
+export const getProductsAPI = async (
+  filters?: Record<string, string>
+): Promise<ProductDetailResponse[]> => {
+  const queryParams: URLSearchParams = new URLSearchParams(filters);
+
   const response = await onParseResponse<ProductDetailResponse[]>({
     method: "get",
     url: "/products",
+    params: queryParams,
   });
 
   return response;

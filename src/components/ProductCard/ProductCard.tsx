@@ -25,6 +25,7 @@ const ProductCard: FC<ProductCardProps> = (props) => {
     onDelete,
     onApprove,
     onReject,
+    isDeletable = false,
     isOutOfStock = false,
   } = props;
 
@@ -176,6 +177,7 @@ const ProductCard: FC<ProductCardProps> = (props) => {
                 <Button
                   className="mt-auto"
                   variant="danger"
+                  disabled={!isDeletable}
                   onClick={handleDelete}
                 >
                   Delete
