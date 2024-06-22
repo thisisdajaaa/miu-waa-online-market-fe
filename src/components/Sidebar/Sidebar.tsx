@@ -14,6 +14,9 @@ const Sidebar: FC<SidebarProps> = (props) => {
   const { handleToggleSidebar, isSidebarOpen } = props;
   const userDetails = useAppSelector(selectors.userDetails);
   const isSeller = userDetails.role === "SELLER";
+  const isAdmin = userDetails.role === "ADMIN";
+
+  if (isAdmin) return null;
 
   return (
     <Fragment>
