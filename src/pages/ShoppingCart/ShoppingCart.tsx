@@ -63,21 +63,43 @@ const ShoppingCartPage: FC = () => {
     );
   };
 
-  const handleRemoveFromCart = (lineItem: number) => {
-    dispatch(actions.callRemoveFromBasket(buyerDetails.id, lineItem));
+  const handleRemoveFromCart = (lineItemId: number) => {
+    const productInCart = products.find(
+      (product) => product.lineItem === lineItemId
+    );
+    if (!productInCart) return;
 
-    setCart((prevCart) => {
-      if (!prevCart) return prevCart;
+    if (productInCart.quantity > 1) {
+      dispatch(actions.callRemoveFromBasket(buyerDetails.id, lineItemId));
+      setCart((prevCart) => {
+        if (!prevCart) return prevCart;
 
-      const updatedLineItems = prevCart.lineItems.filter(
-        (item) => item.id !== lineItem
-      );
+        const updatedLineItems = prevCart.lineItems.map((item) =>
+          item.id === lineItemId
+            ? { ...item, quantity: item.quantity - 1 }
+            : item
+        );
 
-      return {
-        ...prevCart,
-        lineItems: updatedLineItems,
-      };
-    });
+        return {
+          ...prevCart,
+          lineItems: updatedLineItems,
+        };
+      });
+    } else {
+      dispatch(actions.callRemoveFromBasket(buyerDetails.id, lineItemId));
+      setCart((prevCart) => {
+        if (!prevCart) return prevCart;
+
+        const updatedLineItems = prevCart.lineItems.filter(
+          (item) => item.id !== lineItemId
+        );
+
+        return {
+          ...prevCart,
+          lineItems: updatedLineItems,
+        };
+      });
+    }
   };
 
   return (

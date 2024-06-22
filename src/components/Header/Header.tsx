@@ -69,6 +69,10 @@ const Header: FC<HeaderProps> = (props) => {
     setIsDropdownOpen((prev) => !prev);
   };
 
+  const handleCategoryClick = (category: string) => {
+    navigate(`${AUTHENTICATED_URLS.HOME}?category=${category}`);
+  };
+
   return (
     <header className="sticky top-0 z-50">
       <div className="navbar bg-accent shadow-md px-10 justify-between">
@@ -155,10 +159,31 @@ const Header: FC<HeaderProps> = (props) => {
           </p>
         )}
 
-        <p className="link">All</p>
-        <p className="link">Electronics</p>
-        <p className="link">Clothings</p>
-        <p className="link">Home Appliances</p>
+        {isBuyer && (
+          <>
+            <p className="link" onClick={() => handleCategoryClick("all")}>
+              All
+            </p>
+            <p
+              className="link"
+              onClick={() => handleCategoryClick("electronics")}
+            >
+              Electronics
+            </p>
+            <p
+              className="link"
+              onClick={() => handleCategoryClick("clothings")}
+            >
+              Clothings
+            </p>
+            <p
+              className="link"
+              onClick={() => handleCategoryClick("home-appliances")}
+            >
+              Home Appliances
+            </p>
+          </>
+        )}
       </div>
     </header>
   );

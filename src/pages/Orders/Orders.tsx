@@ -66,25 +66,29 @@ const OrdersPage: FC = () => {
       </div> */}
 
       <div className="mt-12">
-        {orders.map((order) => (
-          <OrderCard
-            key={order.id}
-            id={order.id}
-            orderNumber={order.id.toString()}
-            deliveryDate={moment(order?.orderDate).format(
-              "MMM DD, YYYY, h:mm a"
-            )}
-            shippingAddress={String(order?.shippingAddress)}
-            showOrderStatusSelect={!isBuyer}
-            orderStatus={order.status}
-            productImages={order?.orderItems?.map(
-              (item) => item.product.base64Image
-            )}
-            onViewDetails={() =>
-              navigate(`${AUTHENTICATED_URLS.ORDERS}/${order.id}`)
-            }
-          />
-        ))}
+        {orders && orders.length > 0 ? (
+          orders.map((order) => (
+            <OrderCard
+              key={order.id}
+              id={order.id}
+              orderNumber={order.id.toString()}
+              deliveryDate={moment(order?.orderDate).format(
+                "MMM DD, YYYY, h:mm a"
+              )}
+              shippingAddress={String(order?.shippingAddress)}
+              showOrderStatusSelect={!isBuyer}
+              orderStatus={order.status}
+              productImages={order?.orderItems?.map(
+                (item) => item.product.base64Image
+              )}
+              onViewDetails={() =>
+                navigate(`${AUTHENTICATED_URLS.ORDERS}/${order.id}`)
+              }
+            />
+          ))
+        ) : (
+          <h2 className="font-bold">No orders found.</h2>
+        )}
       </div>
     </div>
   );
