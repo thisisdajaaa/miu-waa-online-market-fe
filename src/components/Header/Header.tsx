@@ -159,21 +159,31 @@ const Header: FC<HeaderProps> = (props) => {
           </p>
         )}
 
-        <p className="link" onClick={() => handleCategoryClick("all")}>
-          All
-        </p>
-        <p className="link" onClick={() => handleCategoryClick("electronics")}>
-          Electronics
-        </p>
-        <p className="link" onClick={() => handleCategoryClick("clothings")}>
-          Clothings
-        </p>
-        <p
-          className="link"
-          onClick={() => handleCategoryClick("home-appliances")}
-        >
-          Home Appliances
-        </p>
+        {isBuyer && (
+          <>
+            <p className="link" onClick={() => handleCategoryClick("all")}>
+              All
+            </p>
+            <p
+              className="link"
+              onClick={() => handleCategoryClick("electronics")}
+            >
+              Electronics
+            </p>
+            <p
+              className="link"
+              onClick={() => handleCategoryClick("clothings")}
+            >
+              Clothings
+            </p>
+            <p
+              className="link"
+              onClick={() => handleCategoryClick("home-appliances")}
+            >
+              Home Appliances
+            </p>
+          </>
+        )}
       </div>
     </header>
   );
